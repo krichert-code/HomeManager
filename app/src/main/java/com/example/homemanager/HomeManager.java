@@ -46,7 +46,6 @@ import com.example.homemanager.Task.Action.TaskDescription;
 import com.example.homemanager.Garden.Garden;
 import com.example.homemanager.Task.Garden.GardenMessage;
 import com.example.homemanager.Task.Garden.GardenObject;
-import com.example.homemanager.Task.Garden.GardenSettingsTask;
 import com.example.homemanager.Task.Garden.GardenTask;
 import com.example.homemanager.Task.Heater.HeaterMessage;
 import com.example.homemanager.Task.Heater.HeaterObject;
@@ -73,7 +72,7 @@ import java.util.TimerTask;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class HomeManager extends AppCompatActivity implements StatusMessage, TemperatureMessage, InfoMessage, GuiConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage {
+public class HomeManager extends AppCompatActivity implements StatusMessage, TemperatureMessage, InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage {
 
     private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
         @Override

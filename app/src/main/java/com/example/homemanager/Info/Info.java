@@ -11,26 +11,23 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.example.homemanager.GuiConnector;
+import com.example.homemanager.TaskConnector;
 import com.example.homemanager.R;
 import com.example.homemanager.Task.Action.StatusMessage;
-import com.example.homemanager.Task.Heater.HeaterSettingsTask;
 import com.example.homemanager.Task.Info.AlarmSettingsTask;
 import com.example.homemanager.Task.Info.InfoMessage;
 import com.example.homemanager.Task.Info.InfoObject;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.tabs.TabLayout;
 
 public class Info implements InfoMessage {
 
     private View promptView;
     private InfoObject infoObj;
-    private GuiConnector tasks;
+    private TaskConnector tasks;
     private StatusMessage statusMessages;
     private Info infoClass;
 
-    public Info(GuiConnector taskConnector, StatusMessage statusMessages){
+    public Info(TaskConnector taskConnector, StatusMessage statusMessages){
         this.tasks = taskConnector;
         this.statusMessages = statusMessages;
         this.infoClass = this;

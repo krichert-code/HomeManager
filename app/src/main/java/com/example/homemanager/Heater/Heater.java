@@ -15,14 +15,13 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.example.homemanager.GuiConnector;
+import com.example.homemanager.TaskConnector;
 import com.example.homemanager.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.example.homemanager.Task.Action.StatusMessage;
-import com.example.homemanager.Task.Garden.GardenSettingsTask;
 import com.example.homemanager.Task.Heater.HeaterMessage;
 import com.example.homemanager.Task.Heater.HeaterObject;
 import com.example.homemanager.Task.Heater.HeaterSettingsTask;
@@ -48,12 +47,12 @@ public class Heater implements HeaterMessage {
     private View promptView;
     private int pieChartIdDraw;
     private HeaterObject heaterObject;
-    private GuiConnector tasks;
+    private TaskConnector tasks;
     private StatusMessage statusMessages;
     private final Heater heaterClass;
     private boolean firstUpdate = true;
 
-    public Heater(GuiConnector taskConnector, StatusMessage statusMessages){
+    public Heater(TaskConnector taskConnector, StatusMessage statusMessages){
         this.tasks = taskConnector;
         this.statusMessages = statusMessages;
         this.heaterClass = this;

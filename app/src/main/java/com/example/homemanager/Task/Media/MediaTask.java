@@ -1,7 +1,5 @@
 package com.example.homemanager.Task.Media;
 
-import com.example.homemanager.GuiConnector;
-import com.example.homemanager.Task.Info.InfoMessage;
 import com.example.homemanager.Task.Task;
 
 import org.json.JSONArray;

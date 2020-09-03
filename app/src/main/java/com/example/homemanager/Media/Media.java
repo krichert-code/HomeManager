@@ -1,44 +1,32 @@
 package com.example.homemanager.Media;
 import android.app.AlertDialog;
-import android.graphics.Color;
-import android.text.InputType;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.homemanager.GuiConnector;
+import com.example.homemanager.TaskConnector;
 import com.example.homemanager.R;
 import com.example.homemanager.Task.Action.CecTask;
 import com.example.homemanager.Task.Action.PlayTask;
 import com.example.homemanager.Task.Action.SoundVolumeTask;
-import com.example.homemanager.Task.Action.SprinklerTask;
 import com.example.homemanager.Task.Action.StatusMessage;
 import com.example.homemanager.Task.Action.StopMediaTask;
-import com.example.homemanager.Task.Action.TaskDescription;
-import com.example.homemanager.Task.Info.InfoObject;
 import com.example.homemanager.Task.Media.MediaObject;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.List;
 
 public class Media {
 
     private View promptView;
-    private GuiConnector taskConnector;
+    private TaskConnector taskConnector;
     private StatusMessage statusMessages;
 
-    public Media(GuiConnector tasksConnector, StatusMessage statusMessages){
+    public Media(TaskConnector tasksConnector, StatusMessage statusMessages){
         this.taskConnector = tasksConnector;
         this.statusMessages = statusMessages;
     }

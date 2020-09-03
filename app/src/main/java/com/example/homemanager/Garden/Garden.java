@@ -1,47 +1,35 @@
 package com.example.homemanager.Garden;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import androidx.annotation.RequiresApi;
-
-import com.example.homemanager.GuiConnector;
+import com.example.homemanager.TaskConnector;
 import com.example.homemanager.R;
-import com.example.homemanager.Schedule.Schedule;
-import com.example.homemanager.Task.Action.MainGateTask;
 import com.example.homemanager.Task.Action.StatusMessage;
 import com.example.homemanager.Task.Action.SprinklerTask;
 import com.example.homemanager.Task.Garden.GardenMessage;
 import com.example.homemanager.Task.Garden.GardenObject;
 import com.example.homemanager.Task.Garden.GardenSettingsTask;
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 public class Garden implements GardenMessage {
-    private GuiConnector tasks;
+    private TaskConnector tasks;
     private StatusMessage statusMessages;
     private View promptView;
     private GardenObject gardenObject;
     private final Garden gardenClass;
 
-    public Garden(GuiConnector taskConnector, StatusMessage statusMessages){
+    public Garden(TaskConnector taskConnector, StatusMessage statusMessages){
         this.tasks = taskConnector;
         this.statusMessages = statusMessages;
         this.gardenClass = this;
