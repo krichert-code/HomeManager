@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fullscreen_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context=".HomeManager"
+    android:soundEffectsEnabled="true">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tlo"><![CDATA[
+        android:fitsSystemWindows="true"
+        android:soundEffectsEnabled="true">
+
+
+
+        ]]>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="325dp"
+            android:layout_gravity="top"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:alpha="0.9"
+            android:background="#9E9696"
+            android:soundEffectsEnabled="true">
+
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="18dp">
+
+                <ImageView
+                    android:id="@+id/tempModeImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    app:srcCompat="@drawable/day" />
+
+                <TextView
+                    android:id="@+id/temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_span="2"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:text="@string/loadText"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textSize="18sp" />
+            </TableRow>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:layout_span="2"
+                android:background="@android:color/white" />
+
+            <TableRow
+                android:layout_width="297dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/imageGate"
+                    android:layout_width="109dp"
+                    android:layout_height="56dp"
+                    android:alpha="0.8"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:soundEffectsEnabled="true"
+                    app:srcCompat="@drawable/gate" />
+
+
+                <ImageButton
+                    android:id="@+id/imageGate1"
+                    android:layout_width="110dp"
+                    android:layout_height="56dp"
+                    android:alpha="0.8"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:soundEffectsEnabled="true"
+                    app:srcCompat="@drawable/gate1" />
+
+                <ImageButton
+                    android:id="@+id/imageDoor"
+                    android:layout_width="108dp"
+                    android:layout_height="56dp"
+                    android:alpha="0.8"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:soundEffectsEnabled="true"
+                    app:srcCompat="@drawable/door" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="290dp"
+                android:layout_height="27dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/gateText" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/gate1Text" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/Furtka" />
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="297dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/imageSprinkler"
+                    android:layout_width="109dp"
+                    android:layout_height="56dp"
+                    android:alpha="0.8"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:soundEffectsEnabled="true"
+                    app:srcCompat="@drawable/garden" />
+
+
+                <ImageButton
+                    android:id="@+id/imageHeater"
+                    android:layout_width="110dp"
+                    android:layout_height="56dp"
+                    android:alpha="0.8"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:soundEffectsEnabled="true"
+                    app:srcCompat="@drawable/piec" />
+
+                <ImageButton
+                    android:id="@+id/imageAlarm"
+                    android:layout_width="108dp"
+                    android:layout_height="56dp"
+                    android:alpha="0.8"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:soundEffectsEnabled="true"
+                    app:srcCompat="@drawable/alarm" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="290dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/gardenText" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/heatText" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/alarmText" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="95dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/imageMedia"
+                    android:layout_width="109dp"
+                    android:layout_height="56dp"
+                    android:alpha="0.8"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:soundEffectsEnabled="true"
+                    app:srcCompat="@drawable/media" />
+
+
+                <ImageButton
+                    android:id="@+id/imageSchedule"
+                    android:layout_width="110dp"
+                    android:layout_height="56dp"
+                    android:alpha="0.8"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:soundEffectsEnabled="true"
+                    app:srcCompat="@drawable/schedule" />
+
+                <ImageButton
+                    android:id="@+id/imageInfo"
+                    android:layout_width="108dp"
+                    android:layout_height="56dp"
+                    android:alpha="0.8"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:scaleType="fitCenter"
+                    android:soundEffectsEnabled="true"
+                    app:srcCompat="@drawable/info" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="290dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/mediaText" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/scheduleText" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/infoText" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingTop="10dp">
+
+            </TableRow>
+
+        </TableLayout>
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?metaButtonBarStyle"
+            android:layout_width="421dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/black_overlay"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent" />
+
+        <TableLayout
+            android:id="@+id/News"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="10dp"
+            android:alpha="0.9"
+            android:background="#9E9696"
+            android:gravity="bottom|center_horizontal" />
+
+    </FrameLayout>
+
+</FrameLayout>

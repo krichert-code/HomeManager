@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">Home Manager</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="Furtka">Furtka</string>
+    <string name="brama">Brama</string>
+
+    <string name="loadText">Pobieranie danych</string>
+
+    <string name="gateText">Garaż</string>
+    <string name="gate1Text">Brama</string>
+    <string name="doorText">Furtka</string>
+
+    <string name="gardenText">Ogród</string>
+    <string name="heatText">Piec</string>
+    <string name="mediaText">Media</string>
+
+    <string name="scheduleText">Rozkład</string>
+    <string name="alarmText">Alarm</string>
+    <string name="infoText">Info</string>
+
+    <!-- Dialog -->
+    <string name="InfoAlarmTime">Godzina budzika</string>
+    <string name="InfoAlarmStation">Stacja radiowa</string>
+    <string name="InfoAlarmTimeOff">Godzina wyłączenia</string>
+    <string name="InfoAlarmVolume">Głośność[%]</string>
+    <string name="InfoAlarmMode0">Alarm wyłączony</string>
+    <string name="InfoAlarmMode1">Tylko dni tygodnia</string>
+    <string name="InfoAlarmMode2">Zawsze włączony</string>
+
+    <string name="GateOpenText">Na jak długo chesz otworzyć bramę ?</string>
+    <string name="GateOpenMessage">Otwieranie bramy wjazdowej</string>
+    <string name="YesButton">Na stałe</string>
+    <string name="NoButton">Na chwilę</string>
+    <string name="CancelButton">Nie otwieraj</string>
+    <string name="SaveButton">Zapisz nowe ustawienia</string>
+    <string name="CloseButton">Zamknij</string>
+    <string name="NextButton">Następny</string>
+    <string name="AutoWaterButton">Automatyczne podlewanie</string>
+    <string name="WaterButton1">Zraszacze w polu 1</string>
+    <string name="WaterButton2">Zraszacze w polu 2</string>
+    <string name="WaterButton3">Zraszacze w polu 3</string>
+    <string name="StopButton">Stop</string>
+
+    <string name="ctrlPanel">Sterowanie</string>
+    <string name="piePanel">Tryb</string>
+    <string name="linePanel">Temp</string>
+    <string name="infoPanel">Info</string>
+    <string name="settingPanel">Ustawienia</string>
+    <string name="DirectionA">Gdańsk</string>
+    <string name="DirectionB">Gdynia</string>
+
+    <string name="Sprinklers">Zraszacze</string>
+    <string name="pieChartLabel1">Czas całkowity</string>
+    <string name="pieChartLabel2">Czas dzienny</string>
+
+    <!-- hit messages -->
+    <string name="HintAutoWaterScheduled">Automatyczne podlewanie zaplanowane</string>
+    <string name="HintWaitForData">Czekam na odpowiedź</string>
+    <string name="HintSettingsSaveDone">Ustawienia zapisane</string>
+
+    <!-- charts -->
+    <string name="DayMode">Tryb dzienny</string>
+    <string name="NightMode">Tryb nocny</string>
+    <string name="OffMode">Piec wyłączony</string>
+    <string name="insideTemp">Temp wewnątrz</string>
+    <string name="outsideTemp">Temp zewnętrzna</string>
+
+    <!-- heater settings -->
+    <string name="DayTempSetting">Dzień [ºC]</string>
+    <string name="NightTempSetting">Noc [ºC]</string>
+
+    <!-- garden settings -->
+    <string name="waterDuration">Czas podlewania[min]</string>
+    <string name="timeToStartAutoWater">Godzina włączenia</string>
+
+    <!-- Error messages -->
+    <string name="connectionError">Brak połączenia</string>
+
+    <!-- URL -->
+    <string name="LocalUrl">http://192.168.1.3/restApi</string>
+    <string name="RemoteUrl">http://kwiatowa.ovh/restApi</string>
+    <string name="VersionUrl">/version</string>
+    <string name="VolumeUpUrl">/VolumeUp</string>
+    <string name="VolumeDownUrl">/VolumeDown</string>
+</resources>

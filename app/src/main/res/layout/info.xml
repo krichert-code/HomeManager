@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:id="@+id/settingInfoPanel"
+            android:layout_width="match_parent"
+            android:layout_height="350sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:shrinkColumns="*"
+            android:stretchColumns="*"
+            android:visibility="gone">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/InfoAlarmTime" />
+
+                <EditText
+                    android:id="@+id/editStartAlarmTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="time" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/InfoAlarmTimeOff" />
+
+                <EditText
+                    android:id="@+id/editStopAlarmTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="time" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:text="@string/InfoAlarmVolume" />
+
+                <SeekBar
+                    android:id="@+id/volumeBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:max="100" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:text="@string/InfoAlarmStation" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_span="2">
+
+                    <RadioButton
+                        android:id="@+id/radioAlarmMode1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/InfoAlarmMode0" />
+
+                    <RadioButton
+                        android:id="@+id/radioAlarmMode2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/InfoAlarmMode1" />
+
+                    <RadioButton
+                        android:id="@+id/radioAlarmMode3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/InfoAlarmMode2" />
+
+                </RadioGroup>
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/saveAlarmSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_span="2"
+                    android:text="@string/SaveButton" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            android:id="@+id/infoPanel"
+            android:layout_width="match_parent"
+            android:layout_height="350sp"
+            android:layout_marginStart="5sp"
+            android:paddingTop="10sp"
+            android:shrinkColumns="*"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="82dp"
+                    android:layout_height="33dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/alarm" />
+
+                <TextView
+                    android:id="@+id/infoText1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginRight="10dp"
+                    android:inputType="textMultiLine"
+                    android:lines="2"
+
+                    android:paddingRight="5dp"
+                    android:scrollHorizontally="false"
+                    android:singleLine="false"
+                    android:text="TextView" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="82dp"
+                    android:layout_height="33dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/garden" />
+
+                <TextView
+                    android:id="@+id/infoText2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:text="TextView" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="82dp"
+                    android:layout_height="33dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/piec" />
+
+                <TextView
+                    android:id="@+id/infoText3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:text="TextView" />
+            </TableRow>
+
+        </TableLayout>
+
+        <View
+            android:id="@+id/divider_info"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_span="2"
+            android:background="?android:attr/listDivider" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_span="2">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/infoPanelTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/infoPanel" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/settingPanelTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settingPanel" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="2"
+            android:text="Zamknij" />
+    </LinearLayout>
+
+</FrameLayout>
