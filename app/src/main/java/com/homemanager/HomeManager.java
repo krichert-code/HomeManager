@@ -32,6 +32,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.homemanager.Alarm.Alarm;
 import com.homemanager.Task.Action.DoorTask;
 import com.homemanager.Task.Action.GateTask;
 import com.homemanager.Task.Garden.GardenTask;
@@ -73,7 +74,8 @@ import java.util.TimerTask;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class HomeManager extends AppCompatActivity implements StatusMessage, TemperatureMessage, InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage {
+public class HomeManager extends AppCompatActivity implements StatusMessage, TemperatureMessage,
+        InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage {
 
     private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
         @Override
@@ -83,7 +85,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    scheduler();
+                    checkConnection();
                 }
             }, 1000, 30000);
         }
@@ -122,7 +124,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     private View mControlsView;
 
 
-    private void scheduler(){
+    private void checkConnection(){
         boolean connectionError = false;
 
         connectionChecker.checkConnection();
@@ -156,15 +158,10 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
-        taskDispatcher = new TaskInvoker();
+        new Thread(taskDispatcher = new TaskInvoker()).start();
 
         connectionChecker = new ConnectionChecker(getString(R.string.LocalUrl) + getString(R.string.VersionUrl) ,
                 getString(R.string.RemoteUrl)+ getString(R.string.VersionUrl), taskDispatcher);
-
-
-        Thread task;
-        task = new Thread(taskDispatcher);
-        task.start();
 
 
 
@@ -179,7 +176,6 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             public void onClick(View view) {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle(R.string.GateOpenText)
-                        //.setMessage(R.string.GateOpenText)
 
                         .setPositiveButton(R.string.YesButton, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -250,10 +246,16 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         });
 
         findViewById(R.id.imageAlarm).setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
                 view.playSoundEffect(SoundEffectConstants.CLICK);
-                //putNewTask(new GardenSettingsTask(new GardenObject()));
+                Alarm alarm = new Alarm();
+                AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
+                alarmDialog.setView(alarm.createScreen(mContentView, alarmDialog));
+                alarmDialog.show();
+                hide();
+
             }
         });
 
@@ -289,7 +291,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                scheduler();
+                checkConnection();
             }
         }, 1000, 30000);
 
@@ -412,7 +414,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
-                if (connectionChecker.isConnectionErrorAppear() || connectionChecker.isConnectionEstablishInProgress()){
+                if (connectionChecker.isConnectionErrorAppear() ||
+                        connectionChecker.isConnectionEstablishInProgress()){
                     return;
                 }
 
@@ -423,7 +426,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                 for (TaskDescription description : taskDesc) {
                     TableRow tr1 = new TableRow(getApplicationContext());
 
-                    tr1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+                    tr1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                            TableRow.LayoutParams.WRAP_CONTENT));
 
                     TextView textview = new TextView(getApplicationContext());
                     textview.setText(description.getDescription() + " " + description.getDate());
@@ -451,7 +455,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                     image.getLayoutParams().height = 60;
                     image.getLayoutParams().width = 60;
 
-                    tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT , TableRow.LayoutParams.WRAP_CONTENT));
+                    tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT ,
+                            TableRow.LayoutParams.WRAP_CONTENT));
                 }
             }
         });

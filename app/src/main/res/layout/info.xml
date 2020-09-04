@@ -34,7 +34,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="time" />
+                    android:inputType="time"
+                    android:importantForAutofill="no" />
             </TableRow>
 
             <TableRow
@@ -222,7 +223,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_span="2"
-            android:background="?android:attr/listDivider" />
+            android:background="@color/colorAccent" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -249,7 +250,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_span="2"
-            android:text="Zamknij" />
+            android:text="@string/CloseButton" />
     </LinearLayout>
 
 </FrameLayout>

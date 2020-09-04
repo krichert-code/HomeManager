@@ -27,6 +27,9 @@
     <string name="InfoAlarmMode0">Alarm wyłączony</string>
     <string name="InfoAlarmMode1">Tylko dni tygodnia</string>
     <string name="InfoAlarmMode2">Zawsze włączony</string>
+    <string name="InfoRainOccurs">Dzisiaj zanotowano opady deszczu</string>
+    <string name="InfoRainNotOccurs">Dzisiaj nie zanotowano opadu deszczu</string>
+    <string name="InfoHeater">Dzisiejszy czas pracy pieca </string>
 
     <string name="GateOpenText">Na jak długo chesz otworzyć bramę ?</string>
     <string name="GateOpenMessage">Otwieranie bramy wjazdowej</string>

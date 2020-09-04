@@ -81,13 +81,19 @@ public class Info implements InfoMessage {
         ((SeekBar)promptView.findViewById(R.id.volumeBar)).setProgress(Integer.parseInt(infoObj.getAlarmVolume()));
 
         TextView textView = (TextView)promptView.findViewById(R.id.infoText1);
-        textView.setText(data.getAlarmState() + " (" + data.getAlarmTime() + ")");
+        String stringValue;
+        if (data.getAlarmStateValue() == data.ALARM_ALWAYES)
+            textView.setText(promptView.getResources().getString(R.string.InfoAlarmMode2) + " " + data.getAlarmTime());
+        if (data.getAlarmStateValue() == data.ALARM_WEEK_DAYS)
+            textView.setText(promptView.getResources().getString(R.string.InfoAlarmMode1) + " " + data.getAlarmTime());
+        if (data.getAlarmStateValue() == data.ALARM_NEVER)
+            textView.setText(promptView.getResources().getString(R.string.InfoAlarmMode0) );
 
         textView = (TextView)promptView.findViewById(R.id.infoText2);
         textView.setText(data.getTodayRainStats());
 
         textView = (TextView)promptView.findViewById(R.id.infoText3);
-        textView.setText(data.getTodayHeaterStats());
+        textView.setText(promptView.getResources().getString(R.string.InfoHeater) +" " + data.getTodayHeaterStats());
 
         Spinner spinner = (Spinner) promptView.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(promptView.getContext(),
