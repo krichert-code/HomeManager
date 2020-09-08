@@ -19,17 +19,6 @@ public class MediaTask extends Task {
     }
 
     @Override
-    public String getUrl()
-    {
-        return "/getMediaChannels";
-    }
-
-    @Override
-    public boolean isWriteRequest() {
-        return false;
-    }
-
-    @Override
     public long getDuration()
     {
         return duration;
@@ -44,6 +33,19 @@ public class MediaTask extends Task {
     public int getTaskDescriptor()
     {
         return 711;
+    }
+
+    @Override
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "getMediaChannels");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

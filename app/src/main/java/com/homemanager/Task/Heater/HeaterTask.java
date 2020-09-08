@@ -20,17 +20,6 @@ public class HeaterTask extends Task {
     }
 
     @Override
-    public String getUrl()
-    {
-        return "/heaterCharts";
-    }
-
-    @Override
-    public boolean isWriteRequest() {
-        return false;
-    }
-
-    @Override
     public long getDuration()
     {
         return duration;
@@ -45,6 +34,19 @@ public class HeaterTask extends Task {
     public int getTaskDescriptor()
     {
         return 189;
+    }
+
+    @Override
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "heaterCharts");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

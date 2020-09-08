@@ -1,14 +1,30 @@
 package com.homemanager;
 
+
+import android.util.Base64;
+
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.AlgorithmParameters;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
+import java.util.Random;
+
+import javax.crypto.Cipher;
+import javax.crypto.Mac;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 public class RestApi {
     private String jsonResult;
@@ -22,6 +38,98 @@ public class RestApi {
 
     public int getResponseCode(){
         return this.responseCode;
+    }
+
+    public String hex2Str(byte[] data){
+
+        StringBuffer hexString = new StringBuffer();
+        for (int i = 0; i < data.length; i++) {
+            String hex = Integer.toHexString(0xff & data[i]);
+            if(hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
+
+    private String Encode(String data){
+        String password= "AABB";
+        byte[] encrypted;
+        Random RANDOM = new SecureRandom();
+        byte[] salt = new byte[16];
+        byte[] iv   = new byte[16];
+        byte[] key;
+
+        //generate salt
+        RANDOM.nextBytes(salt);
+        try {
+            //---------------generate sha256 from the salt + password
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            outputStream.write(salt);
+            outputStream.write(password.getBytes());
+            md.update(outputStream.toByteArray());
+            key = md.digest();
+
+            //generate IV
+            md.update(salt);
+            byte[] digest = md.digest();
+            for (int i = 0; i < iv.length; i++) iv[i] = digest[i];
+
+            SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, new IvParameterSpec(iv));
+
+            ByteArrayOutputStream encryptStream = new ByteArrayOutputStream();
+            encryptStream.write(salt);
+            encryptStream.write(cipher.doFinal(data.getBytes("UTF8")));
+            encrypted = encryptStream.toByteArray();
+        }
+        catch (Exception e){
+            encrypted = new byte[16];
+        }
+        return Base64.encodeToString(encrypted,Base64.DEFAULT);
+    }
+
+    private String Decode(String data){
+        String password= "AABB";
+        byte[] encrypted = Base64.decode(data, Base64.DEFAULT);
+        byte[] salt = new byte[16];
+        byte[] iv   = new byte[16];
+        byte[] key;
+        byte[] decrypted;
+        String result = "";
+        try {
+            for (int i = 0; i < salt.length; i++) salt[i] = encrypted[i];
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            outputStream.write(salt);
+            outputStream.write(password.getBytes());
+            md.update(outputStream.toByteArray());
+            key = md.digest();
+
+            md.update(salt);
+            byte[] digest = md.digest();
+            for (int i = 0; i < iv.length; i++) iv[i] = digest[i];
+
+            String k  = hex2Str(key);
+            String s  = hex2Str(salt);
+            String i1  = hex2Str(iv);
+
+            SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.DECRYPT_MODE, skeySpec, new IvParameterSpec(iv));
+            byte[] data1 = new byte[encrypted.length - salt.length];
+            for (int i=0; i<data1.length; i++) data1[i]=encrypted[i+salt.length];
+            String d1  = hex2Str(data1);
+            //decrypted = cipher.doFinal(encrypted, salt.length, encrypted.length - salt.length);
+            decrypted = cipher.doFinal(data1);
+            result = new String(decrypted, "utf-8");
+        }
+        catch (Exception e){
+            this.responseCode = INTERNAL_ERROR;
+        }
+
+        return result;
     }
 
     public void readDataFromServer(String url){
@@ -64,6 +172,7 @@ public class RestApi {
         try {
             URL objUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) objUrl.openConnection();
+
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             conn.setRequestProperty("Accept","application/json");
@@ -71,7 +180,7 @@ public class RestApi {
             conn.setDoInput(true);
 
             DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            os.writeBytes(data.toString());
+            os.writeBytes( Encode(data.toString()) );
 
             os.flush();
             os.close();
@@ -80,11 +189,27 @@ public class RestApi {
             //Log.i("MSG" , conn.getResponseMessage());
 
             this.responseCode = conn.getResponseCode();
-            //TODO: check if content says that it went correctly (not only HTTP 200)
+            if (responseCode == 200) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                this.jsonResult = Decode(response.toString());
+                this.responseCode = responseCode;
+            }
+
             conn.disconnect();
         }
         catch (Exception e){
+            e.printStackTrace();
             this.responseCode = INTERNAL_ERROR;
         }
     }
 }
+
+

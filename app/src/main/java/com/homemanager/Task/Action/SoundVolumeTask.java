@@ -1,9 +1,11 @@
 package com.homemanager.Task.Action;
 
+import org.json.JSONObject;
+
 public class SoundVolumeTask extends EventsTask {
     private long duration = 0;
 
-    private String url;
+    private String volumeMode;
 
     private StatusMessage statusMessages;
 
@@ -14,28 +16,35 @@ public class SoundVolumeTask extends EventsTask {
     public static final int VOLUME_SET  = 2;
 
 
-    public SoundVolumeTask(int mode, int volume, StatusMessage statusMessages){
+    public SoundVolumeTask(int volumeMode, int volume, StatusMessage statusMessages){
         super(statusMessages);
         if (volume < 0) volume = 0;
         if (volume>100) volume = 100;
-        if (mode == VOLUME_UP) this.url = "/VolumeUp";
-        if (mode == VOLUME_DOWN) this.url = "/VolumeDown";
-        if (mode == VOLUME_SET) this.url = "/VolumeSet/" + volume;
+        if (volumeMode == VOLUME_UP) this.volumeMode = "VolumeUp";
+        if (volumeMode == VOLUME_DOWN) this.volumeMode = "VolumeDown";
+        if (volumeMode == VOLUME_SET) this.volumeMode = "VolumeSet";
 
         this.volume = volume;
         this.statusMessages = statusMessages;
-        this.url = url;
     }
 
-    public SoundVolumeTask(String url, StatusMessage statusMessages){
+    public SoundVolumeTask(StatusMessage statusMessages){
         super(statusMessages);
         this.statusMessages = statusMessages;
-        this.url = url;
     }
 
     @Override
-    public String getUrl() {
-        return url;
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", volumeMode);
+            jsonParams.put("volume", volume);
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

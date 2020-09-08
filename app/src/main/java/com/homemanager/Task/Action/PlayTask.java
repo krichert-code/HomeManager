@@ -1,5 +1,7 @@
 package com.homemanager.Task.Action;
 
+import org.json.JSONObject;
+
 public class PlayTask extends EventsTask {
     private long duration = 5 * 1000;
 
@@ -13,8 +15,17 @@ public class PlayTask extends EventsTask {
     }
 
     @Override
-    public String getUrl() {
-        return "/PlayPVR/" + channelId;
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "PlayPVR");
+            jsonParams.put("channel", channelId);
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

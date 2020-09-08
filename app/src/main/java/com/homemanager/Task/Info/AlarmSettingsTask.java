@@ -15,17 +15,18 @@ public class AlarmSettingsTask extends Task {
         this.infoMessage = infoMessage;
     }
 
-    @Override
-    public String getUrl() {
-        return "/setAlarmSettings";
-    }
 
     @Override
+    public void parseContent(JSONObject content) {
+    }
+
+        @Override
     public JSONObject getRequestData() {
         JSONObject jsonParams = new JSONObject();
         String day_policy= "disable";
 
         try {
+            jsonParams.put("action","setAlarmSettings");
             jsonParams.put("start_time",  infoObject.getAlarmTime() );
             jsonParams.put("stop_time",  infoObject.getAlarmStop() );
             jsonParams.put("channel",  Integer.toString(infoObject.getAlarmChannel()) );
@@ -42,10 +43,6 @@ public class AlarmSettingsTask extends Task {
         return jsonParams;
     }
 
-    @Override
-    public boolean isWriteRequest() {
-        return true;
-    }
 
     @Override
     public long getDuration() {

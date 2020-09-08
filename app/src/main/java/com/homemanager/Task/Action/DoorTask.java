@@ -1,5 +1,7 @@
 package com.homemanager.Task.Action;
 
+import org.json.JSONObject;
+
 public class DoorTask extends EventsTask {
     private long duration = 5*1000;
     private StatusMessage statusMessages;
@@ -10,8 +12,16 @@ public class DoorTask extends EventsTask {
     }
 
     @Override
-    public String getUrl() {
-        return "/Door";
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "Door");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

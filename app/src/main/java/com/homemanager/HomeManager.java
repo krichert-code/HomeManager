@@ -160,8 +160,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
         new Thread(taskDispatcher = new TaskInvoker()).start();
 
-        connectionChecker = new ConnectionChecker(getString(R.string.LocalUrl) + getString(R.string.VersionUrl) ,
-                getString(R.string.RemoteUrl)+ getString(R.string.VersionUrl), taskDispatcher);
+        connectionChecker = new ConnectionChecker(getString(R.string.LocalUrl),
+                getString(R.string.RemoteUrl), taskDispatcher);
 
 
 

@@ -22,11 +22,10 @@ abstract public class Task implements TaskInterface {
         this.initTimestamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public void parseContent(JSONObject content){}
     public void inProgressStateNotification() {}
     public void inDoneStateNotification() {}
     public void inErrorStateNotification() {}
-    public JSONObject getRequestData() { return null; }
+
 
     public void setInProgressState()
     {

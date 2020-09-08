@@ -1,5 +1,7 @@
 package com.homemanager.Task.Action;
 
+import org.json.JSONObject;
+
 public class GateTask extends EventsTask {
     private long duration = 20*1000;
     private StatusMessage statusMessages;
@@ -10,9 +12,16 @@ public class GateTask extends EventsTask {
     }
 
     @Override
-    public String getUrl()
-    {
-        return "/Gate0";
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "Gate0");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

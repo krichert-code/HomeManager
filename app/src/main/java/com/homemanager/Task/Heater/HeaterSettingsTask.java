@@ -15,9 +15,9 @@ public class HeaterSettingsTask extends Task {
         this.heaterMessage = heaterMessage;
     }
 
+
     @Override
-    public String getUrl() {
-        return "/setHeaterSettings";
+    public void parseContent(JSONObject content) {
     }
 
     @Override
@@ -25,6 +25,7 @@ public class HeaterSettingsTask extends Task {
         JSONObject jsonParams = new JSONObject();
 
         try {
+            jsonParams.put("action", "setHeaterSettings");
             jsonParams.put("day_temperature", Double.toString(heaterObject.getTempDay()));
             jsonParams.put("night_temperature", Double.toString(heaterObject.getTempNight()));
             jsonParams.put("day1", Integer.toString(heaterObject.getTempModeDay(0)));
@@ -39,11 +40,6 @@ public class HeaterSettingsTask extends Task {
         }
 
         return jsonParams;
-    }
-
-    @Override
-    public boolean isWriteRequest() {
-        return true;
     }
 
     @Override

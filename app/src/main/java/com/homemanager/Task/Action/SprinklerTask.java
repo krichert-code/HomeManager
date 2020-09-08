@@ -1,21 +1,44 @@
 package com.homemanager.Task.Action;
 
+import org.json.JSONObject;
+
 public class SprinklerTask extends EventsTask {
+    public final static int MANUAL_DEVICE_1   = 0;
+    public final static int MANUAL_DEVICE_2   = 2;
+    public final static int MANUAL_DEVICE_3   = 3;
+    public final static int MANUAL_STOP       = 4;
+    public final static int AUTO_FORCE        = 5;
+
     private long duration = 0;
-
-    private String url;
-
+    private int mode;
     private StatusMessage statusMessages;
 
-    public SprinklerTask(String url, StatusMessage statusMessages){
+    public SprinklerTask(int mode, StatusMessage statusMessages){
         super(statusMessages);
         this.statusMessages = statusMessages;
-        this.url = url;
+        this.mode = mode;
     }
 
     @Override
-    public String getUrl() {
-        return url;
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            if (mode<=MANUAL_DEVICE_3) {
+                jsonParams.put("action", "SprinklerOn");
+                jsonParams.put("id", this.mode);
+            }
+            else if (mode == MANUAL_STOP){
+                jsonParams.put("action", "SprinklerOff");
+            }
+            else if (mode == AUTO_FORCE){
+                jsonParams.put("action", "SprinklerForceAuto");
+            }
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

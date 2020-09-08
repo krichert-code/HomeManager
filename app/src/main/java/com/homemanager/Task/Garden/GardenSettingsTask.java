@@ -16,15 +16,15 @@ public class GardenSettingsTask extends Task{
     }
 
     @Override
-    public String getUrl() {
-        return "/setGardenSettings";
+    public void parseContent(JSONObject content) {
     }
-
+    
     @Override
     public JSONObject getRequestData() {
         JSONObject jsonParams = new JSONObject();
 
         try {
+            jsonParams.put("action", "setGardenSettings");
             jsonParams.put("state", gardenObject.isGlobalEnable() ? "enable" : "disable" );
             jsonParams.put("start_time", gardenObject.getStartTime());
             jsonParams.put("duration", Integer.toString(gardenObject.getDuration()));
@@ -40,11 +40,6 @@ public class GardenSettingsTask extends Task{
         }
 
         return jsonParams;
-    }
-
-    @Override
-    public boolean isWriteRequest() {
-        return true;
     }
 
     @Override

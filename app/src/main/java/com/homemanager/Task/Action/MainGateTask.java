@@ -1,5 +1,7 @@
 package com.homemanager.Task.Action;
 
+import org.json.JSONObject;
+
 public class MainGateTask extends EventsTask {
     private long duration = 30*1000;
     private StatusMessage statusMessages;
@@ -12,12 +14,21 @@ public class MainGateTask extends EventsTask {
     }
 
     @Override
-    public String getUrl()
-    {
-        if (false == perm) {
-            return "/Gate1";
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            if (false == perm) {
+                jsonParams.put("action", "Gate1");
+            }
+            else{
+                jsonParams.put("action", "Gate1Perm");
+            }
         }
-        return "/Gate1Perm";
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

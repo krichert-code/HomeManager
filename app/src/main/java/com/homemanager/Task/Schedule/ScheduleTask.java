@@ -17,17 +17,6 @@ public class ScheduleTask extends Task {
     }
 
     @Override
-    public String getUrl()
-    {
-        return "/schedule";
-    }
-
-    @Override
-    public boolean isWriteRequest() {
-        return false;
-    }
-
-    @Override
     public long getDuration()
     {
         return duration;
@@ -42,6 +31,19 @@ public class ScheduleTask extends Task {
     public int getTaskDescriptor()
     {
         return 159;
+    }
+
+    @Override
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "schedule");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

@@ -74,7 +74,7 @@ public class Garden implements GardenMessage {
             public void onClick(View v) {
 
                 // btnAdd has been clicked
-                tasks.putNewTask(new SprinklerTask("/SprinklerOn/1", statusMessages));
+                tasks.putNewTask(new SprinklerTask(SprinklerTask.MANUAL_DEVICE_1, statusMessages));
                 dialog.dismiss();
             }
         });
@@ -84,7 +84,7 @@ public class Garden implements GardenMessage {
             public void onClick(View v) {
 
                 // btnAdd has been clicked
-                tasks.putNewTask(new SprinklerTask("/SprinklerOn/2", statusMessages));
+                tasks.putNewTask(new SprinklerTask(SprinklerTask.MANUAL_DEVICE_2, statusMessages));
                 dialog.dismiss();
             }
         });
@@ -94,7 +94,7 @@ public class Garden implements GardenMessage {
             public void onClick(View v) {
 
                 // btnAdd has been clicked
-                tasks.putNewTask(new SprinklerTask("/SprinklerOn/3", statusMessages));
+                tasks.putNewTask(new SprinklerTask(SprinklerTask.MANUAL_DEVICE_3, statusMessages));
                 dialog.dismiss();
             }
         });
@@ -103,7 +103,7 @@ public class Garden implements GardenMessage {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // btnAdd has been clicked
-                tasks.putNewTask(new SprinklerTask("/SprinklerForceAuto", statusMessages));
+                tasks.putNewTask(new SprinklerTask(SprinklerTask.AUTO_FORCE, statusMessages));
                 Toast toast = Toast.makeText(v.getContext(), R.string.HintAutoWaterScheduled, Toast.LENGTH_LONG);
                 toast.show();
                 dialog.dismiss();
@@ -114,7 +114,7 @@ public class Garden implements GardenMessage {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // btnAdd has been clicked
-                tasks.putNewTask(new SprinklerTask("/SprinklerOff", statusMessages));
+                tasks.putNewTask(new SprinklerTask(SprinklerTask.MANUAL_STOP, statusMessages));
                 dialog.dismiss();
             }
         });

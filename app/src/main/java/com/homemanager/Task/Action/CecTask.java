@@ -2,19 +2,29 @@ package com.homemanager.Task.Action;
 
 import com.homemanager.Task.Task;
 
+import org.json.JSONObject;
+
 public class CecTask extends Task {
     private long duration = 2 * 1000;
 
 
     @Override
-    public String getUrl() {
-        return "/toggleCec";
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "toggleCec");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override
-    public boolean isWriteRequest() {
-        return false;
+    public void parseContent(JSONObject content) {
     }
+
 
     @Override
     public long getDuration() {

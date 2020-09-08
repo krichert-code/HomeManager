@@ -16,16 +16,6 @@ public class EventsTask extends Task {
     }
 
     @Override
-    public String getUrl() {
-        return "/events";
-    }
-
-    @Override
-    public boolean isWriteRequest() {
-        return false;
-    }
-
-    @Override
     public long getDuration() {
         return duration;
     }
@@ -39,6 +29,20 @@ public class EventsTask extends Task {
         return 122;
     }
 
+    @Override
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "events");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
+    }
+
+    @Override
     public void parseContent(JSONObject content){
         TaskDescriptionParser statusParser = new TaskDescriptionParser();
         taskDesc = statusParser.getDescription(content);

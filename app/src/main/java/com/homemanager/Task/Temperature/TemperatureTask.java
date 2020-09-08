@@ -18,14 +18,16 @@ public class TemperatureTask extends Task {
     }
 
     @Override
-    public String getUrl()
-    {
-        return "/temperature";
-    }
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
 
-    @Override
-    public boolean isWriteRequest() {
-        return false;
+        try {
+            jsonParams.put("action", "temperature");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

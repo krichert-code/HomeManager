@@ -122,12 +122,7 @@ public class TaskInvoker implements Runnable, NetworkService {
         while(true) {
             //check if new task in the queue
             while ((task = getFirstTaskFromQueue()) != null) {
-                if (task.isWriteRequest()){
-                    restApi.writeDataToServer(url + task.getUrl(), task.getRequestData());
-                }
-                else {
-                    restApi.readDataFromServer(url + task.getUrl());
-                }
+                restApi.writeDataToServer(url , task.getRequestData());
 
                 synchronized (lock) {
                     if (restApi.getResponseCode() == 200) {

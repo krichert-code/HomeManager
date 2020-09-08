@@ -16,15 +16,6 @@ public class GardenTask extends Task {
         this.gardenObject = new GardenObject();
     }
 
-    @Override
-    public String getUrl() {
-        return "/getGardenSettings";
-    }
-
-    @Override
-    public boolean isWriteRequest() {
-        return false;
-    }
 
     @Override
     public long getDuration() {
@@ -39,6 +30,19 @@ public class GardenTask extends Task {
     @Override
     public int getTaskDescriptor() {
         return 989;
+    }
+
+    @Override
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "getGardenSettings");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override

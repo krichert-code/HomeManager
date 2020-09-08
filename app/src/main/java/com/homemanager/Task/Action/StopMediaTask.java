@@ -1,5 +1,7 @@
 package com.homemanager.Task.Action;
 
+import org.json.JSONObject;
+
 public class StopMediaTask extends EventsTask {
     private long duration = 2 * 1000;
 
@@ -12,8 +14,16 @@ public class StopMediaTask extends EventsTask {
     }
 
     @Override
-    public String getUrl() {
-        return "/Stop";
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "Stop");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override
@@ -21,6 +31,7 @@ public class StopMediaTask extends EventsTask {
         return duration;
     }
 
+    @Override
     public void setDuration(long duration){
         this.duration = duration;
     }

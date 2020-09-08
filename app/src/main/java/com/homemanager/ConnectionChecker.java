@@ -1,5 +1,7 @@
 package com.homemanager;
 
+import org.json.JSONObject;
+
 public class ConnectionChecker {
     private final int CONNECTION_TYPE_INIT   = 0;
     private final int CONNECTION_TYPE_LOCAL  = 1;
@@ -27,20 +29,26 @@ public class ConnectionChecker {
             {
                 connectionErrorAppear();
             }
+            JSONObject jsonParams = new JSONObject();
 
-            if ((connectionType == CONNECTION_TYPE_NONE) || (connectionType == CONNECTION_TYPE_INIT)) {
-                restApi.readDataFromServer(localUrl);
-                if (restApi.getResponseCode() == 200) {
-                    connectionType = CONNECTION_TYPE_LOCAL;
-                    networkService.clearError();
-                } else {
-                    restApi.readDataFromServer(remoteUrl);
+            try {
+                jsonParams.put("action", "version");
+
+                if ((connectionType == CONNECTION_TYPE_NONE) || (connectionType == CONNECTION_TYPE_INIT)) {
+                    restApi.writeDataToServer(localUrl, jsonParams);
                     if (restApi.getResponseCode() == 200) {
-                        connectionType = CONNECTION_TYPE_REMOTE;
+                        connectionType = CONNECTION_TYPE_LOCAL;
                         networkService.clearError();
+                    } else {
+                        restApi.writeDataToServer(remoteUrl, jsonParams);
+                        if (restApi.getResponseCode() == 200) {
+                            connectionType = CONNECTION_TYPE_REMOTE;
+                            networkService.clearError();
+                        }
                     }
                 }
             }
+            catch (Exception e) {}
         }
     }
 

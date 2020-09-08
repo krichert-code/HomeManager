@@ -17,17 +17,6 @@ public class InfoTask extends Task {
     }
 
     @Override
-    public String getUrl()
-    {
-        return "/info";
-    }
-
-    @Override
-    public boolean isWriteRequest() {
-        return false;
-    }
-
-    @Override
     public long getDuration()
     {
         return duration;
@@ -42,6 +31,19 @@ public class InfoTask extends Task {
     public int getTaskDescriptor()
     {
         return 129;
+    }
+
+    @Override
+    public JSONObject getRequestData() {
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            jsonParams.put("action", "info");
+        }
+        catch(Exception e){
+        }
+
+        return jsonParams;
     }
 
     @Override
