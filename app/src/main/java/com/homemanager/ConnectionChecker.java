@@ -30,27 +30,55 @@ public class ConnectionChecker {
         this.networkService = networkService;
         connectionType = CONNECTION_TYPE_INIT;
         restApi = new RestApi(networkService.getContext());
-        connectionCheckTimer = new Timer();
-        connectionCheckTimer.scheduleAtFixedRate(new TimerTask() {
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                checkConnection();
-                if((isConnectionErrorAppear() || isConnectionEstablishInProgress() )
-                        && false == waitForNewConnectionSettings){
-                    connectionMessage.displayConnectionError();
-                    waitForNewConnectionSettings = true;
+                synchronized (lock) {
+                    if ((isConnectionErrorAppear() || isConnectionEstablishInProgress())
+                            && false == waitForNewConnectionSettings) {
+                        connectionMessage.displayConnectionError();
+                        waitForNewConnectionSettings = true;
+                    }
                 }
             }
         },  1000, 30000);
+
+        connectionCheckTimer = new Timer();
+        connectionCheckTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                connectionCheckerTimer();
+            }
+        }, 100);
     }
 
+    private void connectionCheckerTimer(){
+        int delay = 30000;
+
+        connectionCheckTimer.cancel();
+        checkConnection();
+        if(isConnectionErrorAppear() || isConnectionEstablishInProgress() ) {
+            delay = 1000;
+        }
+
+        connectionCheckTimer = new Timer();
+        connectionCheckTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                connectionCheckerTimer();
+            }
+        }, delay);
+    }
 
     public void restartConnectionTimer()
     {
-        waitForNewConnectionSettings = false;
+        synchronized (lock) {
+            waitForNewConnectionSettings = false;
+        }
     }
 
-    public void checkConnection()
+    private void checkConnection()
     {
         synchronized (lock) {
             if (networkService.isError())

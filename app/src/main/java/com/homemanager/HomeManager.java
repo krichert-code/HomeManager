@@ -86,9 +86,6 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo ni = manager.getActiveNetworkInfo();
 
-            if(connectionChecker.isConnectionErrorAppear() || connectionChecker.isConnectionEstablishInProgress()) {
-                connectionChecker.checkConnection();
-            }
             statusTimerReschedule(1000);
         }
     };
@@ -128,18 +125,22 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     private void statusTimerReschedule(int delay){
         timer.cancel();
         timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 checkGeneralStatus();
             }
-        }, delay, 30000);
+        }, delay);
     }
 
     private void checkGeneralStatus(){
         if(!connectionChecker.isConnectionErrorAppear() && !connectionChecker.isConnectionEstablishInProgress()) {
             putNewTask(new TemperatureTask(this));
             putNewTask(new EventsTask(this));
+            statusTimerReschedule(30000);
+        }
+        else {
+            statusTimerReschedule(1000);
         }
     }
 
@@ -557,7 +558,6 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     @Override
     public void connectionParametersChanged() {
         connectionChecker.restartConnectionTimer();
-        connectionChecker.checkConnection();
         statusTimerReschedule(2000);
     }
 }
