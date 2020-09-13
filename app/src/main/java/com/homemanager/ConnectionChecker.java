@@ -1,6 +1,12 @@
 package com.homemanager;
 
+import com.homemanager.Task.Action.EventsTask;
+import com.homemanager.Task.Temperature.TemperatureTask;
+
 import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ConnectionChecker {
     private final int CONNECTION_TYPE_INIT   = 0;
@@ -8,18 +14,40 @@ public class ConnectionChecker {
     private final int CONNECTION_TYPE_REMOTE = 2;
     private final int CONNECTION_TYPE_NONE   = 3;
 
-    private int connectionType = CONNECTION_TYPE_INIT;
-    private RestApi restApi = new RestApi();
+    private int connectionType;
+    private RestApi restApi;
     private String localUrl;
     private String remoteUrl;
     private NetworkService networkService;
+    private Timer connectionCheckTimer;
+    private boolean waitForNewConnectionSettings;
     private Object lock = new Object();
 
-    public ConnectionChecker(String localUrl, String remoteUrl, NetworkService networkService)
+    public ConnectionChecker(String localUrl, String remoteUrl, NetworkService networkService, final ConnectionMessage connectionMessage)
     {
         this.localUrl = localUrl;
         this.remoteUrl = remoteUrl;
         this.networkService = networkService;
+        connectionType = CONNECTION_TYPE_INIT;
+        restApi = new RestApi(networkService.getContext());
+        connectionCheckTimer = new Timer();
+        connectionCheckTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                checkConnection();
+                if((isConnectionErrorAppear() || isConnectionEstablishInProgress() )
+                        && false == waitForNewConnectionSettings){
+                    connectionMessage.displayConnectionError();
+                    waitForNewConnectionSettings = true;
+                }
+            }
+        },  1000, 30000);
+    }
+
+
+    public void restartConnectionTimer()
+    {
+        waitForNewConnectionSettings = false;
     }
 
     public void checkConnection()
@@ -39,11 +67,14 @@ public class ConnectionChecker {
                     if (restApi.getResponseCode() == 200) {
                         connectionType = CONNECTION_TYPE_LOCAL;
                         networkService.clearError();
-                    } else {
+                        networkService.setUrl(localUrl);
+                    }
+                    else {
                         restApi.writeDataToServer(remoteUrl, jsonParams);
                         if (restApi.getResponseCode() == 200) {
                             connectionType = CONNECTION_TYPE_REMOTE;
                             networkService.clearError();
+                            networkService.setUrl(remoteUrl);
                         }
                     }
                 }

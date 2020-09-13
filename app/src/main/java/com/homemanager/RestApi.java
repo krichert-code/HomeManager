@@ -1,36 +1,42 @@
 package com.homemanager;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Base64;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.AlgorithmParameters;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.security.spec.KeySpec;
 import java.util.Random;
 
 import javax.crypto.Cipher;
-import javax.crypto.Mac;
-import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import android.app.Activity;
+import android.content.Context;
 
 public class RestApi {
     private String jsonResult;
     private int responseCode;
+    private SharedPreferences prefs;
 
-    private final int INTERNAL_ERROR = 500;
+    private final int HTTP_INTERNAL_ERROR = 500;
+    private final int HTTP_OK             = 200;
+
+    public RestApi(Context context){
+        prefs = context.getSharedPreferences(
+                "com.homemanager", Activity.MODE_PRIVATE);
+    }
 
     public String getJsonResponse() {
         return this.jsonResult;
@@ -51,8 +57,7 @@ public class RestApi {
         return hexString.toString();
     }
 
-    private String Encode(String data){
-        String password= "AABB";
+    private String Encode(String data,String password){
         byte[] encrypted;
         Random RANDOM = new SecureRandom();
         byte[] salt = new byte[16];
@@ -90,8 +95,7 @@ public class RestApi {
         return Base64.encodeToString(encrypted,Base64.DEFAULT);
     }
 
-    private String Decode(String data){
-        String password= "AABB";
+    private String Decode(String data, String password){
         byte[] encrypted = Base64.decode(data, Base64.DEFAULT);
         byte[] salt = new byte[16];
         byte[] iv   = new byte[16];
@@ -126,53 +130,21 @@ public class RestApi {
             result = new String(decrypted, "utf-8");
         }
         catch (Exception e){
-            this.responseCode = INTERNAL_ERROR;
+            this.responseCode = HTTP_INTERNAL_ERROR;
         }
 
         return result;
     }
 
-    public void readDataFromServer(String url){
-        try {
-            URL objUrl = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) objUrl.openConnection();
-            connection.setReadTimeout(10000);
-            connection.setConnectTimeout(5000);
-            connection.setRequestMethod("POST");
-
-            // user agent
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            // język
-            connection.setRequestProperty("Accept-Language", "pl-PL,en;q=0.5");
-
-            // Pobranie kodu odpowiedzi
-            int responseCode = connection.getResponseCode();
-
-            if (responseCode == 200) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line;
-                StringBuilder response = new StringBuilder();
-
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                reader.close();
-
-                this.jsonResult = response.toString();
-                this.responseCode = responseCode;
-            }
-
-            connection.disconnect();
-        } catch (Exception e) {
-            this.responseCode = INTERNAL_ERROR;
-        }
-    }
-
     public void writeDataToServer(String url, JSONObject data){
+        String password = prefs.getString("com.homemanager.password", "password");
+        //"!@Elizka()";
+
         try {
             URL objUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) objUrl.openConnection();
-
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(2000);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             conn.setRequestProperty("Accept","application/json");
@@ -180,7 +152,7 @@ public class RestApi {
             conn.setDoInput(true);
 
             DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            os.writeBytes( Encode(data.toString()) );
+            os.writeBytes( Encode(data.toString(), password) );
 
             os.flush();
             os.close();
@@ -189,7 +161,7 @@ public class RestApi {
             //Log.i("MSG" , conn.getResponseMessage());
 
             this.responseCode = conn.getResponseCode();
-            if (responseCode == 200) {
+            if (responseCode == HTTP_OK) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String line;
                 StringBuilder response = new StringBuilder();
@@ -199,15 +171,14 @@ public class RestApi {
                 }
                 reader.close();
 
-                this.jsonResult = Decode(response.toString());
-                this.responseCode = responseCode;
+                this.jsonResult = Decode(response.toString(), password);
             }
 
             conn.disconnect();
         }
         catch (Exception e){
-            e.printStackTrace();
-            this.responseCode = INTERNAL_ERROR;
+            //e.printStackTrace();
+            this.responseCode = HTTP_INTERNAL_ERROR;
         }
     }
 }

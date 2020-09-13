@@ -1,5 +1,7 @@
 package com.homemanager;
 
+import android.content.Context;
+
 import com.example.homemanager.R;
 import com.homemanager.Task.Task;
 
@@ -20,8 +22,13 @@ public class TaskInvoker implements Runnable, NetworkService {
 
     private String url;
 
+    private Context context;
+
     private boolean isError = false;
 
+    public TaskInvoker(Context context){
+        this.context = context;
+    }
 
     private Task getFirstTaskFromQueue()
     {
@@ -113,13 +120,20 @@ public class TaskInvoker implements Runnable, NetworkService {
             isError = false;
     }
 
+    @Override
+    public Context getContext() {
+        return this.context;
+    }
+
     public void run() {
 
         Task task;
         long timeout = Long.MAX_VALUE;
-        RestApi restApi = new RestApi();
+
 
         while(true) {
+            RestApi restApi = new RestApi(context);
+
             //check if new task in the queue
             while ((task = getFirstTaskFromQueue()) != null) {
                 restApi.writeDataToServer(url , task.getRequestData());

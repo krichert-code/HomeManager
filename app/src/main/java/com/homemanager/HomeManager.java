@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.homemanager.Alarm.Alarm;
+import com.homemanager.Network.Network;
 import com.homemanager.Task.Action.DoorTask;
 import com.homemanager.Task.Action.GateTask;
 import com.homemanager.Task.Garden.GardenTask;
@@ -75,19 +77,19 @@ import java.util.TimerTask;
  * status bar and navigation/system bar) with user interaction.
  */
 public class HomeManager extends AppCompatActivity implements StatusMessage, TemperatureMessage,
-        InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage {
+        InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage,
+        ConnectionMessage {
 
     private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo ni = manager.getActiveNetworkInfo();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    checkConnection();
-                }
-            }, 1000, 30000);
+
+            if(connectionChecker.isConnectionErrorAppear() || connectionChecker.isConnectionEstablishInProgress()) {
+                connectionChecker.checkConnection();
+            }
+            statusTimerReschedule(1000);
         }
     };
 
@@ -95,7 +97,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
     private TaskInvoker taskDispatcher;
 
-    private Timer timer = new Timer();
+    private Timer timer;
     private TableLayout tl;
     private ConnectionChecker connectionChecker;
 
@@ -123,26 +125,24 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     };
     private View mControlsView;
 
+    private void statusTimerReschedule(int delay){
+        timer.cancel();
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                checkGeneralStatus();
+            }
+        }, delay, 30000);
+    }
 
-    private void checkConnection(){
-        boolean connectionError = false;
-
-        connectionChecker.checkConnection();
-        if (connectionChecker.isLocalConnection()){
-            taskDispatcher.setUrl(getString(R.string.LocalUrl));
-        }
-        else if(connectionChecker.isRemoteConnection()) {
-            taskDispatcher.setUrl(getString(R.string.RemoteUrl));
-        }
-        else {
-            connectionError = true;
-        }
-
-        if (connectionError == false) {
+    private void checkGeneralStatus(){
+        if(!connectionChecker.isConnectionErrorAppear() && !connectionChecker.isConnectionEstablishInProgress()) {
             putNewTask(new TemperatureTask(this));
             putNewTask(new EventsTask(this));
         }
     }
+
 
     @Override
     public void putNewTask(Task task){
@@ -158,10 +158,10 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
-        new Thread(taskDispatcher = new TaskInvoker()).start();
+        new Thread(taskDispatcher = new TaskInvoker(getApplicationContext())).start();
 
         connectionChecker = new ConnectionChecker(getString(R.string.LocalUrl),
-                getString(R.string.RemoteUrl), taskDispatcher);
+                getString(R.string.RemoteUrl), taskDispatcher, this);
 
 
 
@@ -255,7 +255,6 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                 alarmDialog.setView(alarm.createScreen(mContentView, alarmDialog));
                 alarmDialog.show();
                 hide();
-
             }
         });
 
@@ -288,12 +287,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         */
 
         //fixed task to get events in progress
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                checkConnection();
-            }
-        }, 1000, 30000);
+        timer = new Timer();
+        statusTimerReschedule(1000);
 
     }
 
@@ -544,4 +539,25 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
+    @Override
+    public void displayConnectionError() {
+        //display configuration panel
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Network netIssue = new Network();
+                AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
+                alarmDialog.setView(netIssue.createScreen(mContentView, alarmDialog, appContext));
+                alarmDialog.show();
+                hide();
+            }
+        });
+    }
+
+    @Override
+    public void connectionParametersChanged() {
+        connectionChecker.restartConnectionTimer();
+        connectionChecker.checkConnection();
+        statusTimerReschedule(2000);
+    }
 }

@@ -1,6 +1,7 @@
 package com.homemanager.Info;
 
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,6 +19,9 @@ import com.example.homemanager.R;
 import com.homemanager.Task.Info.InfoMessage;
 import com.homemanager.Task.Info.InfoObject;
 import com.google.android.material.tabs.TabLayout;
+
+import android.app.Activity;
+import android.content.Context;
 
 public class Info implements InfoMessage {
 
@@ -48,6 +52,7 @@ public class Info implements InfoMessage {
                 dialog.dismiss();
             }
         });
+
 
         btnAdd = (Button) promptView.findViewById(R.id.saveAlarmSettings);
         btnAdd.setOnClickListener(new View.OnClickListener() {

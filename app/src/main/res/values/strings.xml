@@ -37,6 +37,8 @@
     <string name="NoButton">Na chwilę</string>
     <string name="CancelButton">Nie otwieraj</string>
     <string name="SaveButton">Zapisz nowe ustawienia</string>
+    <string name="ChangePassButton">Zmień hasło</string>
+    <string name="NewPasswordText">Podaj nowe hasło</string>
     <string name="CloseButton">Zamknij</string>
     <string name="NextButton">Następny</string>
     <string name="AutoWaterButton">Automatyczne podlewanie</string>
