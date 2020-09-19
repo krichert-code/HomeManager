@@ -26,7 +26,7 @@ public class SprinklerTask extends EventsTask {
         try {
             if (mode<=MANUAL_DEVICE_3) {
                 jsonParams.put("action", "SprinklerOn");
-                jsonParams.put("id", this.mode);
+                jsonParams.put("id", Integer.toString(this.mode));
             }
             else if (mode == MANUAL_STOP){
                 jsonParams.put("action", "SprinklerOff");

@@ -35,8 +35,8 @@ public class TaskDescriptionParser {
                 if (icon.contains("cesspit")){
                     iconId = R.drawable.cesspit;
                 }
-                //-----------------not tested icon----------------
-                if (icon.contains("heater")){
+
+                if (icon.contains("piec")){
                     iconId = R.drawable.piec;
                 }
 

@@ -57,7 +57,7 @@ public class RestApi {
         return hexString.toString();
     }
 
-    private String Encode(String data,String password){
+    private String Encode(String data,String password, String id){
         byte[] encrypted;
         Random RANDOM = new SecureRandom();
         byte[] salt = new byte[16];
@@ -85,6 +85,7 @@ public class RestApi {
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec, new IvParameterSpec(iv));
 
             ByteArrayOutputStream encryptStream = new ByteArrayOutputStream();
+            encryptStream.write(id.getBytes());
             encryptStream.write(salt);
             encryptStream.write(cipher.doFinal(data.getBytes("UTF8")));
             encrypted = encryptStream.toByteArray();
@@ -95,15 +96,22 @@ public class RestApi {
         return Base64.encodeToString(encrypted,Base64.DEFAULT);
     }
 
-    private String Decode(String data, String password){
+    private String Decode(String data, String password, String deviceId){
         byte[] encrypted = Base64.decode(data, Base64.DEFAULT);
+        byte[] id = new byte[8];
         byte[] salt = new byte[16];
         byte[] iv   = new byte[16];
         byte[] key;
         byte[] decrypted;
         String result = "";
         try {
-            for (int i = 0; i < salt.length; i++) salt[i] = encrypted[i];
+            //format : id+salt+message
+            for (int i = 0; i < id.length; i++) id[i] = encrypted[i];
+            //do not even decode if id is incorrect
+            //if (deviceId != id ) throw;
+
+            for (int i = id.length; i < id.length + salt.length; i++) salt[i-id.length] = encrypted[i];
+
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             outputStream.write(salt);
@@ -122,10 +130,10 @@ public class RestApi {
             SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, new IvParameterSpec(iv));
-            byte[] data1 = new byte[encrypted.length - salt.length];
-            for (int i=0; i<data1.length; i++) data1[i]=encrypted[i+salt.length];
+            byte[] data1 = new byte[encrypted.length - salt.length - id.length];
+            for (int i=0; i<data1.length; i++) data1[i]=encrypted[i+salt.length+id.length];
             String d1  = hex2Str(data1);
-            //decrypted = cipher.doFinal(encrypted, salt.length, encrypted.length - salt.length);
+
             decrypted = cipher.doFinal(data1);
             result = new String(decrypted, "utf-8");
         }
@@ -138,6 +146,7 @@ public class RestApi {
 
     public void writeDataToServer(String url, JSONObject data){
         String password = prefs.getString("com.homemanager.password", "password");
+        String id = "00000567";
         //"!@Elizka()";
 
         try {
@@ -152,7 +161,7 @@ public class RestApi {
             conn.setDoInput(true);
 
             DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            os.writeBytes( Encode(data.toString(), password) );
+            os.writeBytes( Encode(data.toString(), password, id) );
 
             os.flush();
             os.close();
@@ -171,7 +180,7 @@ public class RestApi {
                 }
                 reader.close();
 
-                this.jsonResult = Decode(response.toString(), password);
+                this.jsonResult = Decode(response.toString(), password, id);
             }
 
             conn.disconnect();
