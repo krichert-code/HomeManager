@@ -23,8 +23,7 @@ public class ConnectionChecker {
     private boolean waitForNewConnectionSettings;
     private Object lock = new Object();
 
-    public ConnectionChecker(String localUrl, String remoteUrl, NetworkService networkService, final ConnectionMessage connectionMessage)
-    {
+    public ConnectionChecker(String localUrl, String remoteUrl, NetworkService networkService, final ConnectionMessage connectionMessage) {
         this.localUrl = localUrl;
         this.remoteUrl = remoteUrl;
         this.networkService = networkService;
@@ -53,7 +52,11 @@ public class ConnectionChecker {
         }, 100);
     }
 
-    private void connectionCheckerTimer(){
+    public void updateCheckerParameters(String localUrl){
+        this.localUrl = localUrl;
+    }
+
+    private void connectionCheckerTimer() {
         int delay = 30000;
 
         connectionCheckTimer.cancel();

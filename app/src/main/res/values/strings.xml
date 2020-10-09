@@ -39,6 +39,9 @@
     <string name="SaveButton">Zapisz nowe ustawienia</string>
     <string name="ChangePassButton">Zmień hasło</string>
     <string name="NewPasswordText">Podaj nowe hasło</string>
+    <string name="NewRemoteHost">Zdalny serwer</string>
+    <string name="NewLocalHost">IP domowego HCC</string>
+    <string name="DeviceIDText">HCC ID (np. 00000643)</string>
     <string name="CloseButton">Zamknij</string>
     <string name="NextButton">Następny</string>
     <string name="AutoWaterButton">Automatyczne podlewanie</string>
@@ -83,7 +86,6 @@
     <string name="connectionError">Brak połączenia</string>
 
     <!-- URL -->
-    <string name="LocalUrl">http://192.168.1.3/restApi</string>
     <string name="RemoteUrl">http://kwiatowa.ovh/restApi</string>
     <string name="VersionUrl">/version</string>
     <string name="VolumeUpUrl">/VolumeUp</string>

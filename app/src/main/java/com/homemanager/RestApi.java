@@ -146,7 +146,8 @@ public class RestApi {
 
     public void writeDataToServer(String url, JSONObject data){
         String password = prefs.getString("com.homemanager.password", "password");
-        String id = "00000567";
+        String id = prefs.getString("com.homemanager.deviceId", "");
+        //00000567;
         //"!@Elizka()";
 
         try {

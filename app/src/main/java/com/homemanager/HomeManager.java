@@ -161,7 +161,13 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
         new Thread(taskDispatcher = new TaskInvoker(getApplicationContext())).start();
 
-        connectionChecker = new ConnectionChecker(getString(R.string.LocalUrl),
+        //reasd localhost from the resource
+        SharedPreferences prefs = getSharedPreferences(
+                "com.homemanager", getApplicationContext().MODE_PRIVATE);
+
+        String localUrl = "http://" + prefs.getString("com.homemanager.localUrl", "") + ":8090/restApi";
+
+        connectionChecker = new ConnectionChecker(localUrl,
                 getString(R.string.RemoteUrl), taskDispatcher, this);
 
 
@@ -251,7 +257,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             @Override
             public void onClick(View view) {
                 view.playSoundEffect(SoundEffectConstants.CLICK);
-                Alarm alarm = new Alarm();
+                Alarm alarm = new Alarm(appContext);
                 AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
                 alarmDialog.setView(alarm.createScreen(mContentView, alarmDialog));
                 alarmDialog.show();
@@ -557,6 +563,12 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
     @Override
     public void connectionParametersChanged() {
+        SharedPreferences prefs = getSharedPreferences(
+                "com.homemanager", getApplicationContext().MODE_PRIVATE);
+
+        String localUrl = "http://" + prefs.getString("com.homemanager.localUrl", "") + ":8090/restApi";
+
+        connectionChecker.updateCheckerParameters(localUrl);
         connectionChecker.restartConnectionTimer();
         statusTimerReschedule(2000);
     }

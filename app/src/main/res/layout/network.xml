@@ -25,6 +25,26 @@
                 android:layout_marginTop="10sp">
 
                 <TextView
+                    android:id="@+id/netDevIdText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:text="@string/DeviceIDText" />
+
+                <EditText
+                    android:id="@+id/netDevID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10sp">
+
+                <TextView
                     android:id="@+id/netPassText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,20 +65,19 @@
                 android:layout_marginTop="10sp">
 
                 <TextView
-                    android:id="@+id/netHostText"
+                    android:id="@+id/netLocalHostText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
-                    android:text="@string/NewPasswordText" />
+                    android:text="@string/NewLocalHost" />
 
                 <EditText
-                    android:id="@+id/netHost"
+                    android:id="@+id/netLocalHost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="text" />
             </TableRow>
-
 
         </TableLayout>
 

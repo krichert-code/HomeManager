@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.homemanager.R;
 import com.homemanager.ConnectionMessage;
-import com.homemanager.Task.Info.InfoObject;
 
 public class Network {
 
@@ -22,11 +21,14 @@ public class Network {
         SharedPreferences prefs = promptView.getContext().getSharedPreferences(
                 "com.homemanager", promptView.getContext().MODE_PRIVATE);
 
+        ((TextView) promptView.findViewById(R.id.netDevID)).setText(
+                prefs.getString("com.homemanager.deviceId", ""));
+
         ((TextView) promptView.findViewById(R.id.netPassword)).setText(
                 prefs.getString("com.homemanager.password", "password"));
 
-        ((TextView) promptView.findViewById(R.id.netHost)).setText(
-                prefs.getString("com.homemanager.remoteHost", "http://remoteHost.com"));
+        ((TextView) promptView.findViewById(R.id.netLocalHost)).setText(
+                prefs.getString("com.homemanager.localUrl", ""));
 
 
         Button btnAdd = (Button) promptView.findViewById(R.id.networkCloseButton);
@@ -48,6 +50,12 @@ public class Network {
 
                 prefs.edit().putString("com.homemanager.password",
                         ((TextView) promptView.findViewById(R.id.netPassword)).getText().toString()).apply();
+
+                prefs.edit().putString("com.homemanager.localUrl",
+                        ((TextView) promptView.findViewById(R.id.netLocalHost)).getText().toString()).apply();
+
+                prefs.edit().putString("com.homemanager.deviceId",
+                        ((TextView) promptView.findViewById(R.id.netDevID)).getText().toString()).apply();
 
                 //statusMessages.displayHint(R.string.HintSettingsSaveDone);
             }
