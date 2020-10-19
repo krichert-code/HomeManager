@@ -9,10 +9,18 @@ import android.widget.TextView;
 
 import com.example.homemanager.R;
 import com.homemanager.ConnectionMessage;
+import com.homemanager.Task.Action.StatusMessage;
+import com.homemanager.Task.Info.InfoMessage;
+import com.homemanager.Task.Info.InfoObject;
 
 public class Network {
 
     private View promptView;
+    StatusMessage statusMessages;
+
+    public Network(StatusMessage statusMessages){
+        this.statusMessages = statusMessages;
+    }
 
     public View createScreen(View view, final AlertDialog dialog, final ConnectionMessage connectionMessage) {
         LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
@@ -57,13 +65,15 @@ public class Network {
                 prefs.edit().putString("com.homemanager.deviceId",
                         ((TextView) promptView.findViewById(R.id.netDevID)).getText().toString()).apply();
 
-                //statusMessages.displayHint(R.string.HintSettingsSaveDone);
+                statusMessages.displayHint(R.string.HintSettingsSaveDone);
+
             }
         });
         return promptView;
     }
 
 }
+
 
 
 

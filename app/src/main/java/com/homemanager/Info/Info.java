@@ -97,6 +97,9 @@ public class Info implements InfoMessage {
         textView = (TextView)promptView.findViewById(R.id.infoText2);
         textView.setText(data.getTodayRainStats());
 
+        textView = (TextView)promptView.findViewById(R.id.versionInfoText);
+        textView.setText(promptView.getResources().getString(R.string.InfoVersion));
+
         textView = (TextView)promptView.findViewById(R.id.infoText3);
         textView.setText(promptView.getResources().getString(R.string.InfoHeater) +" " + data.getTodayHeaterStats());
 

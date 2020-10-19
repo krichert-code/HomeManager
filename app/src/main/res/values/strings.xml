@@ -19,6 +19,7 @@
     <string name="alarmText">Alarm</string>
     <string name="infoText">Info</string>
 
+
     <!-- Dialog -->
     <string name="InfoAlarmTime">Godzina budzika</string>
     <string name="InfoAlarmStation">Stacja radiowa</string>
@@ -30,6 +31,7 @@
     <string name="InfoRainOccurs">Dzisiaj zanotowano opady deszczu</string>
     <string name="InfoRainNotOccurs">Dzisiaj nie zanotowano opadu deszczu</string>
     <string name="InfoHeater">Dzisiejszy czas pracy pieca </string>
+    <string name="InfoVersion">Wersja 1.0.1</string>
 
     <string name="GateOpenText">Na jak długo chesz otworzyć bramę ?</string>
     <string name="GateOpenMessage">Otwieranie bramy wjazdowej</string>
@@ -54,6 +56,7 @@
     <string name="piePanel">Tryb</string>
     <string name="linePanel">Temp</string>
     <string name="infoPanel">Info</string>
+    <string name="cameraPanel">Kamery</string>
     <string name="settingPanel">Ustawienia</string>
     <string name="DirectionA">Gdańsk</string>
     <string name="DirectionB">Gdynia</string>
@@ -73,6 +76,12 @@
     <string name="OffMode">Piec wyłączony</string>
     <string name="insideTemp">Temp wewnątrz</string>
     <string name="outsideTemp">Temp zewnętrzna</string>
+
+    <!-- alarm text -->
+    <string name="AlarmEnabled">Alarm włączony</string>
+    <string name="AlarmDisabled">Alarm wyłączony</string>
+    <string name="AlarmOn">Aktywuj alarm</string>
+    <string name="AlarmOff">Wyłącz alarm</string>
 
     <!-- heater settings -->
     <string name="DayTempSetting">Dzień [ºC]</string>

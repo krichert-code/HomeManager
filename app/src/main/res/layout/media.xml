@@ -55,7 +55,8 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabMediaLayout"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            app:tabTextAppearance="@style/TextAppearance.AppCompat.Small">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/Radio"

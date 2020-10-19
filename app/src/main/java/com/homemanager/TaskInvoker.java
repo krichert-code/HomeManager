@@ -87,14 +87,14 @@ public class TaskInvoker implements Runnable, NetworkService {
         return timeout;
     }
 
-    public void putNewTask(Task task)
+    public int putNewTask(Task task)
     {
         synchronized (lock) {
             for (Task t: taskList) {
                 if ((t.getTaskDescriptor() == task.getTaskDescriptor() ) &&
                         (t.isBeginState() || t.isInProgressState())){
                     //task is already in the queue
-                    return;
+                    return -1;
                 }
             }
             taskList.add(task); //add only if no one the list
@@ -103,6 +103,7 @@ public class TaskInvoker implements Runnable, NetworkService {
             }
             catch (Exception e) {}
         }
+        return 0;
     }
 
     @Override

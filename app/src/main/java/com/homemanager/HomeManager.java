@@ -146,8 +146,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
 
     @Override
-    public void putNewTask(Task task){
-        taskDispatcher.putNewTask(task);
+    public int putNewTask(Task task){
+        return taskDispatcher.putNewTask(task);
     }
 
     @Override
@@ -552,7 +552,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Network netIssue = new Network();
+                Network netIssue = new Network(appContext);
                 AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
                 alarmDialog.setView(netIssue.createScreen(mContentView, alarmDialog, appContext));
                 alarmDialog.show();
