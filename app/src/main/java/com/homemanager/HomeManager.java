@@ -37,6 +37,9 @@ import com.homemanager.Alarm.Alarm;
 import com.homemanager.Network.Network;
 import com.homemanager.Task.Action.DoorTask;
 import com.homemanager.Task.Action.GateTask;
+import com.homemanager.Task.Alarm.AlarmMessage;
+import com.homemanager.Task.Alarm.AlarmObject;
+import com.homemanager.Task.Alarm.AlarmTask;
 import com.homemanager.Task.Garden.GardenTask;
 import com.homemanager.Heater.Heater;
 import com.homemanager.Info.Info;
@@ -78,7 +81,7 @@ import java.util.TimerTask;
  */
 public class HomeManager extends AppCompatActivity implements StatusMessage, TemperatureMessage,
         InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage,
-        ConnectionMessage {
+        ConnectionMessage, AlarmMessage {
 
     private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
         @Override
@@ -178,6 +181,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                 putNewTask(new GateTask(appContext));
             }
         });
+
         findViewById(R.id.imageGate1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -257,11 +261,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             @Override
             public void onClick(View view) {
                 view.playSoundEffect(SoundEffectConstants.CLICK);
-                Alarm alarm = new Alarm(appContext);
-                AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
-                alarmDialog.setView(alarm.createScreen(mContentView, alarmDialog));
-                alarmDialog.show();
-                hide();
+                putNewTask(new AlarmTask(appContext));
             }
         });
 
@@ -397,6 +397,24 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                               }
                           }
                       });
+    }
+
+    @Override
+    public void displayAlarm(final AlarmObject alarmObject) {
+        runOnUiThread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void run() {
+                if (false == connectionChecker.isConnectionErrorAppear() &&
+                        false == connectionChecker.isConnectionEstablishInProgress()) {
+                    Alarm alarm = new Alarm(appContext);
+                    AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
+                    alarmDialog.setView(alarm.createScreen(mContentView, alarmDialog, alarmObject));
+                    alarmDialog.show();
+                    hide();
+                }
+            }
+        });
     }
 
     @Override
@@ -572,4 +590,5 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         connectionChecker.restartConnectionTimer();
         statusTimerReschedule(2000);
     }
+
 }

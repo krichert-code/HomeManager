@@ -6,7 +6,11 @@ import org.json.JSONObject;
 
 public class LightTask extends Task {
     private long duration = 2 * 1000;
+    private String ip;
 
+    public LightTask(String ip){
+        this.ip = ip;
+    }
 
     @Override
     public JSONObject getRequestData() {
@@ -14,6 +18,7 @@ public class LightTask extends Task {
 
         try {
             jsonParams.put("action", "toggleLight");
+            jsonParams.put("ip", ip);
         }
         catch(Exception e){
         }
