@@ -14,12 +14,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.widget.ImageView;
 import android.text.InputType;
 import android.view.Gravity;
@@ -75,13 +77,15 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.lang.Math.sqrt;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class HomeManager extends AppCompatActivity implements StatusMessage, TemperatureMessage,
         InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage,
-        ConnectionMessage, AlarmMessage {
+        ConnectionMessage  {
 
     private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
         @Override
@@ -157,7 +161,22 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_fullscreen);
+//        DisplayMetrics dm = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(dm);
+//        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
+//        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
+//        double screenInches = Math.sqrt(x+y);
+
+        Configuration configuration = getResources().getConfiguration();
+//        int screenWidthDp = configuration.screenWidthDp; //The current width of the available screen space, in dp units, corresponding to screen width resource qualifier.
+//        int screenHeighthDp = configuration.screenHeightDp;
+
+        if (configuration.screenHeightDp < 800) {
+            setContentView(R.layout.activity_fullscreen);
+        }
+        else {
+            setContentView(R.layout.activity_fullscreen_big);
+        }
 
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
@@ -261,7 +280,14 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             @Override
             public void onClick(View view) {
                 view.playSoundEffect(SoundEffectConstants.CLICK);
-                putNewTask(new AlarmTask(appContext));
+                if (false == connectionChecker.isConnectionErrorAppear() &&
+                        false == connectionChecker.isConnectionEstablishInProgress()) {
+                    Alarm alarm = new Alarm(appContext);
+                    AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
+                    alarmDialog.setView(alarm.createScreen(mContentView, alarmDialog));
+                    alarmDialog.show();
+                    hide();
+                }
             }
         });
 
@@ -400,24 +426,6 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     }
 
     @Override
-    public void displayAlarm(final AlarmObject alarmObject) {
-        runOnUiThread(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void run() {
-                if (false == connectionChecker.isConnectionErrorAppear() &&
-                        false == connectionChecker.isConnectionEstablishInProgress()) {
-                    Alarm alarm = new Alarm(appContext);
-                    AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
-                    alarmDialog.setView(alarm.createScreen(mContentView, alarmDialog, alarmObject));
-                    alarmDialog.show();
-                    hide();
-                }
-            }
-        });
-    }
-
-    @Override
     public void displayHint(final int hint){
         runOnUiThread(new Runnable() {
                           @Override
@@ -452,7 +460,6 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                     TextView textview = new TextView(getApplicationContext());
                     textview.setText(description.getDescription() + " " + description.getDate());
                     textview.setTextColor(Color.BLACK);
-                    textview.setElegantTextHeight(true);
                     textview.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                     textview.setHorizontallyScrolling(false);
 
@@ -498,12 +505,18 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                    TextView temp = (TextView) findViewById(R.id.temperature);
-                    ImageView  modeImage = (ImageView) findViewById(R.id.tempModeImage);
+                TextView temp = (TextView) findViewById(R.id.temperature);
+                if (temperature.isValid()) {
+
+                    ImageView modeImage = (ImageView) findViewById(R.id.tempModeImage);
 
                     temp.setText(temperature.getTemperature() + " \u2103");
                     modeImage.setImageDrawable(getResources().getDrawable(temperature.getMode()));
                 }
+                else{
+                    temp.setText(R.string.HintErrorMessage);
+                }
+            }
         });
     }
 

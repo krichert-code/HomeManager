@@ -59,9 +59,10 @@ public class TemperatureTask extends Task {
             }
             currentTemp.setTime(content.getString("time"));
             currentTemp.setTemperature(content.getString("temp"));
+            currentTemp.setValid(true);
         }
         catch(JSONException e){
-
+            currentTemp.setValid(false);
         }
     }
 

@@ -65,10 +65,11 @@
     <string name="pieChartLabel1">Czas całkowity</string>
     <string name="pieChartLabel2">Czas dzienny</string>
 
-    <!-- hit messages -->
+    <!-- hint messages -->
     <string name="HintAutoWaterScheduled">Automatyczne podlewanie zaplanowane</string>
     <string name="HintWaitForData">Czekam na odpowiedź</string>
     <string name="HintSettingsSaveDone">Ustawienia zapisane</string>
+    <string name="HintErrorMessage">Błąd odczytu</string>
 
     <!-- charts -->
     <string name="DayMode">Tryb dzienny</string>

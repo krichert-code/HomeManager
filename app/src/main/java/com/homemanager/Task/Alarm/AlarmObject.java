@@ -11,10 +11,19 @@ import java.util.List;
 
 public class AlarmObject implements Iterable<Room> {
     private List<Room> rooms = new ArrayList<Room>();
+    private boolean dataValid = true;
+
+    public boolean isDataValid(){
+        return dataValid;
+    }
 
     public void createAlarmObject(JSONObject content) {
         try {
             JSONArray array = content.getJSONArray("rooms");
+            if (content.getInt("error") != 0){
+                dataValid = false;
+            }
+
             for (int idx = 0; idx < array.length(); idx++) {
                 Room room = new Room();
                 JSONObject item = array.getJSONObject(idx);
@@ -62,7 +71,9 @@ public class AlarmObject implements Iterable<Room> {
 
                 rooms.add(room);
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            dataValid = false;
+        }
     }
 
     @NonNull

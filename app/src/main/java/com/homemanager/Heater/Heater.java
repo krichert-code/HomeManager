@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.homemanager.Task.Heater.HeaterMessage;
 import com.homemanager.Task.Heater.HeaterSettingsTask;
 import com.homemanager.TaskConnector;
@@ -153,13 +155,14 @@ public class Heater implements HeaterMessage {
         set1.setSelectionShift(5f);
 
         PieData data = new PieData(set1);
-        data.setValueFormatter(new LargeValueFormatter());
-        data.setValueTextSize(40f);
+        data.setValueFormatter(new IntValueFormatter());
+        //data.setValueFormatter(new PercentFormatter(new DecimalFormat()));
+        data.setValueTextSize(20f);
 
         chart.setEntryLabelColor(Color.WHITE);
         chart.setEntryLabelTextSize(15f);
 
-        data.setValueFormatter(new PercentFormatter(new DecimalFormat()));
+
         chart.setUsePercentValues(true);
 
         chart.setData(data);
@@ -345,4 +348,11 @@ public class Heater implements HeaterMessage {
     }
 }
 
+class IntValueFormatter implements IValueFormatter {
+    @Override
+    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+        DecimalFormat df = new DecimalFormat("###.#");
+        return String.valueOf(df.format(value))+"%";
+    }
+}
 

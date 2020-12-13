@@ -4,6 +4,7 @@ public class TemperatureObject {
     private String temperature;
     private String time;
     private int mode;
+    private boolean valid;
 
 
     public void setTemperature(String temperature){
@@ -30,4 +31,7 @@ public class TemperatureObject {
         return this.mode;
     }
 
+    public boolean isValid() {return this.valid; }
+
+    public void setValid(boolean valid) { this.valid = valid; }
 }

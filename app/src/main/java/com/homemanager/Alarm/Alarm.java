@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -36,16 +37,21 @@ import java.util.TimerTask;
 public class Alarm extends Activity implements AlarmMessage {
     private View promptView;
     private TaskConnector tasks;
-    private final Alarm alarmInfo = this;
+    private final Alarm alarmInfo;
+    private Timer timer;
+    private boolean querySent;
+    private  boolean ignoreResponse;
 
     public Alarm(TaskConnector taskConnector){
         this.tasks = taskConnector;
-        //this.statusMessages = statusMessages;
-        //this.gardenClass = this;
+        timer = new Timer();
+        alarmInfo = this;
+        querySent = false;
+        ignoreResponse = false;
     }
 
 
-    private void createInfoPanel(AlarmObject rooms){
+    private synchronized void createInfoPanel(AlarmObject rooms){
         int index = 0;
         TableLayout infoPanel = (TableLayout) promptView.findViewById(R.id.alarmInfoPanel);
         // Stuff that updates the UI
@@ -93,7 +99,12 @@ public class Alarm extends Activity implements AlarmMessage {
             if (room.lightExist) {
                 light.setImageDrawable(promptView.getResources().getDrawable(R.drawable.lamp_off));
                 TypedValue outValue = new TypedValue();
-                promptView.getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, outValue, true);
+
+//                try {
+//                    promptView.getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, outValue, true);
+//                }
+//                catch (Exception e) {}
+
                 light.setBackgroundResource(outValue.resourceId);
                 light.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 if (room.isLightOn) {
@@ -105,12 +116,16 @@ public class Alarm extends Activity implements AlarmMessage {
                     public void onClick(View v) {
                         if (tasks.putNewTask(new LightTask(room.lightIp)) == 0) {
                             room.isLightOn = (!room.isLightOn);
-                            /*if (room.isLightOn) {
+                            if (querySent == true) {
+                                ignoreResponse = true;
+                            }
+
+                            if (room.isLightOn) {
                                 //light.setColorFilter(new PorterDuffColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP));
                                 light.setColorFilter(new LightingColorFilter(0x77777777, 0x00777733));
                             } else {
-                                //light.setColorFilter(null);
-                            }*/
+                                light.setColorFilter(null);
+                            }
                         }
                     }
                 });
@@ -159,10 +174,22 @@ public class Alarm extends Activity implements AlarmMessage {
         }
     }
 
+    private int dpToPx(int dp) {
+        float density = promptView.getResources()
+                .getDisplayMetrics()
+                .density;
+        return Math.round((float) dp * density);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public View createScreen(View view, final AlertDialog dialog, final AlarmObject alarmObject){
+    public View createScreen(View view, final AlertDialog dialog){//}, final AlarmObject alarmObject){
         LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
         promptView = layoutInflater.inflate(R.layout.alarm, null);
+
+        ScrollView scrollView = (ScrollView) promptView.findViewById((R.id.alarmView));
+        ScrollView.LayoutParams p = (ScrollView.LayoutParams)scrollView.getLayoutParams();
+        p.height=dpToPx(( promptView.getResources().getConfiguration()).screenHeightDp - 200);
+        scrollView.setLayoutParams(p);
 
 
         Button btnAdd = (Button) promptView.findViewById(R.id.alarmCloseButton);
@@ -170,11 +197,10 @@ public class Alarm extends Activity implements AlarmMessage {
             public void onClick(View v) {
 
                 // btnAdd1 has been clicked
+                timer.cancel();
                 dialog.dismiss();
             }
         });
-
-        createInfoPanel(alarmObject);
 
 
         final TabLayout tabItems = (TabLayout) promptView.findViewById(R.id.tabAlarmLayout);
@@ -202,33 +228,33 @@ public class Alarm extends Activity implements AlarmMessage {
             public void onTabReselected(TabLayout.Tab tab) {}
         });
 
-        btnAdd = (Button) promptView.findViewById(R.id.alarmActivateButton);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // btnAdd1 has been clicked
-                createInfoPanel(alarmObject);
-            }
-        });
 
-
-        Timer timer = new Timer();
         timer.scheduleAtFixedRate( new TimerTask(){
             @Override
             public void run() {
-                tasks.putNewTask(new AlarmTask(alarmInfo));
+                if (querySent == false) {
+                    tasks.putNewTask(new AlarmTask(alarmInfo));
+                    querySent = true;
+                }
             }
-        }, 5000, 5000);
+        }, 0, 5000);
 
         return promptView;
     }
 
 
     @Override
-    public void displayAlarm(final AlarmObject alarmObject) {
+    public synchronized void displayAlarm(final AlarmObject alarmObject) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                createInfoPanel(alarmObject);
+                if (alarmObject.isDataValid() && ignoreResponse == false) {
+                    createInfoPanel(alarmObject);
+                    querySent = false;
+                }else {
+                    querySent = false;
+                    ignoreResponse = false;
+                }
             }
         });
     }

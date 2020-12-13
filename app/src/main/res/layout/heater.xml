@@ -37,6 +37,7 @@
                     android:id="@+id/dayTempText"
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right"
                     android:ems="10"
                     android:inputType="numberDecimal" />
             </TableRow>
