@@ -1,0 +1,302 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#44555555 "
+    android:padding="@dimen/widget_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="#09C">
+
+            <TextView
+                android:id="@+id/appwidget_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imageView8"
+                android:text="@string/loadText"
+                android:textColor="#ffffff"
+                android:textSize="24sp"
+                android:textStyle="bold|italic" />
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="48dp"
+                android:layout_height="38dp"
+                android:src="@drawable/piec" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventText1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:layout_toRightOf="@id/eventIco1"
+                    android:maxLines="2"
+                    android:minLines="1"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:singleLine="false"
+                    android:textColor="#eeeeee" />
+
+                <ImageView
+                    android:id="@+id/eventIco1"
+                    android:layout_width="31dp"
+                    android:layout_height="43dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/eventDate1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="#eeeeee" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventText2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:layout_toRightOf="@id/eventIco2"
+                    android:maxLines="2"
+                    android:minLines="1"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:singleLine="false"
+                    android:textColor="#eeeeee" />
+
+                <ImageView
+                    android:id="@+id/eventIco2"
+                    android:layout_width="31dp"
+                    android:layout_height="43dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/eventDate2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="#eeeeee" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventText3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:layout_toRightOf="@id/eventIco3"
+                    android:maxLines="2"
+                    android:minLines="1"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:singleLine="false"
+                    android:textColor="#eeeeee" />
+
+                <ImageView
+                    android:id="@+id/eventIco3"
+                    android:layout_width="31dp"
+                    android:layout_height="43dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/eventDate3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="#eeeeee" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventText4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:layout_toRightOf="@id/eventIco4"
+                    android:maxLines="2"
+                    android:minLines="1"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:singleLine="false"
+                    android:textColor="#eeeeee" />
+
+                <ImageView
+                    android:id="@+id/eventIco4"
+                    android:layout_width="31dp"
+                    android:layout_height="43dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/eventDate4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="#eeeeee" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventText5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:layout_toRightOf="@id/eventIco5"
+                    android:maxLines="2"
+                    android:minLines="1"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:singleLine="false"
+                    android:textColor="#eeeeee" />
+
+                <ImageView
+                    android:id="@+id/eventIco5"
+                    android:layout_width="31dp"
+                    android:layout_height="43dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/eventDate5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="#eeeeee" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventText6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:layout_toRightOf="@id/eventIco6"
+                    android:maxLines="2"
+                    android:minLines="1"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:singleLine="false"
+                    android:textColor="#eeeeee" />
+
+                <ImageView
+                    android:id="@+id/eventIco6"
+                    android:layout_width="31dp"
+                    android:layout_height="43dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/eventDate6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginRight="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="#eeeeee" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

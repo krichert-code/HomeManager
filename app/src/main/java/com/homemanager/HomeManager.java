@@ -30,6 +30,7 @@ import android.view.SoundEffectConstants;
 import android.view.View;
 
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -454,11 +455,11 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                 for (TaskDescription description : taskDesc) {
                     TableRow tr1 = new TableRow(getApplicationContext());
 
-                    tr1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                    tr1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                             TableRow.LayoutParams.WRAP_CONTENT));
 
                     TextView textview = new TextView(getApplicationContext());
-                    textview.setText(description.getDescription() + " " + description.getDate());
+                    textview.setText(description.getDescription());
                     textview.setTextColor(Color.BLACK);
                     textview.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                     textview.setHorizontallyScrolling(false);
@@ -466,15 +467,22 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                     textview.setSingleLine(false);
                     textview.setMaxLines(3);
                     textview.setMinLines(1);
-                    textview.setMaxWidth(tl.getWidth() - 100);
+
+                    textview.setMaxWidth(tl.getWidth() - 320);
 
                     ImageView image = new ImageView(getApplicationContext());
                     image.setImageDrawable(getResources().getDrawable(description.getIcon()));
 
+                    TextView textview_date = new TextView(getApplicationContext());
+                    textview_date.setText(description.getDate());
+                    textview_date.setTextColor(Color.BLACK);
+
                     tr1.addView(image);
                     tr1.addView(textview);
+                    tr1.addView(textview_date);
 
                     LinearLayout.LayoutParams p = (LinearLayout.LayoutParams)textview.getLayoutParams();
+                    p.width = p.MATCH_PARENT;
                     p.rightMargin=10;
                     p.leftMargin = 20;
                     p.gravity=Gravity.CENTER | Gravity.LEFT;
@@ -482,9 +490,10 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                     image.getLayoutParams().height = 60;
                     image.getLayoutParams().width = 60;
 
-                    tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT ,
+                    tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT ,
                             TableRow.LayoutParams.WRAP_CONTENT));
                 }
+
             }
         });
     }
