@@ -31,7 +31,8 @@
                 android:id="@+id/imageView8"
                 android:layout_width="48dp"
                 android:layout_height="38dp"
-                android:src="@drawable/piec" />
+                android:background="#09C"
+                android:src="@drawable/homedecoration" />
         </RelativeLayout>
 
         <LinearLayout
