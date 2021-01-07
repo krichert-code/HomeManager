@@ -455,7 +455,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                 for (TaskDescription description : taskDesc) {
                     TableRow tr1 = new TableRow(getApplicationContext());
 
-                    tr1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                    tr1.setLayoutParams(new TableRow.LayoutParams(tl.getWidth(),//TableRow.LayoutParams.MATCH_PARENT,
                             TableRow.LayoutParams.WRAP_CONTENT));
 
                     TextView textview = new TextView(getApplicationContext());
@@ -467,8 +467,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                     textview.setSingleLine(false);
                     textview.setMaxLines(3);
                     textview.setMinLines(1);
-
-                    textview.setMaxWidth(tl.getWidth() - 320);
+                    textview.setMaxWidth((int)(tl.getWidth()/2));
 
                     ImageView image = new ImageView(getApplicationContext());
                     image.setImageDrawable(getResources().getDrawable(description.getIcon()));
@@ -482,13 +481,21 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                     tr1.addView(textview_date);
 
                     LinearLayout.LayoutParams p = (LinearLayout.LayoutParams)textview.getLayoutParams();
-                    p.width = p.MATCH_PARENT;
                     p.rightMargin=10;
                     p.leftMargin = 20;
                     p.gravity=Gravity.CENTER | Gravity.LEFT;
 
+
+                    p = (LinearLayout.LayoutParams)textview_date.getLayoutParams();
+                    p.width = p.WRAP_CONTENT;
+                    p.rightMargin=10;
+                    p.leftMargin = 10;
+                    p.gravity=Gravity.CENTER;//.CENTER_HORIZONTAL | Gravity.LEFT;
+
                     image.getLayoutParams().height = 60;
                     image.getLayoutParams().width = 60;
+
+                    textview_date.getLayoutParams().width = tl.getWidth() - 60 - textview.getMaxWidth();
 
                     tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT ,
                             TableRow.LayoutParams.WRAP_CONTENT));

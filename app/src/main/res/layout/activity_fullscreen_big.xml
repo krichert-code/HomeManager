@@ -301,14 +301,15 @@
 
         <TableLayout
             android:id="@+id/News"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="10dp"
             android:alpha="0.9"
             android:background="#9E9696"
-            android:gravity="bottom|center_horizontal"/>
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical"
+            android:shrinkColumns="*" />
 
 
     </FrameLayout>

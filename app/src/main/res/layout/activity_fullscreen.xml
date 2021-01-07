@@ -303,7 +303,8 @@
             android:layout_margin="10dp"
             android:alpha="0.9"
             android:background="#9E9696"
-            android:gravity="bottom|center_horizontal" />
+            android:gravity="bottom|center_horizontal"
+            android:stretchColumns="*" />
 
     </FrameLayout>
 
