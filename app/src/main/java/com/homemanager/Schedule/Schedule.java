@@ -76,7 +76,7 @@ public class Schedule {
             TextView textview = new TextView(view.getContext());
             textview.setText(element.getElement_1());
             textview.setTextColor(Color.BLACK);
-            textview.setElegantTextHeight(true);
+            //textview.setElegantTextHeight(true);
             textview.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             textview.setHorizontallyScrolling(false);
 
@@ -87,7 +87,7 @@ public class Schedule {
             TextView textview1 = new TextView(view.getContext());
             textview1.setText(element.getElement_2());
             textview1.setTextColor(Color.BLACK);
-            textview1.setElegantTextHeight(true);
+            //textview1.setElegantTextHeight(true);
             textview1.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             textview1.setHorizontallyScrolling(false);
 
@@ -101,7 +101,7 @@ public class Schedule {
             LinearLayout.LayoutParams p = (LinearLayout.LayoutParams)textview.getLayoutParams();
             p.rightMargin=10;
             p.leftMargin = 20;
-            p.gravity= Gravity.CENTER | Gravity.LEFT;
+            p.gravity= Gravity.CENTER;
 
             tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT , TableRow.LayoutParams.WRAP_CONTENT));
         }
