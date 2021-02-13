@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -33,6 +35,9 @@ import com.homemanager.TaskConnector;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.widget.VideoView;
+import android.net.Uri;
+
 
 public class Alarm extends Activity implements AlarmMessage {
     private View promptView;
@@ -41,22 +46,25 @@ public class Alarm extends Activity implements AlarmMessage {
     private Timer timer;
     private boolean querySent;
     private  boolean ignoreResponse;
+    private VideoView videoView;
+    private String RtspSrvUrl;
 
-    public Alarm(TaskConnector taskConnector){
+    public Alarm(TaskConnector taskConnector,String rtsp_url){
         this.tasks = taskConnector;
         timer = new Timer();
         alarmInfo = this;
         querySent = false;
         ignoreResponse = false;
+        RtspSrvUrl = rtsp_url;
     }
 
 
     private synchronized void createInfoPanel(AlarmObject rooms){
         int index = 0;
         TableLayout infoPanel = (TableLayout) promptView.findViewById(R.id.alarmInfoPanel);
+
         // Stuff that updates the UI
         infoPanel.removeAllViews();
-
         for (final Room room:rooms) {
             TableRow row = new TableRow(promptView.getContext());
             row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
@@ -191,7 +199,8 @@ public class Alarm extends Activity implements AlarmMessage {
         p.height=dpToPx(( promptView.getResources().getConfiguration()).screenHeightDp - 200);
         scrollView.setLayoutParams(p);
 
-
+        videoView = (VideoView) promptView.findViewById(R.id.videoView);
+        
         Button btnAdd = (Button) promptView.findViewById(R.id.alarmCloseButton);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -210,14 +219,22 @@ public class Alarm extends Activity implements AlarmMessage {
                 if (tabItems.getTabAt(0) == tab){
                     promptView.findViewById(R.id.alarmInfoPanel).setVisibility(View.GONE);
                     promptView.findViewById(R.id.alarmEnablePanel).setVisibility(View.VISIBLE);
+                    promptView.findViewById(R.id.cameraView).setVisibility(View.GONE);
                 }
                 else if (tabItems.getTabAt(1) == tab){
                     promptView.findViewById(R.id.alarmInfoPanel).setVisibility(View.VISIBLE);
                     promptView.findViewById(R.id.alarmEnablePanel).setVisibility(View.GONE);
+                    promptView.findViewById(R.id.cameraView).setVisibility(View.GONE);
                 }
                 else {
                     promptView.findViewById(R.id.alarmInfoPanel).setVisibility(View.GONE);
                     promptView.findViewById(R.id.alarmEnablePanel).setVisibility(View.GONE);
+                    promptView.findViewById(R.id.cameraView).setVisibility(View.VISIBLE);
+                    if (!videoView.isPlaying()) {
+                        videoView.setVideoURI(Uri.parse(RtspSrvUrl));
+                        videoView.requestFocus();
+                        videoView.start();
+                    }
                 }
             }
 

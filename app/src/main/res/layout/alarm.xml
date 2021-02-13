@@ -27,12 +27,23 @@
                     android:visibility="gone" />
             </ScrollView>
 
+            <FrameLayout
+                android:id="@+id/cameraView"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:visibility="gone">
+
+                <VideoView
+                    android:id="@+id/videoView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+
+            </FrameLayout>
+
             <TableLayout
                 android:id="@+id/alarmEnablePanel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10sp"
-                android:layout_marginRight="10sp"
                 android:shrinkColumns="*"
                 android:stretchColumns="*">
 

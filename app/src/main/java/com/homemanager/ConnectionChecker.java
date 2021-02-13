@@ -18,14 +18,19 @@ public class ConnectionChecker {
     private RestApi restApi;
     private String localUrl;
     private String remoteUrl;
+    private String localRtsp;
+    private String remoteRtsp;
     private NetworkService networkService;
     private Timer connectionCheckTimer;
     private boolean waitForNewConnectionSettings;
     private Object lock = new Object();
 
     public ConnectionChecker(String localUrl, String remoteUrl, NetworkService networkService, final ConnectionMessage connectionMessage) {
-        this.localUrl = localUrl;
-        this.remoteUrl = remoteUrl;
+        this.localRtsp = "rtsp://" + localUrl + ":8554/mystream";
+        this.remoteRtsp = "rtsp://" + remoteUrl + ":8554/mystream";
+        this.localUrl = "http://" + localUrl + ":8090/restApi";
+        this.remoteUrl = "http://" + remoteUrl + "/restApi";
+
         this.networkService = networkService;
         connectionType = CONNECTION_TYPE_INIT;
         restApi = new RestApi(networkService.getContext());
@@ -50,6 +55,13 @@ public class ConnectionChecker {
                 connectionCheckerTimer();
             }
         }, 100);
+    }
+
+    public String getCurrentRtspUrl(){
+        if (connectionType == CONNECTION_TYPE_LOCAL)
+            return localRtsp;
+        else
+            return remoteRtsp;
     }
 
     public void updateCheckerParameters(String localUrl){

@@ -96,7 +96,7 @@
     <string name="connectionError">Brak połączenia</string>
 
     <!-- URL -->
-    <string name="RemoteUrl">http://kwiatowa.ovh/restApi</string>
+    <string name="RemoteUrl">kwiatowa.ovh</string>
     <string name="VersionUrl">/version</string>
     <string name="VolumeUpUrl">/VolumeUp</string>
     <string name="VolumeDownUrl">/VolumeDown</string>

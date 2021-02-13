@@ -188,9 +188,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         SharedPreferences prefs = getSharedPreferences(
                 "com.homemanager", getApplicationContext().MODE_PRIVATE);
 
-        String localUrl = "http://" + prefs.getString("com.homemanager.localUrl", "") + ":8090/restApi";
-
-        connectionChecker = new ConnectionChecker(localUrl,
+        connectionChecker = new ConnectionChecker(prefs.getString("com.homemanager.localUrl", ""),
                 getString(R.string.RemoteUrl), taskDispatcher, this);
 
 
@@ -283,7 +281,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                 view.playSoundEffect(SoundEffectConstants.CLICK);
                 if (false == connectionChecker.isConnectionErrorAppear() &&
                         false == connectionChecker.isConnectionEstablishInProgress()) {
-                    Alarm alarm = new Alarm(appContext);
+                    Alarm alarm = new Alarm(appContext, connectionChecker.getCurrentRtspUrl());
                     AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
                     alarmDialog.setView(alarm.createScreen(mContentView, alarmDialog));
                     alarmDialog.show();
