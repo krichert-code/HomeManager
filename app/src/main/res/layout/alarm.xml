@@ -16,7 +16,8 @@
             <ScrollView
                 android:id="@+id/alarmView"
                 android:layout_width="match_parent"
-                android:layout_height="350dp">
+                android:layout_height="350dp"
+                android:visibility="visible">
 
                 <TableLayout
                     android:id="@+id/alarmInfoPanel"
@@ -33,10 +34,22 @@
                 android:layout_height="350dp"
                 android:visibility="gone">
 
-                <VideoView
-                    android:id="@+id/videoView"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/cameraUrl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <VideoView
+                        android:id="@+id/videoView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
             </FrameLayout>
 
@@ -112,17 +125,17 @@
             app:tabTextAppearance="@style/TextAppearance.AppCompat.Small">
 
             <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/ctrlPanel" />
 
             <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/infoPanel" />
 
             <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/cameraPanel" />
         </com.google.android.material.tabs.TabLayout>

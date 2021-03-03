@@ -3,6 +3,7 @@ package com.homemanager.Info;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,6 +24,11 @@ import com.google.android.material.tabs.TabLayout;
 import android.app.Activity;
 import android.content.Context;
 
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Info implements InfoMessage {
 
     private View promptView;
@@ -37,6 +43,28 @@ public class Info implements InfoMessage {
         this.infoClass = this;
     }
 
+
+    private void createButtonHandler(final int button, final int text, final boolean isDirectionUp){
+        Button btnAdd = (Button) promptView.findViewById(button);
+        btnAdd.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event){
+                final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+                DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                try {
+                    String time = ((TextView) promptView.findViewById(text)).getText().toString();
+                    Date d = dateFormat.parse(time);
+                    if (!isDirectionUp)
+                        d.setTime(d.getTime() - ONE_MINUTE_IN_MILLIS);
+                    else
+                        d.setTime(d.getTime() + ONE_MINUTE_IN_MILLIS);
+                    ((TextView) promptView.findViewById(text)).setText(dateFormat.format(d));
+                }
+                catch(Exception e){
+                }
+                return true;
+            }
+        });
+    }
 
     public View createScreen(View view, final AlertDialog dialog, InfoObject data){
         LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
@@ -82,6 +110,11 @@ public class Info implements InfoMessage {
                 tasks.putNewTask(new AlarmSettingsTask(infoObj, infoClass));
             }
         });
+
+        createButtonHandler(R.id.leftTime, R.id.editStartAlarmTime, false);
+        createButtonHandler(R.id.leftDuration,R.id.editStopAlarmTime, false);
+        createButtonHandler(R.id.rightTime, R.id.editStartAlarmTime,true);
+        createButtonHandler(R.id.rightDuration, R.id.editStopAlarmTime, true);
 
         ((SeekBar)promptView.findViewById(R.id.volumeBar)).setProgress(Integer.parseInt(infoObj.getAlarmVolume()));
 
@@ -148,11 +181,11 @@ public class Info implements InfoMessage {
                     info.setVisibility(View.GONE);
                 }
                 else if (tabItems.getTabAt(1) == tab){
-                    TableLayout info = (TableLayout) promptView.findViewById(R.id.infoPanel);
-                    info.setVisibility(View.GONE);
-
-                    info = (TableLayout) promptView.findViewById(R.id.settingInfoPanel);
+                    TableLayout info = (TableLayout) promptView.findViewById(R.id.settingInfoPanel);
                     info.setVisibility(View.VISIBLE);
+
+                    info = (TableLayout) promptView.findViewById(R.id.infoPanel);
+                    info.setVisibility(View.GONE);
                 }
             }
 

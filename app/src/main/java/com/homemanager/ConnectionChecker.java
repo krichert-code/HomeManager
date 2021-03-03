@@ -65,7 +65,8 @@ public class ConnectionChecker {
     }
 
     public void updateCheckerParameters(String localUrl){
-        this.localUrl = localUrl;
+        this.localRtsp = "rtsp://" + localUrl + ":8554/mystream";
+        this.localUrl = "http://" + localUrl + ":8090/restApi";
     }
 
     private void connectionCheckerTimer() {

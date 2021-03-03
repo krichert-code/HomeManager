@@ -457,7 +457,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                             TableRow.LayoutParams.WRAP_CONTENT));
 
                     TextView textview = new TextView(getApplicationContext());
-                    textview.setText(description.getDescription());
+                    textview.setText(description.getDescription() + " " + description.getDate());
                     textview.setTextColor(Color.BLACK);
                     textview.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                     textview.setHorizontallyScrolling(false);
@@ -476,7 +476,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
                     tr1.addView(image);
                     tr1.addView(textview);
-                    tr1.addView(textview_date);
+                    //tr1.addView(textview_date);
 
                     LinearLayout.LayoutParams p = (LinearLayout.LayoutParams)textview.getLayoutParams();
                     p.rightMargin=10;
@@ -484,16 +484,16 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                     p.gravity=Gravity.CENTER | Gravity.LEFT;
 
 
-                    p = (LinearLayout.LayoutParams)textview_date.getLayoutParams();
+                    /*p = (LinearLayout.LayoutParams)textview_date.getLayoutParams();
                     p.width = p.WRAP_CONTENT;
                     p.rightMargin=10;
                     p.leftMargin = 10;
-                    p.gravity=Gravity.CENTER;//.CENTER_HORIZONTAL | Gravity.LEFT;
+                    p.gravity=Gravity.CENTER;//.CENTER_HORIZONTAL | Gravity.LEFT;*/
 
                     image.getLayoutParams().height = 60;
                     image.getLayoutParams().width = 60;
 
-                    textview_date.getLayoutParams().width = tl.getWidth() - 60 - textview.getMaxWidth();
+                    //textview_date.getLayoutParams().width = tl.getWidth() - 60 - textview.getMaxWidth();
 
                     tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT ,
                             TableRow.LayoutParams.WRAP_CONTENT));
@@ -610,10 +610,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     public void connectionParametersChanged() {
         SharedPreferences prefs = getSharedPreferences(
                 "com.homemanager", getApplicationContext().MODE_PRIVATE);
-
-        String localUrl = "http://" + prefs.getString("com.homemanager.localUrl", "") + ":8090/restApi";
-
-        connectionChecker.updateCheckerParameters(localUrl);
+        connectionChecker.updateCheckerParameters(prefs.getString("com.homemanager.localUrl", ""));
         connectionChecker.restartConnectionTimer();
         statusTimerReschedule(2000);
     }

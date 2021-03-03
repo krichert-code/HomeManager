@@ -33,13 +33,29 @@
                     android:paddingLeft="5dp"
                     android:text="@string/DayTempSetting" />
 
+                <Button
+                    android:id="@+id/dayLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="1dip"
+                    android:text="&lt;" />
+
                 <EditText
                     android:id="@+id/dayTempText"
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:ems="10"
+                    android:enabled="false"
                     android:inputType="numberDecimal" />
+
+                <Button
+                    android:id="@+id/dayRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="1dip"
+                    android:text="&gt;" />
+
             </TableRow>
 
             <TableRow
@@ -54,13 +70,28 @@
                     android:paddingLeft="5dp"
                     android:text="@string/NightTempSetting" />
 
+                <Button
+                    android:id="@+id/nightLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="1dip"
+                    android:text="&lt;" />
+
                 <EditText
                     android:id="@+id/nightTempText"
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:ems="10"
+                    android:enabled="false"
                     android:inputType="numberDecimal" />
+
+                <Button
+                    android:id="@+id/nightRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="1dip"
+                    android:text="&gt;" />
             </TableRow>
 
             <TableRow
@@ -85,7 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10sp"
-                    android:layout_span="2"
+                    android:layout_span="4"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -271,7 +302,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_span="2"
+                    android:layout_span="4"
                     android:text="@string/SaveButton" />
             </TableRow>
 

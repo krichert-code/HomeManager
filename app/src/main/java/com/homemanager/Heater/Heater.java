@@ -70,8 +70,8 @@ public class Heater implements HeaterMessage {
 
         for(TempData temp :heaterObject.getTemperatureData()){
             String date = temp.getDate();
-            date = date.substring(date.indexOf("/") + 1);
-            //date = date.substring(0, date.indexOf("/"));
+            //date = date.substring(date.indexOf("/") + 1);
+            date = date.substring(date.indexOf(" ") + 1, date.lastIndexOf("/"));
             xLabel.add(date);
             values1.add(new Entry(index, (float)temp.getTempInside()));
             values2.add(new Entry(index, (float)temp.getTempOutside()));
@@ -215,6 +215,37 @@ public class Heater implements HeaterMessage {
         heaterObject.setTempModeDay(spinner.getSelectedItemPosition(), v);
     }
 
+    private void updateSpinnerButtonMinLimits(final int button, final int text, final double limit){
+        Button btnAdd = (Button) promptView.findViewById(button);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                double value = Double.parseDouble(
+                        ((TextView) promptView.findViewById(text)).getText().toString());
+                if (value > limit) {
+                    value = Math.round((value - 0.2) * 10.0);
+                    EditText editText = (EditText) promptView.findViewById(text);
+                    editText.setText(Double.toString(value / 10));
+                }
+
+            }
+        });
+    }
+
+    private void updateSpinnerButtonMaxLimits(final int button, final int text, final double limit){
+        Button btnAdd = (Button) promptView.findViewById(button);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                double value = Double.parseDouble(
+                        ((TextView) promptView.findViewById(text)).getText().toString());
+                if (value < limit) {
+                    value = Math.round((value + 0.2) * 10.0);
+                    EditText editText = (EditText) promptView.findViewById(text);
+                    editText.setText(Double.toString(value / 10));
+                }
+            }
+        });
+    }
+
     public View createScreen(final View view, final AlertDialog dialog, final HeaterObject heaterObject){
         pieChartIdDraw = 0;
         LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
@@ -242,6 +273,12 @@ public class Heater implements HeaterMessage {
                 tasks.putNewTask(new HeaterSettingsTask(heaterObject, heaterClass));
             }
         });
+
+        updateSpinnerButtonMinLimits(R.id.dayLeft, R.id.dayTempText, 15.0);
+        updateSpinnerButtonMaxLimits(R.id.dayRight, R.id.dayTempText, 30.0);
+
+        updateSpinnerButtonMinLimits(R.id.nightLeft, R.id.nightTempText, 15.0);
+        updateSpinnerButtonMaxLimits(R.id.nightRight, R.id.nightTempText, 30.0);
 
         for (int i=0; i<24; i++) {
             String name = "h" + i;

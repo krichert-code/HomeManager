@@ -200,6 +200,7 @@ public class Alarm extends Activity implements AlarmMessage {
         scrollView.setLayoutParams(p);
 
         videoView = (VideoView) promptView.findViewById(R.id.videoView);
+        ((TextView) promptView.findViewById(R.id.cameraUrl)).setText(this.RtspSrvUrl);
         
         Button btnAdd = (Button) promptView.findViewById(R.id.alarmCloseButton);
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -218,16 +219,19 @@ public class Alarm extends Activity implements AlarmMessage {
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tabItems.getTabAt(0) == tab){
                     promptView.findViewById(R.id.alarmInfoPanel).setVisibility(View.GONE);
+                    //promptView.findViewById(R.id.alarmView).setVisibility(View.GONE);
                     promptView.findViewById(R.id.alarmEnablePanel).setVisibility(View.VISIBLE);
                     promptView.findViewById(R.id.cameraView).setVisibility(View.GONE);
                 }
                 else if (tabItems.getTabAt(1) == tab){
                     promptView.findViewById(R.id.alarmInfoPanel).setVisibility(View.VISIBLE);
+                    //promptView.findViewById(R.id.alarmView).setVisibility(View.VISIBLE);
                     promptView.findViewById(R.id.alarmEnablePanel).setVisibility(View.GONE);
                     promptView.findViewById(R.id.cameraView).setVisibility(View.GONE);
                 }
                 else {
                     promptView.findViewById(R.id.alarmInfoPanel).setVisibility(View.GONE);
+                    //promptView.findViewById(R.id.alarmView).setVisibility(View.VISIBLE);
                     promptView.findViewById(R.id.alarmEnablePanel).setVisibility(View.GONE);
                     promptView.findViewById(R.id.cameraView).setVisibility(View.VISIBLE);
                     if (!videoView.isPlaying()) {

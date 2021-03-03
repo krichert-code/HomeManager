@@ -99,8 +99,13 @@ public class Schedule {
             tr1.addView(textview1);
 
             LinearLayout.LayoutParams p = (LinearLayout.LayoutParams)textview.getLayoutParams();
-            p.rightMargin=10;
-            p.leftMargin = 20;
+            p.rightMargin= 5;
+            p.leftMargin = 5;
+            p.gravity= Gravity.CENTER;
+
+            p = (LinearLayout.LayoutParams)textview1.getLayoutParams();
+            p.rightMargin= 5;
+            p.leftMargin = 5;
             p.gravity= Gravity.CENTER;
 
             tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT , TableRow.LayoutParams.WRAP_CONTENT));

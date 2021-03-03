@@ -3,6 +3,7 @@ package com.homemanager.Garden;
 import android.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,10 @@ import com.homemanager.TaskConnector;
 import com.example.homemanager.R;
 import com.google.android.material.tabs.TabLayout;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Garden implements GardenMessage {
     private TaskConnector tasks;
     private StatusMessage statusMessages;
@@ -33,6 +38,46 @@ public class Garden implements GardenMessage {
         this.tasks = taskConnector;
         this.statusMessages = statusMessages;
         this.gardenClass = this;
+    }
+
+    private void createButtonTimeHandler(final int button, final int text, final boolean isDirectionUp){
+        Button btnAdd = (Button) promptView.findViewById(button);
+        btnAdd.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event){
+                final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+                DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                try {
+                    String time = ((TextView) promptView.findViewById(text)).getText().toString();
+                    Date d = dateFormat.parse(time);
+                    if (!isDirectionUp)
+                        d.setTime(d.getTime() - ONE_MINUTE_IN_MILLIS);
+                    else
+                        d.setTime(d.getTime() + ONE_MINUTE_IN_MILLIS);
+                    ((TextView) promptView.findViewById(text)).setText(dateFormat.format(d));
+                }
+                catch(Exception e){
+                }
+                return true;
+            }
+        });
+    }
+
+    private void createButtonDurationHandler(final int button, final int text, final boolean isDirectionUp){
+        Button btnAdd = (Button) promptView.findViewById(button);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    int value = Integer.parseInt(((TextView) promptView.findViewById(text)).getText().toString());
+                    if (!isDirectionUp && value > 1)
+                        value = value - 1;
+                    else if (isDirectionUp)
+                        value = value + 1;
+                    ((TextView) promptView.findViewById(text)).setText(Integer.toString(value));
+                }
+                catch(Exception e){
+                }
+            }
+        });
     }
 
     private void updateSettingsWindow(){
@@ -150,6 +195,11 @@ public class Garden implements GardenMessage {
                 tasks.putNewTask(new GardenSettingsTask(gardenObject, gardenClass));
             }
         });
+
+        createButtonTimeHandler(R.id.leftGardenTime, R.id.startTimeText, false);
+        createButtonTimeHandler(R.id.rightGardenTime, R.id.startTimeText, true);
+        createButtonDurationHandler(R.id.leftGardenDuration, R.id.durationText, false);
+        createButtonDurationHandler(R.id.rightGardenDuration, R.id.durationText, true);
 
         btnAdd = (Button) promptView.findViewById(R.id.closeBtn);
         btnAdd.setOnClickListener(new View.OnClickListener() {

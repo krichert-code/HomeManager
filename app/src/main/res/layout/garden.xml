@@ -19,7 +19,6 @@
             android:layout_height="350dp"
             android:layout_gravity="top"
             android:shrinkColumns="*"
-            android:stretchColumns="*"
             android:visibility="gone">
 
             <TableRow
@@ -31,17 +30,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|clip_vertical|start|center_horizontal"
+                    android:minWidth="200dip"
                     android:text="@string/timeToStartAutoWater" />
+
+                <Button
+                    android:id="@+id/leftGardenTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:width="120dip"
+                    android:minWidth="120dip"
+                    android:text="&lt;" />
 
                 <EditText
                     android:id="@+id/startTimeText"
-                    android:layout_width="20dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|left"
+                    android:width="160dip"
                     android:ems="10"
+                    android:enabled="false"
                     android:gravity="start|left"
                     android:inputType="time"
                     android:scaleX="1" />
+
+                <Button
+                    android:id="@+id/rightGardenTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:width="120dip"
+                    android:minWidth="120dip"
+                    android:text="&gt;" />
+
             </TableRow>
 
             <TableRow
@@ -53,16 +74,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
+                    android:minWidth="200dip"
                     android:text="@string/waterDuration" />
+
+                <Button
+                    android:id="@+id/leftGardenDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:width="120dip"
+                    android:minWidth="120dip"
+                    android:text="&lt;" />
 
                 <EditText
                     android:id="@+id/durationText"
-                    android:layout_width="20dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:width="160dip"
                     android:ems="10"
+                    android:enabled="false"
                     android:inputType="number"
                     android:scaleX="1" />
+
+                <Button
+                    android:id="@+id/rightGardenDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:width="120dip"
+                    android:minWidth="120dip"
+                    android:text="&gt;" />
+
             </TableRow>
 
             <TableRow
@@ -74,6 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
+                    android:minWidth="200dip"
                     android:text="@string/Sprinklers" />
 
                 <ToggleButton
@@ -81,6 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="start|left"
+                    android:layout_span="3"
                     android:text="ToggleButton" />
             </TableRow>
 
@@ -93,6 +138,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="left"
+                    android:layout_span="2"
                     android:orientation="vertical">
 
                     <Switch
@@ -120,6 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
+                    android:layout_span="2"
                     android:orientation="vertical">
 
                     <Switch
@@ -147,10 +194,10 @@
 
                 <Button
                     android:id="@+id/saveGardenSettings"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:layout_span="2"
+                    android:layout_span="4"
                     android:text="@string/SaveButton" />
             </TableRow>
 

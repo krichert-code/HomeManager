@@ -14,8 +14,7 @@
             android:id="@+id/settingInfoPanel"
             android:layout_width="match_parent"
             android:layout_height="350sp"
-            android:paddingLeft="5sp"
-            android:paddingRight="5sp"
+            android:padding="5sp"
             android:shrinkColumns="*"
             android:stretchColumns="*"
             android:visibility="gone">
@@ -26,17 +25,34 @@
 
                 <TextView
                     android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/InfoAlarmTime" />
+
+                <Button
+                    android:id="@+id/leftTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="1dip"
+                    android:text="&lt;" />
 
                 <EditText
                     android:id="@+id/editStartAlarmTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:width="40dp"
                     android:ems="10"
-                    android:inputType="time"
-                    android:importantForAutofill="no" />
+                    android:enabled="false"
+                    android:importantForAutofill="no"
+                    android:inputType="time" />
+
+                <Button
+                    android:id="@+id/rightTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="1dip"
+                    android:text="&gt;" />
+
             </TableRow>
 
             <TableRow
@@ -49,12 +65,28 @@
                     android:layout_height="wrap_content"
                     android:text="@string/InfoAlarmTimeOff" />
 
+                <Button
+                    android:id="@+id/leftDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="1dip"
+                    android:text="&lt;" />
+
                 <EditText
                     android:id="@+id/editStopAlarmTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:width="40dp"
                     android:ems="10"
+                    android:enabled="false"
                     android:inputType="time" />
+
+                <Button
+                    android:id="@+id/rightDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="1dip"
+                    android:text="&gt;" />
 
             </TableRow>
 
@@ -75,6 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10sp"
+                    android:layout_span="4"
                     android:max="100" />
             </TableRow>
 
@@ -94,7 +127,8 @@
                     android:id="@+id/spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|left" />
+                    android:layout_gravity="center|left"
+                    android:layout_span="4" />
             </TableRow>
 
             <TableRow
@@ -138,20 +172,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
-                    android:layout_span="2"
+                    android:layout_span="5"
                     android:text="@string/SaveButton" />
             </TableRow>
 
         </TableLayout>
 
+
         <TableLayout
             android:id="@+id/infoPanel"
             android:layout_width="match_parent"
             android:layout_height="350sp"
-            android:layout_marginStart="5sp"
-            android:paddingTop="10sp"
-            android:shrinkColumns="*"
-            android:stretchColumns="*">
+            android:padding="5sp">
 
             <TableRow
                 android:layout_width="match_parent"
@@ -214,12 +246,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
+                    android:layout_marginRight="20dp"
+                    android:maxWidth="400dp"
+                    android:maxLines="3"
                     android:text="TextView" />
             </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -233,12 +268,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
+                    android:layout_marginRight="20dp"
+                    android:maxLines="3"
                     android:text="Dane o alarmie niedostępne" />
             </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/imageView7"
