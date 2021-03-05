@@ -66,6 +66,24 @@ public class Info implements InfoMessage {
         });
     }
 
+    private void createButtonDurationHandler(final int button, final int text, final boolean isDirectionUp){
+        Button btnAdd = (Button) promptView.findViewById(button);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    int value = Integer.parseInt(((TextView) promptView.findViewById(text)).getText().toString());
+                    if (!isDirectionUp && value > 1)
+                        value = value - 1;
+                    else if (isDirectionUp)
+                        value = value + 1;
+                    ((TextView) promptView.findViewById(text)).setText(Integer.toString(value));
+                }
+                catch(Exception e){
+                }
+            }
+        });
+    }
+
     public View createScreen(View view, final AlertDialog dialog, InfoObject data){
         LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
         promptView = layoutInflater.inflate(R.layout.info, null);
@@ -112,9 +130,9 @@ public class Info implements InfoMessage {
         });
 
         createButtonHandler(R.id.leftTime, R.id.editStartAlarmTime, false);
-        createButtonHandler(R.id.leftDuration,R.id.editStopAlarmTime, false);
+        createButtonDurationHandler(R.id.leftDuration,R.id.editStopAlarmTime, false);
         createButtonHandler(R.id.rightTime, R.id.editStartAlarmTime,true);
-        createButtonHandler(R.id.rightDuration, R.id.editStopAlarmTime, true);
+        createButtonDurationHandler(R.id.rightDuration, R.id.editStopAlarmTime, true);
 
         ((SeekBar)promptView.findViewById(R.id.volumeBar)).setProgress(Integer.parseInt(infoObj.getAlarmVolume()));
 
