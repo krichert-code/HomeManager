@@ -582,12 +582,14 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     public void onResume() {
         super.onResume();
         registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-    }*/
-
+    }
+*/
     @Override
     public void onPause() {
-        unregisterReceiver(networkStateReceiver);
+        //unregisterReceiver(networkStateReceiver);
         super.onPause();
+        finishAffinity();
+
     }
 
     @Override

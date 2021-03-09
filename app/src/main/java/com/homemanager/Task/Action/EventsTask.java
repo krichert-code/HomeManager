@@ -43,7 +43,7 @@ public class EventsTask extends Task {
     }
 
     @Override
-    public void parseContent(JSONObject content){
+    final public void parseContent(JSONObject content){
         TaskDescriptionParser statusParser = new TaskDescriptionParser();
         taskDesc = statusParser.getDescription(content);
     }

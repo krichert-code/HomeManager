@@ -1,19 +1,15 @@
 package com.homemanager.Task.Action;
 
 import com.example.homemanager.R;
-import com.homemanager.Task.Task;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
-public class VideoShareTask extends Task {
+public class VideoShareTask extends EventsTask {
     private long duration = 0;
     private StatusMessage statusMessages;
     private String link = "";
-    private int resultInfo = R.string.HintYTError;
 
     public VideoShareTask(StatusMessage statusMessages, String link){
-        super();
+        super(statusMessages);
         this.statusMessages = statusMessages;
         this.link = link;
     }
@@ -30,19 +26,6 @@ public class VideoShareTask extends Task {
         }
 
         return jsonParams;
-    }
-
-    @Override
-    public void parseContent(JSONObject content) {
-        try {
-            resultInfo = R.string.HintYTSuccess;
-            if (content.getInt("status") != 0) {
-                resultInfo = R.string.HintYTError;
-            }
-        }
-        catch(JSONException e){
-            resultInfo = R.string.HintYTError;
-        }
     }
 
     @Override
@@ -64,6 +47,6 @@ public class VideoShareTask extends Task {
 
     @Override
     public void inDoneStateNotification(){
-        statusMessages.displayHint(resultInfo);
+        statusMessages.displayHint(R.string.HintYTSent);
     }
 }
