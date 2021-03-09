@@ -12,16 +12,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.DisplayMetrics;
 import android.widget.ImageView;
 import android.text.InputType;
 import android.view.Gravity;
@@ -30,7 +29,7 @@ import android.view.SoundEffectConstants;
 import android.view.View;
 
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -40,9 +39,7 @@ import com.homemanager.Alarm.Alarm;
 import com.homemanager.Network.Network;
 import com.homemanager.Task.Action.DoorTask;
 import com.homemanager.Task.Action.GateTask;
-import com.homemanager.Task.Alarm.AlarmMessage;
-import com.homemanager.Task.Alarm.AlarmObject;
-import com.homemanager.Task.Alarm.AlarmTask;
+import com.homemanager.Task.Action.VideoShareTask;
 import com.homemanager.Task.Garden.GardenTask;
 import com.homemanager.Heater.Heater;
 import com.homemanager.Info.Info;
@@ -157,6 +154,19 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     public int putNewTask(Task task){
         return taskDispatcher.putNewTask(task);
     }
+
+    private String onSharedIntent() {
+        String parameter = "";
+        Intent intent = getIntent();
+
+        Bundle extras = intent.getExtras();
+        if (extras != null && Intent.ACTION_SEND.equals(intent.getAction()))
+            parameter = extras.getString(Intent.EXTRA_TEXT);
+            intent.setAction(null);
+
+        return parameter;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -322,8 +332,22 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         timer = new Timer();
         statusTimerReschedule(1000);
 
-    }
+        if (savedInstanceState == null) {
+            final String shareContent = onSharedIntent();
+            if (shareContent.length() != 0) {
+                Toast toast = Toast.makeText(appContext, shareContent, Toast.LENGTH_SHORT);
+                toast.show();
+                //trigger one shot timer to share video, after taskInvoker thread will be ready
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        putNewTask(new VideoShareTask(appContext, shareContent));
+                    }
+                }, 2000);
+            }
+        }
 
+    }
 
     @Override
     public void doneActionNotification(){
@@ -554,11 +578,11 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         hide();
     }
 
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
         registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-    }
+    }*/
 
     @Override
     public void onPause() {
