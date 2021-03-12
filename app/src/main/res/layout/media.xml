@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -32,6 +33,73 @@
 
                 </LinearLayout>
             </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/spotifyLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editTextTextPersonName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="textPersonName" />
+
+                    <ImageButton
+                        android:id="@+id/buttonSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@android:drawable/ic_search_category_default" />
+
+                    <ImageButton
+                        android:id="@+id/buttonPlaySpotify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@android:drawable/ic_media_play" />
+
+
+                    <ImageButton
+                        android:id="@+id/buttonUp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@android:drawable/ic_menu_revert" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/loadingBar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+                    android:indeterminate="true"
+                    android:maxHeight="24dip"
+                    android:minHeight="12dip"
+                    android:progressDrawable="@android:drawable/progress_horizontal"
+                    android:visibility="visible" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/spotifyDataLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"></LinearLayout>
+                </ScrollView>
+
+            </LinearLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -69,6 +137,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TV" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/Spotify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Spotify" />
 
         </com.google.android.material.tabs.TabLayout>
 

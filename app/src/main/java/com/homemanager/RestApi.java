@@ -153,8 +153,8 @@ public class RestApi {
         try {
             URL objUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) objUrl.openConnection();
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(2000);
+            conn.setReadTimeout(30000);
+            conn.setConnectTimeout(5000);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             conn.setRequestProperty("Accept","application/json");

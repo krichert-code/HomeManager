@@ -4,7 +4,7 @@ import com.example.homemanager.R;
 import org.json.JSONObject;
 
 public class VideoShareTask extends EventsTask {
-    private long duration = 0;
+    private long duration = 5 * 1000;
     private StatusMessage statusMessages;
     private String link = "";
 
