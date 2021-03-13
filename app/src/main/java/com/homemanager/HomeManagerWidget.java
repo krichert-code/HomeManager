@@ -128,7 +128,8 @@ public class HomeManagerWidget extends AppWidgetProvider{
 
 
         if(eventsProvider == null) {
-            new Thread(eventsProvider = new EventsProvider(context)).start();
+            eventsProvider = new EventsProvider(context);
+            new Thread(eventsProvider).start();
         }
 
         Timer timer = new Timer();

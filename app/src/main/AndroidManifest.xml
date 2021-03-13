@@ -13,6 +13,7 @@
         android:soundEffectsEnabled="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:launchMode="singleInstance"
         android:usesCleartextTraffic="true">
         <receiver android:name="com.homemanager.HomeManagerWidget">
             <intent-filter>

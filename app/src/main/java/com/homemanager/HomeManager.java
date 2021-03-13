@@ -12,6 +12,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -155,16 +156,26 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         return taskDispatcher.putNewTask(task);
     }
 
-    private String onSharedIntent() {
+    private void onSharedIntent() {
         String parameter = "";
         Intent intent = getIntent();
 
         Bundle extras = intent.getExtras();
-        if (extras != null && Intent.ACTION_SEND.equals(intent.getAction()))
+        if (extras != null && Intent.ACTION_SEND.equals(intent.getAction())) {
             parameter = extras.getString(Intent.EXTRA_TEXT);
             intent.setAction(null);
 
-        return parameter;
+            Toast toast = Toast.makeText(appContext, parameter, Toast.LENGTH_SHORT);
+            toast.show();
+            //trigger one shot timer to share video, after taskInvoker thread will be ready
+            final String finalParameter = parameter;
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    putNewTask(new VideoShareTask(appContext, finalParameter));
+                }
+            }, 2000);
+        }
     }
 
 
@@ -333,18 +344,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         statusTimerReschedule(1000);
 
         if (savedInstanceState == null) {
-            final String shareContent = onSharedIntent();
-            if (shareContent.length() != 0) {
-                Toast toast = Toast.makeText(appContext, shareContent, Toast.LENGTH_SHORT);
-                toast.show();
-                //trigger one shot timer to share video, after taskInvoker thread will be ready
-                new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        putNewTask(new VideoShareTask(appContext, shareContent));
-                    }
-                }, 2000);
-            }
+            onSharedIntent();
         }
 
     }
@@ -578,20 +578,42 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         hide();
     }
 
-    /*@Override
+
+    @Override
+    protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        setIntent(intent);
+        onSharedIntent();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
-*/
+
+    @Override
+    public void onPause() {
+        unregisterReceiver(networkStateReceiver);
+        super.onPause();
+    }
+
+
+    /*
+    @Override
+    public void onResume() {
+        super.onResume();
+        //registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
     @Override
     public void onPause() {
         //unregisterReceiver(networkStateReceiver);
         super.onPause();
-        finishAffinity();
+        //finishAffinity();
 
     }
-
+*/
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)){

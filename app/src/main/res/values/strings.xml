@@ -31,7 +31,7 @@
     <string name="InfoRainOccurs">Dzisiaj zanotowano opady deszczu</string>
     <string name="InfoRainNotOccurs">Dzisiaj nie zanotowano opadu deszczu</string>
     <string name="InfoHeater">Dziś piec pracuje</string>
-    <string name="InfoVersion">Wersja 1.0.2</string>
+    <string name="InfoVersion">Wersja 1.1.2</string>
 
     <string name="GateOpenText">Na jak długo chesz otworzyć bramę ?</string>
     <string name="GateOpenMessage">Otwieranie bramy wjazdowej</string>
