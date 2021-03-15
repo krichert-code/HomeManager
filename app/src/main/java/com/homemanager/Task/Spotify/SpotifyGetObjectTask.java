@@ -12,18 +12,31 @@ public class SpotifyGetObjectTask extends Task implements SpotifyGetObject{
     private SpotifyInterface spotifyMessage;
     private String currentDirectory;
     private JSONArray currentDirectoryContent;
+    private String searchText;
+    private boolean searchInSpotify = false;
+    private boolean currentDirectoryExist = false;
 
 
     public SpotifyGetObjectTask(SpotifyInterface spotifyMessage){
         super();
         this.spotifyMessage = spotifyMessage;
-        this.currentDirectory = "";
+        this.searchInSpotify = false;
+        this.currentDirectoryExist = false;
     }
 
     public SpotifyGetObjectTask(SpotifyInterface spotifyMessage, String directory){
         super();
         this.spotifyMessage = spotifyMessage;
         this.currentDirectory = directory;
+        this.searchInSpotify = false;
+        this.currentDirectoryExist = true;
+    }
+
+    public SpotifyGetObjectTask setSearchText(String searchText){
+        this.searchInSpotify = true;
+        this.currentDirectoryExist = false;
+        this.searchText = searchText;
+        return this;
     }
 
     @Override
@@ -48,9 +61,11 @@ public class SpotifyGetObjectTask extends Task implements SpotifyGetObject{
         JSONObject jsonParams = new JSONObject();
 
         try {
-            jsonParams.put("action", "getSpotifyObject");
-            if (currentDirectory.length() > 0)
-                jsonParams.put("directory", this.currentDirectory);
+            jsonParams.put("action", "getSpotifyData");
+            jsonParams.put("searchTextExist", searchInSpotify);
+            jsonParams.put("searchText", this.searchText);
+            jsonParams.put("currentDirectoryExist", this.currentDirectoryExist);
+            jsonParams.put("currentDirectoryText", this.currentDirectory);
         }
         catch(Exception e){
         }

@@ -145,21 +145,23 @@ public class HomeManagerWidget extends AppWidgetProvider{
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.home_manager_widget);
                 views.setTextViewText(R.id.appwidget_text, tempText);
 
+                try {
+                    for (TaskDescription event : eventsProvider.getEvents()) {
+                        resName = "eventText" + resId;
+                        views.setTextViewText(context.getResources().getIdentifier(resName, "id", context.getPackageName()), event.getDescription());
 
-                for (TaskDescription event : eventsProvider.getEvents()){
-                    resName = "eventText" + resId;
-                    views.setTextViewText(context.getResources().getIdentifier(resName, "id", context.getPackageName()), event.getDescription());
+                        resName = "eventIco" + resId;
+                        views.setImageViewResource(context.getResources().getIdentifier(resName, "id", context.getPackageName()), event.getIcon());
 
-                    resName = "eventIco" + resId;
-                    views.setImageViewResource(context.getResources().getIdentifier(resName, "id", context.getPackageName()),event.getIcon());
+                        resName = "eventDate" + resId;
+                        views.setTextViewText(context.getResources().getIdentifier(resName, "id", context.getPackageName()), event.getDate());
 
-                    resName = "eventDate" + resId;
-                    views.setTextViewText(context.getResources().getIdentifier(resName, "id", context.getPackageName()), event.getDate());
+                        resId++;
 
-                    resId++;
-
-                    if (resId > maxNumberOfMessages) break;
+                        if (resId > maxNumberOfMessages) break;
+                    }
                 }
+                catch (Exception e) {}
 
                 while (resId <= maxNumberOfMessages){
                     resName = "eventIco" + resId;

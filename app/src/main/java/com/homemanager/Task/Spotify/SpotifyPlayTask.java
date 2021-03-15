@@ -8,10 +8,13 @@ import org.json.JSONObject;
 public class SpotifyPlayTask extends EventsTask {
     private String link;
     private long duration = 5 * 1000;
+    private String actionName;
 
-    public SpotifyPlayTask(StatusMessage statusMessages, String link) {
+    public SpotifyPlayTask(StatusMessage statusMessages, String link, boolean isDirectory) {
         super(statusMessages);
         this.link = link;
+        if (isDirectory) actionName = "PlaySpotifyDirectory";
+        else actionName = "PlaySpotifyObject";
     }
 
     @Override
@@ -19,7 +22,7 @@ public class SpotifyPlayTask extends EventsTask {
         JSONObject jsonParams = new JSONObject();
 
         try {
-            jsonParams.put("action", "PlaySpotifyObject");
+            jsonParams.put("action", this.actionName);
             jsonParams.put("link", link);
         }
         catch(Exception e){

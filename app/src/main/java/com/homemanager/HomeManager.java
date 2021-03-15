@@ -258,6 +258,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             public void onClick(View view) {
                 view.playSoundEffect(SoundEffectConstants.CLICK);
                 putNewTask(new GardenTask(appContext));
+                Toast toast = Toast.makeText(view.getContext(), R.string.HintWaitForData, Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -266,6 +268,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             public void onClick(View view) {
                 view.playSoundEffect(SoundEffectConstants.CLICK);
                 putNewTask(new InfoTask(appContext));
+                Toast toast = Toast.makeText(view.getContext(), R.string.HintWaitForData, Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -284,6 +288,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             public void onClick(View view) {
                 view.playSoundEffect(SoundEffectConstants.CLICK);
                 putNewTask(new HeaterTask(appContext));
+                Toast toast = Toast.makeText(view.getContext(), R.string.HintWaitForData, Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -292,6 +298,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             public void onClick(View view) {
                 view.playSoundEffect(SoundEffectConstants.CLICK);
                 putNewTask(new MediaTask(appContext));
+                Toast toast = Toast.makeText(view.getContext(), R.string.HintWaitForData, Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -594,26 +602,11 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
     @Override
     public void onPause() {
+        super.onPause();
         unregisterReceiver(networkStateReceiver);
-        super.onPause();
     }
 
 
-    /*
-    @Override
-    public void onResume() {
-        super.onResume();
-        //registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-    }
-
-    @Override
-    public void onPause() {
-        //unregisterReceiver(networkStateReceiver);
-        super.onPause();
-        //finishAffinity();
-
-    }
-*/
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)){
@@ -622,6 +615,13 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
         if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP)){
             putNewTask(new SoundVolumeTask(SoundVolumeTask.VOLUME_UP,0, appContext));
+        }
+
+        if(keyCode == KeyEvent.KEYCODE_BACK)// || keyCode == KeyEvent.KEYCODE_HOME)
+        {
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
         }
 
         return true;

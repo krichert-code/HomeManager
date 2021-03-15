@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -121,6 +122,15 @@ public class Media extends Activity implements SpotifyInterface {
             }
         });
 
+        imgBtnAdd = (ImageButton) promptView.findViewById(R.id.buttonSearch);
+        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                taskConnector.putNewTask(new SpotifyGetObjectTask(media).setSearchText(((EditText)promptView.findViewById(R.id.searchSpotifyObject)).getText().toString()));
+                statusMessages.displayHint(R.string.HintWaitForData);
+                ((ProgressBar)(promptView.findViewById(R.id.loadingBar))).setVisibility(View.VISIBLE);
+            }
+        });
+
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -138,7 +148,7 @@ public class Media extends Activity implements SpotifyInterface {
         imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (currentSporifyDirectory.length() != 0 ){
-                    taskConnector.putNewTask(new SpotifyPlayTask(statusMessages, currentSporifyDirectory));
+                    taskConnector.putNewTask(new SpotifyPlayTask(statusMessages, currentSporifyDirectory, true));
                     statusMessages.displayHint(R.string.HintWaitForData);
                 }
 
@@ -281,12 +291,18 @@ public class Media extends Activity implements SpotifyInterface {
                 final Button button = new Button(promptView.getContext());
                 button.setText(item.getString("label"));
                 final String file = item.getString("file");
+                final boolean isDirectory = item.getString("filetype").equals("directory");
 
                 button.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        taskConnector.putNewTask(new SpotifyGetObjectTask(media, file));
+                        if (isDirectory) {
+                            taskConnector.putNewTask(new SpotifyGetObjectTask(media, file));
+                            ((ProgressBar)(promptView.findViewById(R.id.loadingBar))).setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            taskConnector.putNewTask(new SpotifyPlayTask(statusMessages, file, isDirectory));
+                        }
                         statusMessages.displayHint(R.string.HintWaitForData);
-                        ((ProgressBar)(promptView.findViewById(R.id.loadingBar))).setVisibility(View.VISIBLE);
                     }
                 });
 
