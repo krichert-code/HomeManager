@@ -3,7 +3,7 @@ package com.homemanager.Task.Action;
 import org.json.JSONObject;
 
 public class SprinklerTask extends EventsTask {
-    public final static int MANUAL_DEVICE_1   = 0;
+    public final static int MANUAL_DEVICE_1   = 1;
     public final static int MANUAL_DEVICE_2   = 2;
     public final static int MANUAL_DEVICE_3   = 3;
     public final static int MANUAL_STOP       = 4;
