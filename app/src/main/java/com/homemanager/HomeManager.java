@@ -100,7 +100,6 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
     private TaskInvoker taskDispatcher;
 
-    private Timer timer;
     private TableLayout tl;
     private ConnectionChecker connectionChecker;
 
@@ -129,8 +128,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     private View mControlsView;
 
     private void statusTimerReschedule(int delay){
-        timer.cancel();
-        timer = new Timer();
+        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -141,8 +139,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
     private void checkGeneralStatus(){
         if(!connectionChecker.isConnectionErrorAppear() && !connectionChecker.isConnectionEstablishInProgress()) {
-            putNewTask(new TemperatureTask(this));
             putNewTask(new EventsTask(this));
+            putNewTask(new TemperatureTask(this));
             statusTimerReschedule(30000);
         }
         else {
@@ -218,6 +216,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             @Override
             public void onClick(View view) {
                 putNewTask(new GateTask(appContext));
+                Toast toast = Toast.makeText(view.getContext(), R.string.HintWaitForData, Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -242,6 +242,9 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .show();
+
+                Toast toast = Toast.makeText(view.getContext(), R.string.HintWaitForData, Toast.LENGTH_SHORT);
+                toast.show();
                 hide();
             }
         });
@@ -250,6 +253,8 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             @Override
             public void onClick(View view) {
                 putNewTask(new DoorTask(appContext));
+                Toast toast = Toast.makeText(view.getContext(), R.string.HintWaitForData, Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -348,8 +353,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         */
 
         //fixed task to get events in progress
-        timer = new Timer();
-        statusTimerReschedule(1000);
+        statusTimerReschedule(1);
 
         if (savedInstanceState == null) {
             onSharedIntent();
@@ -660,7 +664,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                 "com.homemanager", getApplicationContext().MODE_PRIVATE);
         connectionChecker.updateCheckerParameters(prefs.getString("com.homemanager.localUrl", ""));
         connectionChecker.restartConnectionTimer();
-        statusTimerReschedule(2000);
+        statusTimerReschedule(1000);
     }
 
 }
