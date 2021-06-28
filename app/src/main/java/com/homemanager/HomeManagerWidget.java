@@ -114,6 +114,11 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
     public void displayHint(int hint) {
 
     }
+
+    @Override
+    public void displayCustomHint(String hint) {
+
+    }
 }
 /**
  * Implementation of App Widget functionality.

@@ -41,6 +41,9 @@ import com.homemanager.Network.Network;
 import com.homemanager.Task.Action.DoorTask;
 import com.homemanager.Task.Action.GateTask;
 import com.homemanager.Task.Action.VideoShareTask;
+import com.homemanager.Task.Energy.EnergyMessage;
+import com.homemanager.Task.Energy.EnergyObject;
+import com.homemanager.Task.Energy.EnergyTask;
 import com.homemanager.Task.Garden.GardenTask;
 import com.homemanager.Heater.Heater;
 import com.homemanager.Info.Info;
@@ -84,7 +87,7 @@ import static java.lang.Math.sqrt;
  */
 public class HomeManager extends AppCompatActivity implements StatusMessage, TemperatureMessage,
         InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage,
-        ConnectionMessage  {
+        ConnectionMessage, EnergyMessage {
 
     private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
         @Override
@@ -141,6 +144,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         if(!connectionChecker.isConnectionErrorAppear() && !connectionChecker.isConnectionEstablishInProgress()) {
             putNewTask(new EventsTask(this));
             putNewTask(new TemperatureTask(this));
+            putNewTask(new EnergyTask(this));
             statusTimerReschedule(30000);
         }
         else {
@@ -472,6 +476,17 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     }
 
     @Override
+    public void displayCustomHint(final String hint){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast toast = Toast.makeText(appContext, hint, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+    }
+
+    @Override
     public void displayData(final List<TaskDescription> taskDesc) {
         runOnUiThread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -487,52 +502,56 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                 tl.removeAllViews();
 
                 for (TaskDescription description : taskDesc) {
-                    TableRow tr1 = new TableRow(getApplicationContext());
 
-                    tr1.setLayoutParams(new TableRow.LayoutParams(tl.getWidth(),//TableRow.LayoutParams.MATCH_PARENT,
-                            TableRow.LayoutParams.WRAP_CONTENT));
+                    try {
+                        TableRow tr1 = new TableRow(getApplicationContext());
 
-                    TextView textview = new TextView(getApplicationContext());
-                    textview.setText(description.getDescription() + " " + description.getDate());
-                    textview.setTextColor(Color.BLACK);
-                    textview.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                    textview.setHorizontallyScrolling(false);
+                        tr1.setLayoutParams(new TableRow.LayoutParams(tl.getWidth(),//TableRow.LayoutParams.MATCH_PARENT,
+                                TableRow.LayoutParams.WRAP_CONTENT));
 
-                    textview.setSingleLine(false);
-                    textview.setMaxLines(3);
-                    textview.setMinLines(1);
-                    textview.setMaxWidth((int)(tl.getWidth()/2));
+                        TextView textview = new TextView(getApplicationContext());
+                        textview.setText(description.getDescription() + " " + description.getDate());
+                        textview.setTextColor(Color.BLACK);
+                        textview.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                        textview.setHorizontallyScrolling(false);
 
-                    ImageView image = new ImageView(getApplicationContext());
-                    image.setImageDrawable(getResources().getDrawable(description.getIcon()));
+                        textview.setSingleLine(false);
+                        textview.setMaxLines(3);
+                        textview.setMinLines(1);
+                        textview.setMaxWidth((int) (tl.getWidth() / 2));
 
-                    TextView textview_date = new TextView(getApplicationContext());
-                    textview_date.setText(description.getDate());
-                    textview_date.setTextColor(Color.BLACK);
+                        ImageView image = new ImageView(getApplicationContext());
+                        image.setImageDrawable(getResources().getDrawable(description.getIcon()));
 
-                    tr1.addView(image);
-                    tr1.addView(textview);
-                    //tr1.addView(textview_date);
+                        TextView textview_date = new TextView(getApplicationContext());
+                        textview_date.setText(description.getDate());
+                        textview_date.setTextColor(Color.BLACK);
 
-                    LinearLayout.LayoutParams p = (LinearLayout.LayoutParams)textview.getLayoutParams();
-                    p.rightMargin=10;
-                    p.leftMargin = 20;
-                    p.gravity=Gravity.CENTER | Gravity.LEFT;
+                        tr1.addView(image);
+                        tr1.addView(textview);
+                        //tr1.addView(textview_date);
+
+                        LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) textview.getLayoutParams();
+                        p.rightMargin = 10;
+                        p.leftMargin = 20;
+                        p.gravity = Gravity.CENTER | Gravity.LEFT;
 
 
-                    /*p = (LinearLayout.LayoutParams)textview_date.getLayoutParams();
-                    p.width = p.WRAP_CONTENT;
-                    p.rightMargin=10;
-                    p.leftMargin = 10;
-                    p.gravity=Gravity.CENTER;//.CENTER_HORIZONTAL | Gravity.LEFT;*/
+                        /*p = (LinearLayout.LayoutParams)textview_date.getLayoutParams();
+                        p.width = p.WRAP_CONTENT;
+                        p.rightMargin=10;
+                        p.leftMargin = 10;
+                        p.gravity=Gravity.CENTER;//.CENTER_HORIZONTAL | Gravity.LEFT;*/
 
-                    image.getLayoutParams().height = 60;
-                    image.getLayoutParams().width = 60;
+                        image.getLayoutParams().height = 60;
+                        image.getLayoutParams().width = 60;
 
-                    //textview_date.getLayoutParams().width = tl.getWidth() - 60 - textview.getMaxWidth();
+                        //textview_date.getLayoutParams().width = tl.getWidth() - 60 - textview.getMaxWidth();
 
-                    tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT ,
-                            TableRow.LayoutParams.WRAP_CONTENT));
+                        tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                                TableRow.LayoutParams.WRAP_CONTENT));
+                    }
+                    catch (Exception e){}
                 }
 
             }
@@ -565,6 +584,23 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                 }
                 else{
                     temp.setText(R.string.HintErrorMessage);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void displayEnergy(final EnergyObject energy){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView temp = (TextView) findViewById(R.id.energy);
+                if (energy.isValid()) {
+
+                    //ImageView modeImage = (ImageView) findViewById(R.id.tempModeImage);
+                    //modeImage.setImageDrawable(getResources().getDrawable(temperature.getMode()));
+                    temp.setText(energy.getTodayPower() + "KWh " + energy.getCurrentPower() + "KWp" );
+
                 }
             }
         });

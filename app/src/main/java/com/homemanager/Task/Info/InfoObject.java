@@ -12,8 +12,12 @@ public class InfoObject {
     private String alarmStop;
     private String alarmVolume;
     private int alarmChannel;
+    private String energyToday;
+    private String energyTotal;
+
     private List<Integer> channelsID = new ArrayList<Integer>();
     private List<String>  channelsName = new ArrayList<String>();
+    private List<Integer>  energyValues = new ArrayList<Integer>();
 
     public final int ALARM_ALWAYES   = 3;
     public final int ALARM_WEEK_DAYS = 2;
@@ -29,6 +33,18 @@ public class InfoObject {
 
     public String getAlarmStop() {
         return alarmStop;
+    }
+
+    public String getEnergyToday() {
+        return energyToday;
+    }
+
+    public void setEnergyToday(String energy) { this.energyToday = energy; }
+
+    public void setEnergyTotal(String energy) { this.energyTotal = energy; }
+
+    public String getEnergyTotal() {
+        return energyTotal;
     }
 
     public int getAlarmChannel() {
@@ -54,6 +70,12 @@ public class InfoObject {
     public List<Integer> getChannelsID() {
         return channelsID;
     }
+
+    public List<Integer> getEnergyValues() {
+        return energyValues;
+    }
+
+    public void addEnergyValue(Integer energyValue) { this.energyValues.add(energyValue); }
 
     public void addChannelsID(int channelID) {
         this.channelsID.add(channelID);

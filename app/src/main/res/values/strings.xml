@@ -21,6 +21,7 @@
 
 
     <!-- Dialog -->
+    <string name="InfoNoData">Brak danych</string>
     <string name="InfoAlarmTime">Budzik start</string>
     <string name="InfoAlarmStation">Stacja radiowa</string>
     <string name="InfoAlarmTimeOff">Budzik stop</string>
@@ -31,7 +32,8 @@
     <string name="InfoRainOccurs">Dzisiaj zanotowano opady deszczu</string>
     <string name="InfoRainNotOccurs">Dzisiaj nie zanotowano opadu deszczu</string>
     <string name="InfoHeater">Dziś piec pracuje</string>
-    <string name="InfoVersion">Wersja 1.1.2</string>
+    <string name="InfoEnergyTotal">Wygenerowana moc </string>
+    <string name="InfoVersion">Wersja 1.1.5</string>
 
     <string name="GateOpenText">Na jak długo chesz otworzyć bramę ?</string>
     <string name="GateOpenMessage">Otwieranie bramy wjazdowej</string>

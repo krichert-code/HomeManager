@@ -9,4 +9,5 @@ public interface StatusMessage {
     public void displayData(final List<TaskDescription> taskDesc);
     public void doneActionNotification();
     public void displayHint(int hint);
+    public void displayCustomHint(String hint);
 }

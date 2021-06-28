@@ -59,6 +59,9 @@ public class InfoTask extends Task {
             currentInfo.setAlarmStateValue(content.getInt("alarm_state_value"));
             currentInfo.setAlarmStop(content.getString("alarm_stop"));
             currentInfo.setAlarmVolume(content.getString("alarm_volume"));
+
+            currentInfo.setEnergyTotal((content.getString("total_energy")));
+
             JSONArray array = content.getJSONArray("alarm_channels");
 
             for(int idx = 0; idx < array.length() ;idx++ ){
@@ -66,6 +69,12 @@ public class InfoTask extends Task {
                 currentInfo.addChannelsID(item.getInt("channelid"));
                 currentInfo.addChannelsName(item.getString("label"));
             }
+
+            array = content.getJSONArray("total_per_month");
+            for(int idx = 0; idx < array.length() ;idx++ ){
+                currentInfo.addEnergyValue(array.getInt(idx));
+            }
+
         }
         catch(JSONException e){
 

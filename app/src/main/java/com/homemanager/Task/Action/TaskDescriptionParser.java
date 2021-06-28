@@ -40,6 +40,10 @@ public class TaskDescriptionParser {
                     iconId = R.drawable.piec;
                 }
 
+                if (icon.contains("switch")){
+                    iconId = R.drawable.error;
+                }
+
                 taskDesc.add(new TaskDescription(desc, iconId, date));
             }
         }

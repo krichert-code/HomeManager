@@ -28,7 +28,7 @@
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="325dp"
+            android:layout_height="345dp"
             android:layout_gravity="top"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
@@ -61,6 +61,31 @@
                     android:textAllCaps="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textSize="18sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="18dp">
+
+                <ImageView
+                    android:id="@+id/energyModeImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    app:srcCompat="@drawable/battery" />
+
+                <TextView
+                    android:id="@+id/energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_span="2"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="14sp" />
             </TableRow>
 
             <View

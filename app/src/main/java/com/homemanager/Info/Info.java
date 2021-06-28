@@ -2,6 +2,7 @@ package com.homemanager.Info;
 
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +14,23 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.homemanager.Task.Action.StatusMessage;
+import com.homemanager.Task.Heater.TempData;
 import com.homemanager.Task.Info.AlarmSettingsTask;
 import com.homemanager.TaskConnector;
 import com.example.homemanager.R;
@@ -27,6 +44,7 @@ import android.content.Context;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Info implements InfoMessage {
@@ -43,6 +61,50 @@ public class Info implements InfoMessage {
         this.infoClass = this;
     }
 
+    private void createLineChart(final View view){
+        BarChart chart = (BarChart) promptView.findViewById(R.id.batteryChart);
+
+        ArrayList<BarEntry> values1 = new ArrayList<>();
+        final ArrayList<String> xLabel = new ArrayList<>();
+        int index = 0;
+
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener()
+        {
+            @Override
+            public void onValueSelected(Entry e, Highlight h)
+            {
+                statusMessages.displayCustomHint(Double.toString(e.getY())+" KWh" );
+            }
+
+            @Override
+            public void onNothingSelected()
+            {
+
+            }
+        });
+        for (int value : infoObj.getEnergyValues()){
+            values1.add(new BarEntry(index + 1, (float)value));
+            index++;
+        }
+
+        BarDataSet set1 = new BarDataSet(values1,view.getResources().getString(R.string.insideTemp));
+        set1.setColor(Color.RED);
+        set1.setValueTextSize(9f);
+        set1.setValueTextSize(9f);
+        set1.setDrawValues(false);
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1);
+        BarData data = new BarData(dataSets);
+        chart.setData(data);
+        chart.getLegend().setEnabled(false);
+        chart.setDrawGridBackground(false);
+        chart.setDrawBorders(false);
+        chart.getDescription().setEnabled(false);
+        chart.setAutoScaleMinMaxEnabled(true);
+        chart.animateXY(1500, 1500);
+        chart.invalidate();
+    }
 
     private void createButtonHandler(final int button, final int text, final boolean isDirectionUp){
         Button btnAdd = (Button) promptView.findViewById(button);
@@ -90,6 +152,7 @@ public class Info implements InfoMessage {
         infoObj = data;
         int index = 0;
 
+        createLineChart(view);
         Button btnAdd = (Button) promptView.findViewById(R.id.button);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -153,6 +216,9 @@ public class Info implements InfoMessage {
 
         textView = (TextView)promptView.findViewById(R.id.infoText3);
         textView.setText(promptView.getResources().getString(R.string.InfoHeater) +" " + data.getTodayHeaterStats());
+
+        textView = (TextView)promptView.findViewById(R.id.batteryInfoText);
+        textView.setText(promptView.getResources().getString(R.string.InfoEnergyTotal) +" " + data.getEnergyTotal() + "KWh");
 
         Spinner spinner = (Spinner) promptView.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(promptView.getContext(),

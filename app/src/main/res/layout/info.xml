@@ -13,7 +13,7 @@
         <TableLayout
             android:id="@+id/settingInfoPanel"
             android:layout_width="match_parent"
-            android:layout_height="350sp"
+            android:layout_height="380sp"
             android:padding="5sp"
             android:shrinkColumns="*"
             android:stretchColumns="*"
@@ -182,7 +182,7 @@
         <TableLayout
             android:id="@+id/infoPanel"
             android:layout_width="match_parent"
-            android:layout_height="350sp"
+            android:layout_height="380sp"
             android:padding="5sp">
 
             <TableRow
@@ -270,7 +270,7 @@
                     android:layout_gravity="center|left"
                     android:layout_marginRight="20dp"
                     android:maxLines="3"
-                    android:text="Dane o alarmie niedostępne" />
+                    android:text="@string/InfoNoData" />
             </TableRow>
 
             <TableRow
@@ -290,6 +290,38 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
                     android:text="TextView" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="82dp"
+                    android:layout_height="33dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/battery" />
+
+                <TextView
+                    android:id="@+id/batteryInfoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:text="@string/InfoNoData" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/batteryChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="110sp"
+                    android:layout_gravity="bottom"
+                    android:layout_span="2"
+                    android:visibility="visible"></com.github.mikephil.charting.charts.BarChart>
             </TableRow>
 
         </TableLayout>
