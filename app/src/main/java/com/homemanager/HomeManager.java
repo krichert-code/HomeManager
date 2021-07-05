@@ -38,8 +38,6 @@ import android.widget.Toast;
 
 import com.homemanager.Alarm.Alarm;
 import com.homemanager.Network.Network;
-import com.homemanager.Task.Action.DoorTask;
-import com.homemanager.Task.Action.GateTask;
 import com.homemanager.Task.Action.VideoShareTask;
 import com.homemanager.Task.Energy.EnergyMessage;
 import com.homemanager.Task.Energy.EnergyObject;
@@ -51,7 +49,7 @@ import com.homemanager.Media.Media;
 import com.example.homemanager.R;
 import com.homemanager.Schedule.Schedule;
 import com.homemanager.Task.Action.EventsTask;
-import com.homemanager.Task.Action.MainGateTask;
+import com.homemanager.Task.Action.GateTask;
 import com.homemanager.Task.Action.SoundVolumeTask;
 import com.homemanager.Task.Action.StatusMessage;
 import com.homemanager.Task.Action.TaskDescription;
@@ -78,8 +76,6 @@ import com.homemanager.Task.Temperature.TemperatureTask;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static java.lang.Math.sqrt;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -219,7 +215,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         findViewById(R.id.imageGate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                putNewTask(new GateTask(appContext));
+                putNewTask(new GateTask(appContext, 1, 1000*20, false));
                 Toast toast = Toast.makeText(view.getContext(), R.string.HintWaitForData, Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -233,14 +229,14 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
                         .setPositiveButton(R.string.YesButton, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                putNewTask(new MainGateTask(appContext, true));
+                                putNewTask(new GateTask(appContext, 2, 1000*30, true));
                             }
                         })
 
 
                         .setNegativeButton(R.string.NoButton, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                putNewTask(new MainGateTask(appContext, false));
+                                putNewTask(new GateTask(appContext, 2,1000*30, false));
                             }
                         })
 
@@ -256,7 +252,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
         findViewById(R.id.imageDoor).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                putNewTask(new DoorTask(appContext));
+                putNewTask(new GateTask(appContext,3, 1000*5, false));
                 Toast toast = Toast.makeText(view.getContext(), R.string.HintWaitForData, Toast.LENGTH_SHORT);
                 toast.show();
             }

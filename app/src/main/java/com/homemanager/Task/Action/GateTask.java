@@ -3,12 +3,17 @@ package com.homemanager.Task.Action;
 import org.json.JSONObject;
 
 public class GateTask extends EventsTask {
-    private long duration = 20*1000;
+    private long duration = 30*1000;
     private StatusMessage statusMessages;
+    private boolean perm;
+    private int gateId;
 
-    public GateTask(StatusMessage statusMessages){
+    public GateTask(StatusMessage statusMessages, int gateId, long duration, boolean perm){
         super(statusMessages);
         this.statusMessages = statusMessages;
+        this.perm = perm;
+        this.gateId = gateId;
+        this.duration = duration;
     }
 
     @Override
@@ -16,7 +21,14 @@ public class GateTask extends EventsTask {
         JSONObject jsonParams = new JSONObject();
 
         try {
-            jsonParams.put("action", "Gate0");
+            if (false == perm) {
+                jsonParams.put("action", "Gate");
+                jsonParams.put("id", Integer.toString(gateId));
+            }
+            else{
+                jsonParams.put("action", "GatePerm");
+                jsonParams.put("id", Integer.toString(gateId));
+            }
         }
         catch(Exception e){
         }
@@ -38,11 +50,12 @@ public class GateTask extends EventsTask {
     @Override
     public int getTaskDescriptor()
     {
-        return 3;
+        return 1;
     }
 
     @Override
     public void inDoneStateNotification(){
         statusMessages.doneActionNotification();
     }
+
 }

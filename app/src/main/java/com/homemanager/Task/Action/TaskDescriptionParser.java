@@ -16,32 +16,27 @@ public class TaskDescriptionParser {
             for (int i = 0; i < arr.length(); i++)
             {
                 String desc = arr.getJSONObject(i).getString("eventDesc");
-                String icon = arr.getJSONObject(i).getString("eventIcon");
+                String eventType = arr.getJSONObject(i).getString("eventType");
                 String date = arr.getJSONObject(i).getString("eventDate");
                 int iconId = -1;
 
-                if (icon.contains("calendar")){
+                if (eventType.contains("calendar")){
                     iconId = R.drawable.calendar;
                 }
-                if (icon.contains("gate")){
+                if (eventType.contains("gate")){
                     iconId = R.drawable.gate;
                 }
-                if (icon.contains("radio")){
+                if (eventType.contains("radio")){
                     iconId = R.drawable.media;
                 }
-                if (icon.contains("garden")){
+                if (eventType.contains("sprinkler")){
                     iconId = R.drawable.garden;
                 }
-                if (icon.contains("cesspit")){
-                    iconId = R.drawable.cesspit;
-                }
-
-                if (icon.contains("piec")){
-                    iconId = R.drawable.piec;
-                }
-
-                if (icon.contains("switch")){
+                if (eventType.contains("status")){
                     iconId = R.drawable.error;
+                }
+                if (eventType.contains("heater")){
+                    iconId = R.drawable.piec;
                 }
 
                 taskDesc.add(new TaskDescription(desc, iconId, date));
