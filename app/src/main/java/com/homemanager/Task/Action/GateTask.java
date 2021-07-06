@@ -50,7 +50,7 @@ public class GateTask extends EventsTask {
     @Override
     public int getTaskDescriptor()
     {
-        return 1;
+        return 1 + gateId;
     }
 
     @Override
