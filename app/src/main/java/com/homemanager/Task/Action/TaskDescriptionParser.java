@@ -33,7 +33,7 @@ public class TaskDescriptionParser {
                     iconId = R.drawable.garden;
                 }
                 if (eventType.contains("status")){
-                    iconId = R.drawable.error;
+                    iconId = R.drawable.information;
                 }
                 if (eventType.contains("heater")){
                     iconId = R.drawable.piec;

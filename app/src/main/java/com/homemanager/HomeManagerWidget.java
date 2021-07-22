@@ -51,7 +51,7 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
     public void run() {
 
         Task task;
-        long timeout = 60000;
+        long timeout = 25000;
 
         RestApi restApi = new RestApi(context);
         SharedPreferences prefs = context.getSharedPreferences(
@@ -183,7 +183,7 @@ public class HomeManagerWidget extends AppWidgetProvider{
 
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             }
-        },5000,  60000);
+        },5000,  30000);
     }
 
     @Override
