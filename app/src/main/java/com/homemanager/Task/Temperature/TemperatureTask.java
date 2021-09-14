@@ -51,15 +51,20 @@ public class TemperatureTask extends Task {
     public void parseContent(JSONObject content){
 
         try {
-            if (content.getString("mode").contains("night")) {
-                currentTemp.setMode(R.drawable.night);
-            } else {
+            if (content.getString("status").contains("OK")) {
+                if (content.getString("mode").contains("night")) {
+                    currentTemp.setMode(R.drawable.night);
+                } else {
 
-                currentTemp.setMode(R.drawable.day);
+                    currentTemp.setMode(R.drawable.day);
+                }
+                currentTemp.setTime(content.getString("time"));
+                currentTemp.setTemperature(content.getString("temp"));
+                currentTemp.setValid(true);
             }
-            currentTemp.setTime(content.getString("time"));
-            currentTemp.setTemperature(content.getString("temp"));
-            currentTemp.setValid(true);
+            else{
+                currentTemp.setValid(false);
+            }
         }
         catch(JSONException e){
             currentTemp.setValid(false);

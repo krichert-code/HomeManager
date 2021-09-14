@@ -578,9 +578,6 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                     temp.setText(temperature.getTemperature() + " \u2103");
                     modeImage.setImageDrawable(getResources().getDrawable(temperature.getMode()));
                 }
-                else{
-                    temp.setText(R.string.HintErrorMessage);
-                }
             }
         });
     }
