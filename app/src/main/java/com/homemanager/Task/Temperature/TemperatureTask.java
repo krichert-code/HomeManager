@@ -14,7 +14,7 @@ public class TemperatureTask extends Task {
     public TemperatureTask(TemperatureMessage temperatureMessage){
         super();
         this.temperatureMessage = temperatureMessage;
-        currentTemp = new TemperatureObject();
+        this.currentTemp = new TemperatureObject();
     }
 
     @Override
@@ -55,7 +55,6 @@ public class TemperatureTask extends Task {
                 if (content.getString("mode").contains("night")) {
                     currentTemp.setMode(R.drawable.night);
                 } else {
-
                     currentTemp.setMode(R.drawable.day);
                 }
                 currentTemp.setTime(content.getString("time"));
@@ -64,6 +63,9 @@ public class TemperatureTask extends Task {
             }
             else{
                 currentTemp.setValid(false);
+                currentTemp.setMode(R.drawable.day);
+                currentTemp.setTime("00:00");
+                currentTemp.setTemperature("-");
             }
         }
         catch(JSONException e){

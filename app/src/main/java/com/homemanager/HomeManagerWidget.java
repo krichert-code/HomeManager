@@ -28,8 +28,7 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
     private Object lock = new Object();
     private Context context;
 
-    private String insideTemp;
-    private String outsideTemp;
+    private String insideTemp = "-";
     private List<TaskDescription> events;
 
     public EventsProvider(Context context) {
@@ -38,10 +37,6 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
 
     public String getTemperatureInside(){
         return insideTemp;
-    }
-
-    public String getTemperatureOutide(){
-        return outsideTemp;
     }
 
     public List<TaskDescription> getEvents() { return events; }

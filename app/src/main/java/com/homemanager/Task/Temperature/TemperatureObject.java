@@ -7,6 +7,10 @@ public class TemperatureObject {
     private boolean valid;
 
 
+    TemperatureObject(){
+        valid = false;
+    }
+
     public void setTemperature(String temperature){
         this.temperature = temperature;
     }
