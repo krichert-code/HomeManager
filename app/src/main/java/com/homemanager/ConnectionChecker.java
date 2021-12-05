@@ -29,7 +29,7 @@ public class ConnectionChecker {
         this.localRtsp = "rtsp://" + localUrl + ":8554/mystream";
         this.remoteRtsp = "rtsp://" + remoteUrl + ":8554/mystream";
         this.localUrl = "http://" + localUrl + ":8090/restApi";
-        this.remoteUrl = "http://" + remoteUrl + "/restApi";
+        this.remoteUrl = "http://" + remoteUrl + ":90/restApi";
 
         this.networkService = networkService;
         connectionType = CONNECTION_TYPE_INIT;
