@@ -1,13 +1,17 @@
 package com.homemanager.Media;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -68,6 +72,12 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
         LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
         promptView = layoutInflater.inflate(R.layout.media, null);
 
+        DisplayMetrics displayMetrics = promptView.getResources().getDisplayMetrics();
+        FrameLayout layout1 = (FrameLayout) promptView.findViewById(R.id.frameMediaLayout);
+        ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) layout1.getLayoutParams();
+        params.height = (int)(displayMetrics.heightPixels * 0.6);
+        layout1.setLayoutParams( params);
+
         SeekBar volumeBar = (SeekBar) promptView.findViewById(R.id.volumeBar);
         volumeBar.setProgress(mediaObject.getVolume());
         volumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -107,12 +117,7 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
         ImageButton imgBtnAdd = (ImageButton) promptView.findViewById(R.id.powerMediaButton);
         imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-/*                new DownloadImageTask((ImageView) promptView.findViewById(R.id.imageYT1))
-                        .execute("https://i.ytimg.com/vi/0InQzHqfeq0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLALXM08Ask1g6v03rea4b0Na6I73w");
-                statusMessages.displayHint(R.string.HintWaitForData);*/
-
-                //taskConnector.putNewTask(new CecTask());
+                taskConnector.putNewTask(new CecTask());
             }
         });
 

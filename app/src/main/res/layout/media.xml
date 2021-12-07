@@ -17,6 +17,7 @@
             android:layout_marginBottom="10dp" />
 
         <FrameLayout
+            android:id="@+id/frameMediaLayout"
             android:layout_width="match_parent"
             android:layout_height="350dp">
 
@@ -80,9 +81,10 @@
                 <LinearLayout
                     android:id="@+id/radioLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="330dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="visible"
+                    tools:visibility="visible">
 
                 </LinearLayout>
             </ScrollView>
@@ -134,8 +136,8 @@
                     android:id="@+id/loadingBar"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
                     android:indeterminate="true"
+                    android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
                     android:maxHeight="24dip"
                     android:minHeight="12dip"
                     android:progressDrawable="@android:drawable/progress_horizontal"
@@ -161,7 +163,7 @@
                 <LinearLayout
                     android:id="@+id/tvLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="330dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="gone"></LinearLayout>
             </ScrollView>
@@ -196,13 +198,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Youtube" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/Spotify"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Spotify"
-                android:visibility="visible" />
 
         </com.google.android.material.tabs.TabLayout>
 
