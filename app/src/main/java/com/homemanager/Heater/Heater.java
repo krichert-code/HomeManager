@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.formatter.IValueFormatter;
@@ -48,6 +49,7 @@ import com.google.android.material.tabs.TabLayout;
 public class Heater implements HeaterMessage {
     private View promptView;
     private int pieChartIdDraw;
+    private int heaterModeSettings;
     private HeaterObject heaterObject;
     private TaskConnector tasks;
     private StatusMessage statusMessages;
@@ -176,7 +178,9 @@ public class Heater implements HeaterMessage {
         chart.invalidate();
     }
 
-    private void updateSettingsWindow(){
+    private void updateSettingsWindow(int settingId){
+        int idx = 0;
+        int v = 0;
 
         if(firstUpdate) {
             EditText editText = (EditText) promptView.findViewById(R.id.dayTempText);
@@ -186,9 +190,28 @@ public class Heater implements HeaterMessage {
             firstUpdate = false;
         }
 
-        int v = heaterObject.getTempModeDay(
-                ((Spinner) promptView.findViewById(R.id.spinnerHeater)).getSelectedItemPosition());
-        int idx = 0;
+        if (heaterModeSettings ==0) {
+            v = heaterObject.getTempModeDay(
+                    ((Spinner) promptView.findViewById(R.id.spinnerHeater)).getSelectedItemPosition());
+            ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(0).setVisibility(View.VISIBLE);
+            ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(1).setVisibility(View.GONE);
+            ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(2).setVisibility(View.VISIBLE);
+            ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(3).setVisibility(View.VISIBLE);
+            CheckBox cb = (CheckBox) promptView.findViewById(R.id.heatMainMode);
+            if (this.heaterObject.isMainHeater()) cb.setChecked(true);
+            else cb.setChecked(false);
+        }
+        else {
+            v = heaterObject.getTempAdditionModeDay(
+                    ((Spinner) promptView.findViewById(R.id.spinnerHeater)).getSelectedItemPosition());
+            ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(0).setVisibility(View.GONE);
+            ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(1).setVisibility(View.VISIBLE);
+            ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(2).setVisibility(View.GONE);
+            ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(3).setVisibility(View.GONE);
+            CheckBox cb = (CheckBox) promptView.findViewById(R.id.heatAddtionMode);
+            if (this.heaterObject.isAdditionHeater()) cb.setChecked(true);
+            else cb.setChecked(false);
+        }
 
         for (int bitIdx = 0; bitIdx < 24; bitIdx++) {
             String name = "h" + idx;
@@ -200,11 +223,17 @@ public class Heater implements HeaterMessage {
             idx++;
             v = v >> 1;
         }
+
     }
 
     private void updateTempModeSettings(int hourIdx, boolean state){
         Spinner spinner = (Spinner) promptView.findViewById(R.id.spinnerHeater);
-        int v = heaterObject.getTempModeDay(spinner.getSelectedItemPosition());
+        int v;
+        if (this.heaterModeSettings == 0)
+            v= heaterObject.getTempModeDay(spinner.getSelectedItemPosition());
+        else
+            v = heaterObject.getTempAdditionModeDay(spinner.getSelectedItemPosition());
+
         if (state){
             v = (v | (1<<hourIdx));
         }
@@ -212,7 +241,23 @@ public class Heater implements HeaterMessage {
         {
             v = v & (~ (1 << hourIdx));
         }
-        heaterObject.setTempModeDay(spinner.getSelectedItemPosition(), v);
+
+        if (this.heaterModeSettings == 0)
+            heaterObject.setTempModeDay(spinner.getSelectedItemPosition(), v);
+        else
+            heaterObject.setTempAdditionModeDay(spinner.getSelectedItemPosition(), v);
+    }
+
+    private void updateHeaterEnabler(boolean isMainHeater , boolean state){
+        if (isMainHeater == false){
+            CheckBox cb = (CheckBox) promptView.findViewById(R.id.heatAddtionMode);
+            heaterObject.setAdditionHeater(cb.isChecked());
+        }
+        else
+        {
+            CheckBox cb = (CheckBox) promptView.findViewById(R.id.heatMainMode);
+            heaterObject.setMainHeater(cb.isChecked());
+        }
     }
 
     private void updateSpinnerButtonMinLimits(final int button, final int text, final double limit){
@@ -248,6 +293,7 @@ public class Heater implements HeaterMessage {
 
     public View createScreen(final View view, final AlertDialog dialog, final HeaterObject heaterObject){
         pieChartIdDraw = 0;
+        heaterModeSettings = 0;
         LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
         promptView = layoutInflater.inflate(R.layout.heater, null);
 
@@ -295,11 +341,26 @@ public class Heater implements HeaterMessage {
             catch(Exception e){}
         }
 
+        CheckBox heaterEnabler = (CheckBox) promptView.findViewById(R.id.heatMainMode);
+        heaterEnabler.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                updateHeaterEnabler(true, b);
+            }
+        });
+
+        heaterEnabler = (CheckBox) promptView.findViewById(R.id.heatAddtionMode);
+        heaterEnabler.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                updateHeaterEnabler(false, b);
+            }
+        });
         Spinner daysOfWeek = (Spinner) promptView.findViewById(R.id.spinnerHeater);
         daysOfWeek.setOnItemSelectedListener( new Spinner.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                updateSettingsWindow();
+                updateSettingsWindow(heaterModeSettings);
             }
 
             @Override
@@ -345,13 +406,14 @@ public class Heater implements HeaterMessage {
 
                     TableLayout heaterSettings = (TableLayout) promptView.findViewById(R.id.heaterSettings);
                     heaterSettings.setVisibility(View.VISIBLE);
-                    updateSettingsWindow();
+                    updateSettingsWindow(heaterModeSettings);
                 }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 pieChartIdDraw = 0;
+                heaterModeSettings = 0;
             }
 
             @Override
@@ -372,9 +434,13 @@ public class Heater implements HeaterMessage {
                     TableLayout heaterSettings = (TableLayout) promptView.findViewById(R.id.heaterSettings);
                     heaterSettings.setVisibility(View.GONE);
                 }
+
+                if (tabItems.getTabAt(2) == tab){
+                    heaterModeSettings = (heaterModeSettings +1) %2;
+                    updateSettingsWindow(heaterModeSettings);
+                }
             }
         });
-
 
         return promptView;
     }

@@ -71,6 +71,9 @@ public class HeaterTask extends Task {
                 heaterObject.addTemperatureEntry(element);
             }
 
+            heaterObject.setMainHeater(content.getJSONObject("settings").getInt("mainDevice") == 0 ? false : true);
+            heaterObject.setAdditionHeater(content.getJSONObject("settings").getInt("supportDevice") ==0 ? false : true);
+
             heaterObject.setTempDay(content.getJSONObject("settings").getDouble("dayTemp"));
             heaterObject.setTempNight(content.getJSONObject("settings").getDouble("nightTemp"));
             heaterObject.setThreshold(content.getJSONObject("settings").getDouble("threshold"));
@@ -81,6 +84,14 @@ public class HeaterTask extends Task {
             heaterObject.setTempModeDay(4, content.getJSONObject("settings").getInt("day5"));
             heaterObject.setTempModeDay(5, content.getJSONObject("settings").getInt("day6"));
             heaterObject.setTempModeDay(6, content.getJSONObject("settings").getInt("day7"));
+
+            heaterObject.setTempAdditionModeDay(0, content.getJSONObject("settings").getInt("day_support1"));
+            heaterObject.setTempAdditionModeDay(1, content.getJSONObject("settings").getInt("day_support2"));
+            heaterObject.setTempAdditionModeDay(2, content.getJSONObject("settings").getInt("day_support3"));
+            heaterObject.setTempAdditionModeDay(3, content.getJSONObject("settings").getInt("day_support4"));
+            heaterObject.setTempAdditionModeDay(4, content.getJSONObject("settings").getInt("day_support5"));
+            heaterObject.setTempAdditionModeDay(5, content.getJSONObject("settings").getInt("day_support6"));
+            heaterObject.setTempAdditionModeDay(6, content.getJSONObject("settings").getInt("day_support7"));
         }
         catch(JSONException e){
 

@@ -61,19 +61,23 @@ public class Info implements InfoMessage {
         this.infoClass = this;
     }
 
-    private void createLineChart(final View view){
+    private void createChart(final View view){
         BarChart chart = (BarChart) promptView.findViewById(R.id.batteryChart);
 
         ArrayList<BarEntry> values1 = new ArrayList<>();
+        ArrayList<BarEntry> values2 = new ArrayList<>();
         final ArrayList<String> xLabel = new ArrayList<>();
-        int index = 0;
+        int index;
 
         chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener()
         {
             @Override
             public void onValueSelected(Entry e, Highlight h)
             {
-                statusMessages.displayCustomHint(Double.toString(e.getY())+" KWh" );
+                int energyValue;
+                String months[] = promptView.getResources().getStringArray(R.array.months_name);
+                energyValue = infoObj.getEnergyValues().get((int)e.getX()-1);
+                statusMessages.displayCustomHint(months[(int)e.getX()-1] + ": "+ Integer.toString(energyValue)+" KWh" );
             }
 
             @Override
@@ -82,19 +86,33 @@ public class Info implements InfoMessage {
 
             }
         });
+        index = 1;
         for (int value : infoObj.getEnergyValues()){
-            values1.add(new BarEntry(index + 1, (float)value));
+            values1.add(new BarEntry(index, (float)value));
+            index++;
+        }
+        index = 1;
+        for (int value : infoObj.getEnergyPrevValues()){
+            values2.add(new BarEntry(index, (float)value));
             index++;
         }
 
-        BarDataSet set1 = new BarDataSet(values1,view.getResources().getString(R.string.insideTemp));
+        BarDataSet set1 = new BarDataSet(values1,"");
         set1.setColor(Color.RED);
         set1.setValueTextSize(9f);
         set1.setValueTextSize(9f);
         set1.setDrawValues(false);
 
+        BarDataSet set2 = new BarDataSet(values2,"");
+        set2.setColor(Color.BLUE);
+        set2.setValueTextSize(9f);
+        set2.setValueTextSize(9f);
+        set2.setDrawValues(false);
+
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set2);
         dataSets.add(set1);
+
         BarData data = new BarData(dataSets);
         chart.setData(data);
         chart.getLegend().setEnabled(false);
@@ -152,7 +170,7 @@ public class Info implements InfoMessage {
         infoObj = data;
         int index = 0;
 
-        createLineChart(view);
+        createChart(view);
         Button btnAdd = (Button) promptView.findViewById(R.id.button);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -18,7 +18,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/tlo"><![CDATA[
+        android:background="@drawable/background"><![CDATA[
         android:fitsSystemWindows="true"
         android:soundEffectsEnabled="true">
 

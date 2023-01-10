@@ -9,18 +9,51 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:visibility="visible">
 
         <TableLayout
             android:id="@+id/heaterSettings"
             android:layout_width="match_parent"
-            android:layout_height="380sp"
+            android:layout_height="420sp"
             android:layout_gravity="bottom"
             android:paddingLeft="5sp"
             android:paddingRight="5sp"
             android:shrinkColumns="*"
             android:stretchColumns="*"
             android:visibility="gone">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="@string/MainModeEnableSetting" />
+
+                <CheckBox
+                    android:id="@+id/heatMainMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="@string/AdditionModeEnableSetting" />
+
+                <CheckBox
+                    android:id="@+id/heatAddtionMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
@@ -55,7 +88,6 @@
                     android:layout_height="wrap_content"
                     android:minWidth="1dip"
                     android:text="&gt;" />
-
             </TableRow>
 
             <TableRow

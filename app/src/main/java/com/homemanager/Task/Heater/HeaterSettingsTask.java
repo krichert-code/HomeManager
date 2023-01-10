@@ -26,6 +26,8 @@ public class HeaterSettingsTask extends Task {
 
         try {
             jsonParams.put("action", "setHeaterSettings");
+
+            jsonParams.put("main_device_enable", heaterObject.isMainHeater() ? "1" : "0");
             jsonParams.put("day_temperature", Double.toString(heaterObject.getTempDay()));
             jsonParams.put("night_temperature", Double.toString(heaterObject.getTempNight()));
             jsonParams.put("day1", Integer.toString(heaterObject.getTempModeDay(0)));
@@ -35,6 +37,15 @@ public class HeaterSettingsTask extends Task {
             jsonParams.put("day5", Integer.toString(heaterObject.getTempModeDay(4)));
             jsonParams.put("day6", Integer.toString(heaterObject.getTempModeDay(5)));
             jsonParams.put("day7", Integer.toString(heaterObject.getTempModeDay(6)));
+
+            jsonParams.put("support_device_enable", heaterObject.isAdditionHeater() ? "1" : "0");
+            jsonParams.put("day_support1", Integer.toString(heaterObject.getTempAdditionModeDay(0)));
+            jsonParams.put("day_support2", Integer.toString(heaterObject.getTempAdditionModeDay(1)));
+            jsonParams.put("day_support3", Integer.toString(heaterObject.getTempAdditionModeDay(2)));
+            jsonParams.put("day_support4", Integer.toString(heaterObject.getTempAdditionModeDay(3)));
+            jsonParams.put("day_support5", Integer.toString(heaterObject.getTempAdditionModeDay(4)));
+            jsonParams.put("day_support6", Integer.toString(heaterObject.getTempAdditionModeDay(5)));
+            jsonParams.put("day_support7", Integer.toString(heaterObject.getTempAdditionModeDay(6)));
         }
         catch(Exception e){
         }

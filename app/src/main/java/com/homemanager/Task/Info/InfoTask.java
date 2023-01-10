@@ -75,6 +75,11 @@ public class InfoTask extends Task {
                 currentInfo.addEnergyValue(array.getInt(idx));
             }
 
+            array = content.getJSONArray("total_per_month_prev_value");
+            for(int idx = 0; idx < array.length() ;idx++ ){
+                currentInfo.addEnergyPrevValue(array.getInt(idx));
+            }
+
         }
         catch(JSONException e){
 

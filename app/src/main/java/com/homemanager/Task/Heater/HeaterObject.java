@@ -15,10 +15,30 @@ public class HeaterObject {
     private double tempDay;
     private double tempNight;
     private double threshold;
-    private int[] tempModeDay = new int[7];
 
+    private boolean mainHeater;
+    private boolean additionHeater;
+
+    private int[] tempModeDay = new int[7];
+    private int[] tempModeDayAddition = new int[7];
 
     private List<TempData> temperatureData;
+
+    public boolean isAdditionHeater() {
+        return additionHeater;
+    }
+
+    public void setAdditionHeater(boolean additionHeater) {
+        this.additionHeater = additionHeater;
+    }
+
+    public boolean isMainHeater() {
+        return mainHeater;
+    }
+
+    public void setMainHeater(boolean mainHeater) {
+        this.mainHeater = mainHeater;
+    }
 
     public int getModeChartDay() {
         return modeChartDay;
@@ -111,4 +131,13 @@ public class HeaterObject {
     public void setTempModeDay(int index, int tempModeDay) {
         this.tempModeDay[index] = tempModeDay;
     }
+
+    public int getTempAdditionModeDay(int index) {
+        return tempModeDayAddition[index];
+    }
+
+    public void setTempAdditionModeDay(int index, int tempModeDay) {
+        this.tempModeDayAddition[index] = tempModeDay;
+    }
+
 }
