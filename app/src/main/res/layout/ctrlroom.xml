@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:id="@+id/ctrlRoomView"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:visibility="visible">
+
+                <TableLayout
+                    android:id="@+id/ctrlRoomInfoPanel"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:layout_marginStart="20px"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginEnd="20px"
+                    android:layout_marginRight="20px"
+                    android:shrinkColumns="*"
+                    android:stretchColumns="*"
+                    android:visibility="visible" />
+            </ScrollView>
+
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorAccent" />
+
+            <Button
+                android:id="@+id/ctrlRoomCloseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/CloseButton" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

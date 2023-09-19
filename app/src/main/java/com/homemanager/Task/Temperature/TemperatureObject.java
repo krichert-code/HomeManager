@@ -1,18 +1,25 @@
 package com.homemanager.Task.Temperature;
 
 public class TemperatureObject {
-    private String temperature;
+    private String temperatureInside;
+    private String temperatureOutside;
     private String time;
     private int mode;
-    private boolean valid;
+    private boolean validInside;
+    private boolean validOutside;
 
 
     TemperatureObject(){
-        valid = false;
+        validInside = false;
+        validOutside = false;
     }
 
-    public void setTemperature(String temperature){
-        this.temperature = temperature;
+    public void setInsideTemperature(String temperature){
+        this.temperatureInside = temperature;
+    }
+
+    public void setOutsideTemperature(String temperature){
+        this.temperatureOutside = temperature;
     }
 
     public void setTime(String time){
@@ -23,9 +30,11 @@ public class TemperatureObject {
         this.mode = mode;
     }
 
-    public String getTemperature(){
-        return this.temperature;
+    public String getInsideTemperature(){
+        return this.temperatureInside;
     }
+
+    public String getOutsideTemperature() { return this.temperatureOutside; }
 
     public String getTime(){
         return this.time;
@@ -35,7 +44,12 @@ public class TemperatureObject {
         return this.mode;
     }
 
-    public boolean isValid() {return this.valid; }
+    public boolean isValidInside() {return this.validInside; }
 
-    public void setValid(boolean valid) { this.valid = valid; }
+    public void setValidInside(boolean valid) { this.validInside = valid; }
+
+    public boolean isValidOutside() {return this.validOutside; }
+
+    public void setValidOutside(boolean valid) { this.validOutside = valid; }
+
 }

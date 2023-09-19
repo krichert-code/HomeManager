@@ -29,6 +29,7 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
     private Context context;
 
     private String insideTemp = "-";
+    private String outsideTemp = "-";
     private List<TaskDescription> events;
 
     public EventsProvider(Context context) {
@@ -37,6 +38,10 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
 
     public String getTemperatureInside(){
         return insideTemp;
+    }
+
+    public String getTemperatureOutside(){
+        return outsideTemp;
     }
 
     public List<TaskDescription> getEvents() { return events; }
@@ -85,8 +90,11 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
 
     @Override
     public void displayTemperature(TemperatureObject temperature) {
-        if (temperature.isValid()){
-            insideTemp = temperature.getTemperature();
+        if (temperature.isValidInside()){
+            insideTemp = temperature.getInsideTemperature();
+        }
+        if (temperature.isValidOutside()){
+            outsideTemp = temperature.getOutsideTemperature();
         }
     }
 
@@ -141,6 +149,9 @@ public class HomeManagerWidget extends AppWidgetProvider{
                 int resId = 1;
 
                 CharSequence tempText = eventsProvider.getTemperatureInside() + "ºC";
+
+                tempText = tempText + " \\ " + eventsProvider.getTemperatureOutside() + "ºC";
+                
                 // Construct the RemoteViews object
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.home_manager_widget);
                 views.setTextViewText(R.id.appwidget_text, tempText);

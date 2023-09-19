@@ -37,8 +37,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.homemanager.Alarm.Alarm;
+import com.homemanager.CtrlDevice.CtrlDevice;
 import com.homemanager.Network.Network;
 import com.homemanager.Task.Action.VideoShareTask;
+import com.homemanager.Task.CtrlDevice.CtrlDeviceMessage;
+import com.homemanager.Task.CtrlDevice.CtrlDeviceObject;
+import com.homemanager.Task.CtrlDevice.CtrlDeviceTask;
 import com.homemanager.Task.Energy.EnergyMessage;
 import com.homemanager.Task.Energy.EnergyObject;
 import com.homemanager.Task.Energy.EnergyTask;
@@ -67,7 +71,6 @@ import com.homemanager.Task.Media.MediaObject;
 import com.homemanager.Task.Media.MediaTask;
 import com.homemanager.Task.Schedule.ScheduleMessage;
 import com.homemanager.Task.Schedule.ScheduleObject;
-import com.homemanager.Task.Schedule.ScheduleTask;
 import com.homemanager.Task.Task;
 import com.homemanager.Task.Temperature.TemperatureMessage;
 import com.homemanager.Task.Temperature.TemperatureObject;
@@ -83,7 +86,7 @@ import java.util.TimerTask;
  */
 public class HomeManager extends AppCompatActivity implements StatusMessage, TemperatureMessage,
         InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage,
-        ConnectionMessage, EnergyMessage {
+        ConnectionMessage, EnergyMessage, CtrlDeviceMessage {
 
     private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
         @Override
@@ -211,7 +214,6 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                 getString(R.string.RemoteUrl), taskDispatcher, this);
 
 
-
         findViewById(R.id.imageGate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -278,11 +280,11 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             }
         });
 
-        findViewById(R.id.imageSchedule).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.imageControl).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.playSoundEffect(SoundEffectConstants.CLICK);
-                putNewTask(new ScheduleTask(appContext));
+                putNewTask(new CtrlDeviceTask(appContext));
                 Toast toast = Toast.makeText(view.getContext(), R.string.HintWaitForData, Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -461,6 +463,24 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     }
 
     @Override
+    public void displayCtrlDevice(final CtrlDeviceObject ctrlDeviceObject) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CtrlDevice ctrDevices = new CtrlDevice(appContext, appContext);
+                if (false == connectionChecker.isConnectionErrorAppear() &&
+                        false == connectionChecker.isConnectionEstablishInProgress()) {
+                    AlertDialog ctrlDeviceDialog = new AlertDialog.Builder(appContext).create();
+                    ctrlDeviceDialog.setView(ctrDevices.createScreen(mContentView, ctrlDeviceDialog, ctrlDeviceObject));
+                    ctrlDeviceDialog.show();
+                    hide();
+                }
+            }
+        });
+    }
+
+
+    @Override
     public void displayHint(final int hint){
         runOnUiThread(new Runnable() {
                           @Override
@@ -571,12 +591,23 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
             @Override
             public void run() {
                 TextView temp = (TextView) findViewById(R.id.temperature);
-                if (temperature.isValid()) {
+                ImageView modeImage = (ImageView) findViewById(R.id.tempModeImage);
 
-                    ImageView modeImage = (ImageView) findViewById(R.id.tempModeImage);
+                modeImage.setImageDrawable(getResources().getDrawable(temperature.getMode()));
+                if (temperature.isValidInside()) {
+                    temp.setText(temperature.getInsideTemperature() + " \u2103 \\ ");
+                }
+                else
+                {
+                    temp.setText("- \u2103 \\ ");
+                }
 
-                    temp.setText(temperature.getTemperature() + " \u2103");
-                    modeImage.setImageDrawable(getResources().getDrawable(temperature.getMode()));
+                if (temperature.isValidOutside()) {
+                    temp.setText(temp.getText() + temperature.getOutsideTemperature() + " \u2103");
+                }
+                else
+                {
+                    temp.setText(temp.getText() + "- \u2103");
                 }
             }
         });

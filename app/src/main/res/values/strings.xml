@@ -15,7 +15,7 @@
     <string name="heatText">Piec</string>
     <string name="mediaText">Media</string>
 
-    <string name="scheduleText">Rozkład</string>
+    <string name="ctrlText">Sterowanie</string>
     <string name="alarmText">Alarm</string>
     <string name="infoText">Info</string>
 
@@ -33,7 +33,7 @@
     <string name="InfoRainNotOccurs">Dzisiaj nie zanotowano opadu deszczu</string>
     <string name="InfoHeater">Dziś piec pracuje</string>
     <string name="InfoEnergyTotal">Wygenerowana moc </string>
-    <string name="InfoVersion">Wersja 1.3.0</string>
+    <string name="InfoVersion">Wersja 1.4.0</string>
 
     <string name="GateOpenText">Na jak długo chesz otworzyć bramę ?</string>
     <string name="GateOpenMessage">Otwieranie bramy wjazdowej</string>

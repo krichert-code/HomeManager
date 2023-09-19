@@ -251,14 +251,14 @@
 
 
                 <ImageButton
-                    android:id="@+id/imageSchedule"
+                    android:id="@+id/imageControl"
                     android:layout_width="110dp"
                     android:layout_height="56dp"
                     android:alpha="0.8"
                     android:background="?android:selectableItemBackgroundBorderless"
                     android:scaleType="fitCenter"
                     android:soundEffectsEnabled="true"
-                    app:srcCompat="@drawable/schedule" />
+                    app:srcCompat="@drawable/control" />
 
                 <ImageButton
                     android:id="@+id/imageInfo"
@@ -289,7 +289,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/scheduleText" />
+                    android:text="@string/ctrlText" />
 
                 <TextView
                     android:id="@+id/textView12"

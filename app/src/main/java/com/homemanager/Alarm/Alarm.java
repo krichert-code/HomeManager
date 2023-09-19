@@ -103,49 +103,10 @@ public class Alarm extends Activity implements AlarmMessage {
             tempLayout.addView(imageHeater);
             tempLayout.addView(textTemp);
 
-            final ImageButton light = new ImageButton((promptView.getContext()));
-            if (room.lightExist) {
-                light.setImageDrawable(promptView.getResources().getDrawable(R.drawable.lamp_off));
-                TypedValue outValue = new TypedValue();
-
-//                try {
-//                    promptView.getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, outValue, true);
-//                }
-//                catch (Exception e) {}
-
-                light.setBackgroundResource(outValue.resourceId);
-                light.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                if (room.isLightOn) {
-                    //light.setColorFilter(new PorterDuffColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP));
-                    light.setColorFilter(new LightingColorFilter(0x77777777, 0x00777733));
-                }
-
-                light.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        if (tasks.putNewTask(new LightTask(room.lightIp)) == 0) {
-                            room.isLightOn = (!room.isLightOn);
-                            if (querySent == true) {
-                                ignoreResponse = true;
-                            }
-
-                            if (room.isLightOn) {
-                                //light.setColorFilter(new PorterDuffColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP));
-                                light.setColorFilter(new LightingColorFilter(0x77777777, 0x00777733));
-                            } else {
-                                light.setColorFilter(null);
-                            }
-                        }
-                    }
-                });
-            }
-
-
             row.addView(textview);
             row.addView(heaterLayout);
             row.addView(tempLayout);
-            if (room.lightExist) {
-                row.addView(light);
-            }
+
             if (index%2 == 0)
                 row.setBackgroundColor(Color.LTGRAY);
             else
@@ -167,13 +128,6 @@ public class Alarm extends Activity implements AlarmMessage {
 
             imageHeater.getLayoutParams().height = 40;
             imageHeater.getLayoutParams().width = 130;
-
-            if (room.lightExist) {
-                light.getLayoutParams().height = 80;
-                light.getLayoutParams().width = 80;
-                ((LinearLayout.LayoutParams) (light.getLayoutParams())).rightMargin = 15;
-            }
-
 
             infoPanel.addView(row, new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.MATCH_PARENT));

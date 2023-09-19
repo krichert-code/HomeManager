@@ -226,9 +226,6 @@ public class Info implements InfoMessage {
         if (data.getAlarmStateValue() == data.ALARM_NEVER)
             textView.setText(promptView.getResources().getString(R.string.InfoAlarmMode0) );
 
-        textView = (TextView)promptView.findViewById(R.id.infoText2);
-        textView.setText(data.getTodayRainStats());
-
         textView = (TextView)promptView.findViewById(R.id.versionInfoText);
         textView.setText(promptView.getResources().getString(R.string.InfoVersion));
 

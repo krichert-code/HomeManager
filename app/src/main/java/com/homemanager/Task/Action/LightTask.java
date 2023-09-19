@@ -5,7 +5,7 @@ import com.homemanager.Task.Task;
 import org.json.JSONObject;
 
 public class LightTask extends Task {
-    private long duration = 2 * 1000;
+    private long duration = 1 * 500;
     private String ip;
 
     public LightTask(String ip){

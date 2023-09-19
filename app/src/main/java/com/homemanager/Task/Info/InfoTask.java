@@ -53,7 +53,6 @@ public class InfoTask extends Task {
             currentInfo.setAlarmTime(content.getString("alarm_start"));
             currentInfo.setAlarmState(content.getString("alarm_state"));
             currentInfo.setTodayHeaterStats(content.getString("heater_time"));
-            currentInfo.setTodayRainStats(content.getString("rain"));
             currentInfo.setAlarmChannel(Integer.parseInt(content.getString("alarm_channel")));
 
             currentInfo.setAlarmStateValue(content.getInt("alarm_state_value"));

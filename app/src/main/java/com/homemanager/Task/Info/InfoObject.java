@@ -119,13 +119,4 @@ public class InfoObject {
     public void setTodayHeaterStats(String todayHeaterStats) {
         this.todayHeaterStats = todayHeaterStats;
     }
-
-    public String getTodayRainStats() {
-        return todayRainStats;
-    }
-
-    public void setTodayRainStats(String todayRainStats) {
-        this.todayRainStats = todayRainStats;
-    }
-
 }

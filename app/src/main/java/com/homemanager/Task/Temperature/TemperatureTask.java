@@ -51,25 +51,34 @@ public class TemperatureTask extends Task {
     public void parseContent(JSONObject content){
 
         try {
-            if (content.getString("status").contains("OK")) {
-                if (content.getString("mode").contains("night")) {
-                    currentTemp.setMode(R.drawable.night);
-                } else {
-                    currentTemp.setMode(R.drawable.day);
-                }
-                currentTemp.setTime(content.getString("time"));
-                currentTemp.setTemperature(content.getString("temp"));
-                currentTemp.setValid(true);
+            if (content.getString("statusInside").contains("OK")) {
+                currentTemp.setInsideTemperature(content.getString("tempInside"));
+                currentTemp.setValidInside(true);
             }
             else{
-                currentTemp.setValid(false);
-                currentTemp.setMode(R.drawable.day);
-                currentTemp.setTime("00:00");
-                currentTemp.setTemperature("-");
+                currentTemp.setValidInside(false);
+                currentTemp. setInsideTemperature("-");
             }
+
+            if (content.getString("statusOutside").contains("OK")) {
+                currentTemp.setOutsideTemperature(content.getString("tempOutside"));
+                currentTemp.setValidOutside(true);
+            }
+            else{
+                currentTemp.setValidOutside(false);
+                currentTemp.setOutsideTemperature("-");
+            }
+
+            if (content.getString("mode").contains("night")) {
+                currentTemp.setMode(R.drawable.night);
+            } else {
+                currentTemp.setMode(R.drawable.day);
+            }
+            currentTemp.setTime(content.getString("time"));
         }
         catch(JSONException e){
-            currentTemp.setValid(false);
+            currentTemp.setValidInside(false);
+            currentTemp.setValidOutside(false);
         }
     }
 
