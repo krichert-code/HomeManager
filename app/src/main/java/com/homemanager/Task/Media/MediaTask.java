@@ -10,6 +10,7 @@ public class MediaTask extends Task {
     private long duration = 0;
     private MediaMessage mediaMessage;
     private MediaObject mediaObject;
+    private boolean validData;
 
 
     public MediaTask(MediaMessage mediaMessage){
@@ -50,7 +51,7 @@ public class MediaTask extends Task {
 
     @Override
     public void parseContent(JSONObject content){
-
+        validData = true;
         try {
             JSONArray array = content.getJSONArray("radio");
             for(int idx = 0; idx < array.length() ;idx++ ){
@@ -69,12 +70,12 @@ public class MediaTask extends Task {
             mediaObject.setVolume(content.getInt("volume"));
         }
         catch(JSONException e){
-
+            validData = false;
         }
     }
 
     @Override
     public void inDoneStateNotification(){
-        mediaMessage.displayMedia(mediaObject);
+        if(validData) mediaMessage.displayMedia(mediaObject);
     }
 }

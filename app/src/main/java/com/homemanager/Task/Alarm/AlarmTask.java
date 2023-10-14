@@ -50,7 +50,7 @@ public class AlarmTask extends Task {
 
     @Override
     public void inDoneStateNotification(){
-        alarmMessage.displayAlarm(alarmObject);
+        if (alarmObject.isDataValid()) alarmMessage.displayAlarm(alarmObject);
     }
 
 }

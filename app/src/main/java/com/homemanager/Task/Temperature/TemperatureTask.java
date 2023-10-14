@@ -84,7 +84,9 @@ public class TemperatureTask extends Task {
 
     @Override
     public void inProgressStateNotification(){
-        temperatureMessage.displayTemperature(currentTemp);
+        if (currentTemp.isValidInside() || currentTemp.isValidOutside()) {
+            temperatureMessage.displayTemperature(currentTemp);
+        }
     }
 
     @Override

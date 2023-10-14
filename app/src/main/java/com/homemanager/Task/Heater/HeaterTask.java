@@ -12,6 +12,7 @@ public class HeaterTask extends Task {
     private long duration = 0;
     private HeaterMessage heaterMessage;
     private HeaterObject heaterObject;
+    private boolean validData;
 
     public HeaterTask(HeaterMessage heaterMessage){
         super();
@@ -53,6 +54,7 @@ public class HeaterTask extends Task {
     public void parseContent(JSONObject content){
 
         try {
+            validData = true;
             heaterObject.setModeChartDay(content.getJSONObject("percentage").getInt("day"));
             heaterObject.setModeChartNight(content.getJSONObject("percentage").getInt("night"));
             heaterObject.setModeChartOff(content.getJSONObject("percentage").getInt("off"));
@@ -94,12 +96,12 @@ public class HeaterTask extends Task {
             heaterObject.setTempAdditionModeDay(6, content.getJSONObject("settings").getInt("day_support7"));
         }
         catch(JSONException e){
-
+            validData = false;
         }
     }
 
     @Override
     public void inDoneStateNotification(){
-        heaterMessage.displayHeaterData(heaterObject);
+        if(validData) heaterMessage.displayHeaterData(heaterObject);
     }
 }

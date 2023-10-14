@@ -24,7 +24,7 @@ public class TaskInvoker implements Runnable, NetworkService {
 
     private Context context;
 
-    private boolean isError = false;
+    private boolean isError = true;
 
     public TaskInvoker(Context context){
         this.context = context;
@@ -135,25 +135,26 @@ public class TaskInvoker implements Runnable, NetworkService {
         while(true) {
             RestApi restApi = new RestApi(context);
 
-            //check if new task in the queue
-            while ((task = getFirstTaskFromQueue()) != null) {
-                restApi.writeDataToServer(url , task.getRequestData());
+            if (isError == false) {
+                //check if new task in the queue
+                while ((task = getFirstTaskFromQueue()) != null) {
+                    restApi.writeDataToServer(url, task.getRequestData());
 
-                synchronized (lock) {
-                    if (restApi.getResponseCode() == 200) {
-                        try {
-                            task.parseContent(new JSONObject(restApi.getJsonResponse()));
-                            task.setInProgressState();
-                        }
-                        catch(Exception e){
-                        }
+                    synchronized (lock) {
+                        if (restApi.getResponseCode() == 200) {
+                            try {
+                                task.parseContent(new JSONObject(restApi.getJsonResponse()));
+                                task.setInProgressState();
+                            } catch (Exception e) {
+                            }
 
-                    } else {
-                        isError = true;
-                        task.setErrorState(R.string.connectionError);
+                        } else {
+                            isError = true;
+                            task.setErrorState(R.string.connectionError);
+                            break;
+                        }
                     }
                 }
-
             }
 
             synchronized (lock) {

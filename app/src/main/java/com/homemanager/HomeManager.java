@@ -141,10 +141,10 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
     private void checkGeneralStatus(){
         if(!connectionChecker.isConnectionErrorAppear() && !connectionChecker.isConnectionEstablishInProgress()) {
-            putNewTask(new EventsTask(this));
             putNewTask(new TemperatureTask(this));
+            putNewTask(new EventsTask(this));
             putNewTask(new EnergyTask(this));
-            statusTimerReschedule(30000);
+            statusTimerReschedule(60000);
         }
         else {
             statusTimerReschedule(1000);

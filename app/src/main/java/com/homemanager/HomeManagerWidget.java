@@ -46,7 +46,6 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
 
     public List<TaskDescription> getEvents() { return events; }
 
-
     @Override
     public void run() {
 
@@ -57,7 +56,8 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
         SharedPreferences prefs = context.getSharedPreferences(
                 "com.homemanager", context.MODE_PRIVATE);
 
-        String localUrl = "http://" + prefs.getString("com.homemanager.localUrl", "") + ":8090/restApi";
+        String localUrl = "http://" + prefs.getString("com.homemanager.localUrl", "") + "/restApi";
+        /** widget is not supported out of the local network */
         String remoteUrl = context.getString(R.string.RemoteUrl);
         TemperatureTask tempTask = new TemperatureTask(this);
         EventsTask eventsTask = new EventsTask(this);

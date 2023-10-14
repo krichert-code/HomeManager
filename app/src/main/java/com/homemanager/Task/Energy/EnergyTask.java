@@ -14,6 +14,7 @@ public class EnergyTask extends Task {
     private long duration = 0;
     private EnergyMessage energyMessage;
     private EnergyObject energy;
+    private boolean validData;
 
     public EnergyTask(EnergyMessage energyMessage){
         super();
@@ -55,6 +56,7 @@ public class EnergyTask extends Task {
     public void parseContent(JSONObject content){
 
         try {
+            validData = true;
             JSONArray array = content.getJSONArray("energy");
 
             for (int i=0; i< array.length(); i++){
@@ -67,6 +69,7 @@ public class EnergyTask extends Task {
         }
         catch(JSONException e){
             energy.setValid(false);
+            validData = false;
         }
     }
 

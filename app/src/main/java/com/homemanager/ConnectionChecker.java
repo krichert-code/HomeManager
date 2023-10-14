@@ -28,8 +28,9 @@ public class ConnectionChecker {
     public ConnectionChecker(String localUrl, String remoteUrl, NetworkService networkService, final ConnectionMessage connectionMessage) {
         this.localRtsp = "rtsp://" + localUrl + ":8554/mystream";
         this.remoteRtsp = "rtsp://" + remoteUrl + ":8554/mystream";
-        this.localUrl = "http://" + localUrl + ":8090/restApi";
-        this.remoteUrl = "http://" + remoteUrl + ":90/restApi";
+
+        this.localUrl = "http://" + localUrl + "/restApi";
+        this.remoteUrl = "http://" + remoteUrl + "/restApi";
 
         this.networkService = networkService;
         connectionType = CONNECTION_TYPE_INIT;
@@ -66,7 +67,7 @@ public class ConnectionChecker {
 
     public void updateCheckerParameters(String localUrl){
         this.localRtsp = "rtsp://" + localUrl + ":8554/mystream";
-        this.localUrl = "http://" + localUrl + ":8090/restApi";
+        this.localUrl = "http://" + localUrl + "/restApi";
     }
 
     private void connectionCheckerTimer() {
@@ -123,7 +124,9 @@ public class ConnectionChecker {
                     }
                 }
             }
-            catch (Exception e) {}
+            catch (Exception e) {
+                connectionType = CONNECTION_TYPE_NONE;
+            }
         }
     }
 

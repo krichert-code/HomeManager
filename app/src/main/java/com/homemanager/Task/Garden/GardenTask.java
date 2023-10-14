@@ -9,6 +9,7 @@ public class GardenTask extends Task {
 
     private final GardenMessage gardenMessage;
     private GardenObject  gardenObject;
+    private boolean validData;
 
     public GardenTask(GardenMessage gardenMessage){
         super();
@@ -48,6 +49,7 @@ public class GardenTask extends Task {
     @Override
     public void parseContent(JSONObject content){
         try {
+            validData = true;
             gardenObject.setDuration(content.getInt("duration"));
             gardenObject.setGlobalEnable(content.getInt("globalEnable") != 0 ? true : false);
             gardenObject.setStartTime(content.getString("startTime"));
@@ -60,12 +62,12 @@ public class GardenTask extends Task {
             gardenObject.setEnablePerDay(6, content.getInt("day7") != 0 ? true : false);
         }
         catch(JSONException e){
-
+            validData = false;
         }
     }
 
     @Override
     public void inDoneStateNotification(){
-        gardenMessage.displayGardenData(gardenObject);
+        if (validData) gardenMessage.displayGardenData(gardenObject);
     }
 }

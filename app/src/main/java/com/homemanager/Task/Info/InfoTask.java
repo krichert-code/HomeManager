@@ -10,6 +10,7 @@ public class InfoTask extends Task {
     private long duration = 0;
     private InfoMessage infoMessage;
     private InfoObject currentInfo = new InfoObject();
+    private boolean validData;
 
     public InfoTask(InfoMessage infoMessage){
         super();
@@ -50,6 +51,7 @@ public class InfoTask extends Task {
     public void parseContent(JSONObject content){
 
         try {
+            validData = true;
             currentInfo.setAlarmTime(content.getString("alarm_start"));
             currentInfo.setAlarmState(content.getString("alarm_state"));
             currentInfo.setTodayHeaterStats(content.getString("heater_time"));
@@ -81,12 +83,12 @@ public class InfoTask extends Task {
 
         }
         catch(JSONException e){
-
+            validData = false;
         }
     }
 
     @Override
     public void inDoneStateNotification(){
-        infoMessage.displayInfo(currentInfo);
+        if (validData) infoMessage.displayInfo(currentInfo);
     }
 }

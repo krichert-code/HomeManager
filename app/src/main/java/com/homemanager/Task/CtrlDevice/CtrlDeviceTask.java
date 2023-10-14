@@ -6,6 +6,7 @@ import org.json.JSONObject;
 public class CtrlDeviceTask extends Task{
     private CtrlDeviceMessage ctrlDeviceMessage;
     private CtrlDeviceObject ctrlDeviceObject;
+    private boolean validData;
 
     public CtrlDeviceTask(CtrlDeviceMessage ctrlDeviceMessage) {
         super();
