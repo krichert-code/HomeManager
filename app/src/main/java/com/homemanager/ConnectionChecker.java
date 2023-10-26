@@ -1,10 +1,5 @@
 package com.homemanager;
-
-import com.homemanager.Task.Action.EventsTask;
-import com.homemanager.Task.Temperature.TemperatureTask;
-
 import org.json.JSONObject;
-
 import java.util.Timer;
 import java.util.TimerTask;
 

@@ -1,9 +1,7 @@
 package com.homemanager.CtrlDevice;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.graphics.Typeface;
 import android.util.TypedValue;
@@ -18,13 +16,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
-
 import com.example.homemanager.R;
 import com.homemanager.Task.Action.LightTask;
-import com.homemanager.Task.Action.StatusMessage;
-import com.homemanager.Task.Alarm.AlarmObject;
-import com.homemanager.Task.Alarm.Room;
+import com.homemanager.Task.Status.StatusMessage;
 import com.homemanager.Task.CtrlDevice.CtrlDeviceMessage;
 import com.homemanager.Task.CtrlDevice.CtrlDeviceObject;
 import com.homemanager.Task.CtrlDevice.CtrlRoom;

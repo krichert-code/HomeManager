@@ -15,7 +15,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.homemanager.Task.Action.SprinklerTask;
-import com.homemanager.Task.Action.StatusMessage;
+import com.homemanager.Task.Status.StatusMessage;
 import com.homemanager.Task.Garden.GardenMessage;
 import com.homemanager.Task.Garden.GardenObject;
 import com.homemanager.Task.Garden.GardenSettingsTask;
@@ -120,7 +120,6 @@ public class Garden implements GardenMessage {
 
                 // btnAdd has been clicked
                 tasks.putNewTask(new SprinklerTask(SprinklerTask.MANUAL_DEVICE_1, statusMessages));
-                dialog.dismiss();
             }
         });
 
@@ -130,7 +129,6 @@ public class Garden implements GardenMessage {
 
                 // btnAdd has been clicked
                 tasks.putNewTask(new SprinklerTask(SprinklerTask.MANUAL_DEVICE_2, statusMessages));
-                dialog.dismiss();
             }
         });
 
@@ -140,7 +138,6 @@ public class Garden implements GardenMessage {
 
                 // btnAdd has been clicked
                 tasks.putNewTask(new SprinklerTask(SprinklerTask.MANUAL_DEVICE_3, statusMessages));
-                dialog.dismiss();
             }
         });
 
@@ -151,7 +148,6 @@ public class Garden implements GardenMessage {
                 tasks.putNewTask(new SprinklerTask(SprinklerTask.AUTO_FORCE, statusMessages));
                 Toast toast = Toast.makeText(v.getContext(), R.string.HintAutoWaterScheduled, Toast.LENGTH_LONG);
                 toast.show();
-                dialog.dismiss();
             }
         });
 

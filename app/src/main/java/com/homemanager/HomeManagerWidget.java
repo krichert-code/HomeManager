@@ -2,35 +2,31 @@ package com.homemanager;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
 import com.example.homemanager.R;
-import com.homemanager.Task.Action.EventsTask;
-import com.homemanager.Task.Action.StatusMessage;
-import com.homemanager.Task.Action.TaskDescription;
+import com.homemanager.Task.Action.EventDescription;
+import com.homemanager.Task.Status.StatusMessage;
+import com.homemanager.Task.Status.StatusObject;
+import com.homemanager.Task.Status.StatusTask;
 import com.homemanager.Task.Task;
-import com.homemanager.Task.Temperature.TemperatureMessage;
-import com.homemanager.Task.Temperature.TemperatureObject;
-import com.homemanager.Task.Temperature.TemperatureTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
+class EventsProvider implements Runnable, StatusMessage {
     private Object lock = new Object();
     private Context context;
 
     private String insideTemp = "-";
     private String outsideTemp = "-";
-    private List<TaskDescription> events;
+    private List<EventDescription> events;
 
     public EventsProvider(Context context) {
         this.context = context;
@@ -44,7 +40,7 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
         return outsideTemp;
     }
 
-    public List<TaskDescription> getEvents() { return events; }
+    public List<EventDescription> getEvents() { return events; }
 
     @Override
     public void run() {
@@ -59,22 +55,15 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
         String localUrl = "http://" + prefs.getString("com.homemanager.localUrl", "") + "/restApi";
         /** widget is not supported out of the local network */
         String remoteUrl = context.getString(R.string.RemoteUrl);
-        TemperatureTask tempTask = new TemperatureTask(this);
-        EventsTask eventsTask = new EventsTask(this);
+        StatusTask statusTask = new StatusTask(this);
 
         while (true) {
             synchronized (lock) {
                 try {
-                    restApi.writeDataToServer(localUrl, tempTask.getRequestData());
+                    restApi.writeDataToServer(localUrl, statusTask.getRequestData());
                     if (restApi.getResponseCode() == 200){
-                        tempTask.parseContent(new JSONObject(restApi.getJsonResponse()));
-                        tempTask.inProgressStateNotification();
-                    }
-
-                    restApi.writeDataToServer(localUrl, eventsTask.getRequestData());
-                    if (restApi.getResponseCode() == 200){
-                        eventsTask.parseContent(new JSONObject(restApi.getJsonResponse()));
-                        eventsTask.inProgressStateNotification();
+                        statusTask.parseContent(new JSONObject(restApi.getJsonResponse()));
+                        statusTask.inProgressStateNotification();
                     }
 
                 } catch (JSONException e) {}
@@ -89,27 +78,19 @@ class EventsProvider implements Runnable, TemperatureMessage, StatusMessage {
     }
 
     @Override
-    public void displayTemperature(TemperatureObject temperature) {
-        if (temperature.isValidInside()){
-            insideTemp = temperature.getInsideTemperature();
+    public void displayStatusData(StatusObject statusData) {
+        if (statusData.getTempObject().isValidInside()){
+            insideTemp = statusData.getTempObject().getInsideTemperature();
         }
-        if (temperature.isValidOutside()){
-            outsideTemp = temperature.getOutsideTemperature();
+        if (statusData.getTempObject().isValidOutside()){
+            outsideTemp = statusData.getTempObject().getOutsideTemperature();
         }
+
+        events = statusData.getEventsObject().getEventsList();
     }
 
     @Override
-    public void displayData(List<TaskDescription> taskDesc) {
-        events = taskDesc;
-    }
-
-    @Override
-    public void doneActionNotification() {
-
-    }
-
-    @Override
-    public void displayErrorMessage() {
+    public void actionDoneNotification() {
 
     }
 
@@ -157,7 +138,7 @@ public class HomeManagerWidget extends AppWidgetProvider{
                 views.setTextViewText(R.id.appwidget_text, tempText);
 
                 try {
-                    for (TaskDescription event : eventsProvider.getEvents()) {
+                    for (EventDescription event : eventsProvider.getEvents()) {
                         resName = "eventText" + resId;
                         views.setTextViewText(context.getResources().getIdentifier(resName, "id", context.getPackageName()), event.getDescription());
 

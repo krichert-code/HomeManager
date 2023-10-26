@@ -1,5 +1,7 @@
 package com.homemanager.Task.Action;
 
+import com.homemanager.Task.Status.StatusMessage;
+
 import org.json.JSONObject;
 
 public class GateTask extends EventsTask {
@@ -55,7 +57,7 @@ public class GateTask extends EventsTask {
 
     @Override
     public void inDoneStateNotification(){
-        statusMessages.doneActionNotification();
+        statusMessages.actionDoneNotification();
     }
 
 }

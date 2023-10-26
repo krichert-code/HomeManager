@@ -39,13 +39,11 @@ import android.widget.Toast;
 import com.homemanager.Alarm.Alarm;
 import com.homemanager.CtrlDevice.CtrlDevice;
 import com.homemanager.Network.Network;
+import com.homemanager.Task.Action.EventDescription;
 import com.homemanager.Task.Action.VideoShareTask;
 import com.homemanager.Task.CtrlDevice.CtrlDeviceMessage;
 import com.homemanager.Task.CtrlDevice.CtrlDeviceObject;
 import com.homemanager.Task.CtrlDevice.CtrlDeviceTask;
-import com.homemanager.Task.Energy.EnergyMessage;
-import com.homemanager.Task.Energy.EnergyObject;
-import com.homemanager.Task.Energy.EnergyTask;
 import com.homemanager.Task.Garden.GardenTask;
 import com.homemanager.Heater.Heater;
 import com.homemanager.Info.Info;
@@ -55,8 +53,7 @@ import com.homemanager.Schedule.Schedule;
 import com.homemanager.Task.Action.EventsTask;
 import com.homemanager.Task.Action.GateTask;
 import com.homemanager.Task.Action.SoundVolumeTask;
-import com.homemanager.Task.Action.StatusMessage;
-import com.homemanager.Task.Action.TaskDescription;
+import com.homemanager.Task.Status.StatusMessage;
 import com.homemanager.Garden.Garden;
 import com.homemanager.Task.Garden.GardenMessage;
 import com.homemanager.Task.Garden.GardenObject;
@@ -71,10 +68,10 @@ import com.homemanager.Task.Media.MediaObject;
 import com.homemanager.Task.Media.MediaTask;
 import com.homemanager.Task.Schedule.ScheduleMessage;
 import com.homemanager.Task.Schedule.ScheduleObject;
+import com.homemanager.Task.Status.StatusObject;
+import com.homemanager.Task.Status.StatusTask;
 import com.homemanager.Task.Task;
-import com.homemanager.Task.Temperature.TemperatureMessage;
-import com.homemanager.Task.Temperature.TemperatureObject;
-import com.homemanager.Task.Temperature.TemperatureTask;
+
 
 import java.util.List;
 import java.util.Timer;
@@ -84,9 +81,9 @@ import java.util.TimerTask;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class HomeManager extends AppCompatActivity implements StatusMessage, TemperatureMessage,
+public class HomeManager extends AppCompatActivity implements StatusMessage,
         InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage,
-        ConnectionMessage, EnergyMessage, CtrlDeviceMessage {
+        ConnectionMessage, CtrlDeviceMessage {
 
     private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
         @Override
@@ -141,9 +138,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
 
     private void checkGeneralStatus(){
         if(!connectionChecker.isConnectionErrorAppear() && !connectionChecker.isConnectionEstablishInProgress()) {
-            putNewTask(new TemperatureTask(this));
-            putNewTask(new EventsTask(this));
-            putNewTask(new EnergyTask(this));
+            putNewTask(new StatusTask(this));
             statusTimerReschedule(60000);
         }
         else {
@@ -364,7 +359,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     }
 
     @Override
-    public void doneActionNotification(){
+    public void actionDoneNotification(){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -503,7 +498,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
     }
 
     @Override
-    public void displayData(final List<TaskDescription> taskDesc) {
+    public void displayStatusData(final StatusObject statusData) {
         runOnUiThread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -513,11 +508,29 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                     return;
                 }
 
+                TextView energy = (TextView) findViewById(R.id.energy);
+                if (statusData.getEnergyObject().isValid()) {
+                    energy.setText(statusData.getEnergyObject().getTodayPower() + "KWh " +
+                            statusData.getEnergyObject().getCurrentPower() + "KWp");
+                }
+
+                TextView temp = (TextView) findViewById(R.id.temperature);
+                ImageView modeImage = (ImageView) findViewById(R.id.tempModeImage);
+
+                if (statusData.getTempObject().isValidInside()) {
+                    modeImage.setImageDrawable(getResources().getDrawable(statusData.getTempObject().getMode()));
+                    temp.setText(statusData.getTempObject().getInsideTemperature() + " \u2103 \\ ");
+                }
+
+                if (statusData.getTempObject().isValidOutside()) {
+                    temp.setText(temp.getText() + statusData.getTempObject().getOutsideTemperature() + " \u2103");
+                }
+
                 tl = (TableLayout) findViewById(R.id.News);
                 // Stuff that updates the UI
                 tl.removeAllViews();
 
-                for (TaskDescription description : taskDesc) {
+                for (EventDescription description : statusData.getEventsObject().getEventsList()) {
 
                     try {
                         TableRow tr1 = new TableRow(getApplicationContext());
@@ -570,62 +583,6 @@ public class HomeManager extends AppCompatActivity implements StatusMessage, Tem
                     catch (Exception e){}
                 }
 
-            }
-        });
-    }
-
-    @Override
-    public void displayErrorMessage(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView temp = (TextView) findViewById(R.id.temperature);
-                temp.setText(getString(R.string.connectionError));
-            }
-        });
-    }
-
-    @Override
-    public void displayTemperature(final TemperatureObject temperature){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView temp = (TextView) findViewById(R.id.temperature);
-                ImageView modeImage = (ImageView) findViewById(R.id.tempModeImage);
-
-                modeImage.setImageDrawable(getResources().getDrawable(temperature.getMode()));
-                if (temperature.isValidInside()) {
-                    temp.setText(temperature.getInsideTemperature() + " \u2103 \\ ");
-                }
-                else
-                {
-                    temp.setText("- \u2103 \\ ");
-                }
-
-                if (temperature.isValidOutside()) {
-                    temp.setText(temp.getText() + temperature.getOutsideTemperature() + " \u2103");
-                }
-                else
-                {
-                    temp.setText(temp.getText() + "- \u2103");
-                }
-            }
-        });
-    }
-
-    @Override
-    public void displayEnergy(final EnergyObject energy){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView temp = (TextView) findViewById(R.id.energy);
-                if (energy.isValid()) {
-
-                    //ImageView modeImage = (ImageView) findViewById(R.id.tempModeImage);
-                    //modeImage.setImageDrawable(getResources().getDrawable(temperature.getMode()));
-                    temp.setText(energy.getTodayPower() + "KWh " + energy.getCurrentPower() + "KWp" );
-
-                }
             }
         });
     }

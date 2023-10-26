@@ -1,28 +1,25 @@
 package com.homemanager.Task.Action;
 
-import com.example.homemanager.R;
-
-public class TaskDescription {
+public class EventDescription {
     private String description;
     private int icon;
     private String date;
 
-    public TaskDescription(String desc, int icon, String date)
-    {
+    public EventDescription(String desc, int icon, String date) {
         this.description = desc;
         this.icon = icon;
         this.date = date;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return this.description;
     }
 
-    public int getIcon() { return this.icon; }
+    public int getIcon() {
+        return this.icon;
+    }
 
-    public String getDate()
-    {
+    public String getDate() {
         return this.date;
     }
 }

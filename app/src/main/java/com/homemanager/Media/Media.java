@@ -1,10 +1,6 @@
 package com.homemanager.Media;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -33,16 +28,14 @@ import com.example.homemanager.R;
 import com.homemanager.Task.Action.CecTask;
 import com.homemanager.Task.Action.PlayTask;
 import com.homemanager.Task.Action.SoundVolumeTask;
-import com.homemanager.Task.Action.StatusMessage;
+import com.homemanager.Task.Status.StatusMessage;
 import com.homemanager.Task.Action.StopMediaTask;
 import com.homemanager.Task.Media.MediaObject;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;

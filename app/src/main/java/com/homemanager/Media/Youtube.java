@@ -15,8 +15,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.homemanager.R;
-import com.homemanager.Task.Action.PlayTask;
-import com.homemanager.Task.Action.StatusMessage;
+import com.homemanager.Task.Status.StatusMessage;
 import com.homemanager.Task.Action.VideoShareTask;
 import com.homemanager.Task.Youtube.YoutubeObject;
 import com.homemanager.TaskConnector;

@@ -13,7 +13,6 @@ import android.widget.EditText;
 
 import android.widget.Spinner;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.formatter.IValueFormatter;
@@ -26,7 +25,7 @@ import com.example.homemanager.R;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import com.homemanager.Task.Action.StatusMessage;
+import com.homemanager.Task.Status.StatusMessage;
 import com.homemanager.Task.Heater.HeaterObject;
 import com.homemanager.Task.Heater.TempData;
 import com.github.mikephil.charting.charts.LineChart;
@@ -40,8 +39,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.LargeValueFormatter;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.google.android.material.tabs.TabLayout;

@@ -1,7 +1,7 @@
 package com.homemanager.Task.Spotify;
 
 import com.homemanager.Task.Action.EventsTask;
-import com.homemanager.Task.Action.StatusMessage;
+import com.homemanager.Task.Status.StatusMessage;
 
 import org.json.JSONObject;
 

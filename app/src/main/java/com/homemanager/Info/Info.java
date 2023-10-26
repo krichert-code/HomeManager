@@ -1,7 +1,6 @@
 package com.homemanager.Info;
 
 import android.app.AlertDialog;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,31 +14,20 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.homemanager.Task.Action.StatusMessage;
-import com.homemanager.Task.Heater.TempData;
+import com.homemanager.Task.Status.StatusMessage;
 import com.homemanager.Task.Info.AlarmSettingsTask;
 import com.homemanager.TaskConnector;
 import com.example.homemanager.R;
 import com.homemanager.Task.Info.InfoMessage;
 import com.homemanager.Task.Info.InfoObject;
 import com.google.android.material.tabs.TabLayout;
-
-import android.app.Activity;
-import android.content.Context;
 
 
 import java.text.DateFormat;

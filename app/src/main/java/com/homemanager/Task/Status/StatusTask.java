@@ -1,17 +1,17 @@
-package com.homemanager.Task.Action;
+package com.homemanager.Task.Status;
 
-import com.homemanager.Task.Status.StatusMessage;
-import com.homemanager.Task.Status.StatusObject;
+import com.example.homemanager.R;
 import com.homemanager.Task.Task;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class EventsTask extends Task {
+public class StatusTask extends Task {
     private long duration = 0;
     private StatusMessage statusMessages;
-    StatusObject statusData = new StatusObject();
+    private StatusObject statusData = new StatusObject();
 
-    public EventsTask(StatusMessage statusMessages){
+    public StatusTask(StatusMessage statusMessages){
         this.statusMessages = statusMessages;
     }
 
@@ -26,7 +26,7 @@ public class EventsTask extends Task {
 
     @Override
     public int getTaskDescriptor(){
-        return 122;
+        return 791;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class EventsTask extends Task {
         JSONObject jsonParams = new JSONObject();
 
         try {
-            jsonParams.put("action", "events");
+            jsonParams.put("action", "status");
         }
         catch(Exception e){
         }
@@ -44,9 +44,7 @@ public class EventsTask extends Task {
 
     @Override
     final public void parseContent(JSONObject content){
-        EventsObject eventsObject = new EventsObject();
-        eventsObject.parseEvents(content);
-        statusData.setEventsObject(eventsObject);
+        statusData.parseStatus(content);
     }
 
     @Override
@@ -54,5 +52,3 @@ public class EventsTask extends Task {
         statusMessages.displayStatusData(statusData);
     }
 }
-
-

@@ -9,9 +9,7 @@ import android.widget.TextView;
 
 import com.example.homemanager.R;
 import com.homemanager.ConnectionMessage;
-import com.homemanager.Task.Action.StatusMessage;
-import com.homemanager.Task.Info.InfoMessage;
-import com.homemanager.Task.Info.InfoObject;
+import com.homemanager.Task.Status.StatusMessage;
 
 public class Network {
 

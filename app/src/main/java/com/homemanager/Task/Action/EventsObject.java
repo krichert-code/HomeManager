@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.json.*;
 
-public class TaskDescriptionParser {
-    public List<TaskDescription> getDescription(JSONObject obj)
-    {
-        List<TaskDescription> taskDesc = new ArrayList<TaskDescription>();
+public class EventsObject {
+    private List<EventDescription> events = new ArrayList<EventDescription>();
 
+    public void parseEvents(JSONObject obj)
+    {
+        events.clear();
         try {
             JSONArray arr = obj.getJSONArray("events");
             for (int i = 0; i < arr.length(); i++)
@@ -39,12 +40,16 @@ public class TaskDescriptionParser {
                     iconId = R.drawable.piec;
                 }
 
-                taskDesc.add(new TaskDescription(desc, iconId, date));
+                events.add(new EventDescription(desc, iconId, date));
             }
         }
         catch (Exception e){
-            taskDesc.clear();
+            events.clear();
         }
-        return taskDesc;
     }
+
+    public List<EventDescription> getEventsList(){
+        return events;
+    }
+
 }
