@@ -7,12 +7,10 @@ import java.sql.Timestamp;
 abstract public class Task implements TaskInterface {
 
     private int progressState;
-    private int errorDesc;
     private Timestamp initTimestamp;
-    private String response;
 
     private final int BEGIN_STATE       = 0;
-    private final int IN_PROGRESS_STATE = 1;
+    private final int READY_STATE       = 1;
     private final int DONE_STATE        = 2;
     private final int ERROR_STATE       = 3;
 
@@ -22,15 +20,13 @@ abstract public class Task implements TaskInterface {
         this.initTimestamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public void inProgressStateNotification() {}
+    public void inReadyStateNotification() {}
     public void inDoneStateNotification() {}
     public void inErrorStateNotification() {}
 
-
-    public void setInProgressState()
-    {
-        this.progressState = IN_PROGRESS_STATE;
-        inProgressStateNotification();
+    public void setInReadyState() {
+        this.progressState = READY_STATE;
+        inReadyStateNotification();
     }
 
     public void setDoneState() {
@@ -43,9 +39,8 @@ abstract public class Task implements TaskInterface {
         return this.initTimestamp;
     }
 
-    public void setErrorState(int error) {
+    public void setErrorState() {
         this.progressState = ERROR_STATE;
-        this.errorDesc = error;
         inErrorStateNotification();
     }
 
@@ -73,17 +68,11 @@ abstract public class Task implements TaskInterface {
         else return false;
     }
 
-    public boolean isInProgressState()
+    public boolean isReadyState()
     {
-        if (this.progressState == IN_PROGRESS_STATE){
+        if (this.progressState == READY_STATE){
             return true;
         }
         else return false;
     }
-
-    public int getErrorDescription()
-    {
-        return this.errorDesc;
-    }
-
 }

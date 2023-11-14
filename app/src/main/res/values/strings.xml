@@ -6,6 +6,7 @@
     <string name="brama">Brama</string>
 
     <string name="loadText">Pobieranie danych</string>
+    <string name="emptyTempText">--.- ℃</string>
 
     <string name="gateText">Garaż</string>
     <string name="gate1Text">Brama</string>

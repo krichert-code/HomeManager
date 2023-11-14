@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface StatusMessage {
     public void displayStatusData(final StatusObject statusData);
-    public void actionDoneNotification();
+    public void getStatusEventsDataOnly();
 
     public void displayHint(int hint);
     public void displayCustomHint(String hint);

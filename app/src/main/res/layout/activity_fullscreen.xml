@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fullscreen_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:layout_height="wrap_content"
+    android:background="#0099cc "
     tools:context="com.homemanager.HomeManager"
     android:soundEffectsEnabled="true">
+
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -15,85 +16,119 @@
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
-    <FrameLayout
+    <RelativeLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"><![CDATA[
+        android:background="@drawable/background"
+        android:orientation="vertical"><![CDATA[
         android:fitsSystemWindows="true"
         android:soundEffectsEnabled="true">
-
-
-
         ]]>
+
+        <RelativeLayout
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_gravity="top"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:alpha="0.9"
+            android:background="#9E9696"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+
+            <ImageView
+                android:id="@+id/tempIn"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:layout_gravity="left"
+                app:srcCompat="@drawable/homedecoration" />
+
+            <TextView
+                android:id="@+id/tempInText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tempIn"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="24sp"
+                android:textStyle="bold|italic"
+                tools:text="@string/emptyTempText" />
+
+            <ImageView
+                android:id="@+id/tempOut"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:layout_toRightOf="@id/tempInText"
+                app:srcCompat="@drawable/outdoor" />
+            <!--android:layout_below="@id/tempModeImage" -->
+
+            <!--
+                            android:layout_toRightOf="@id/tempOut"
+                            android:layout_below="@id/temperature"
+            -->
+
+            <TextView
+                android:id="@+id/tempOutText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_toRightOf="@id/tempOut"
+                android:text=""
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="24sp"
+                android:textStyle="bold|italic"
+                tools:text="@string/emptyTempText" />
+
+            <ImageView
+                android:id="@+id/tempModeImage"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:layout_alignParentBottom="true"
+                app:srcCompat="@drawable/day" />
+
+            <ImageView
+                android:id="@+id/energyModeImage"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="left"
+                android:layout_toRightOf="@id/tempModeImage"
+                app:srcCompat="@drawable/battery" />
+
+            <TextView
+                android:id="@+id/energy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="start"
+                android:layout_toRightOf="@id/energyModeImage"
+                android:singleLine="false"
+                android:text=""
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="345dp"
+            android:layout_height="300dp"
+            android:layout_below="@+id/status"
             android:layout_gravity="top"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:alpha="0.9"
             android:background="#9E9696"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:soundEffectsEnabled="true">
 
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="18dp">
-
-                <ImageView
-                    android:id="@+id/tempModeImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="left"
-                    app:srcCompat="@drawable/day" />
-
-                <TextView
-                    android:id="@+id/temperature"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_span="2"
-                    android:maxLines="2"
-                    android:singleLine="false"
-                    android:text="@string/loadText"
-                    android:textAllCaps="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textSize="18sp" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="18dp">
-
-                <ImageView
-                    android:id="@+id/energyModeImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="left"
-                    app:srcCompat="@drawable/battery" />
-
-                <TextView
-                    android:id="@+id/energy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_span="2"
-                    android:maxLines="2"
-                    android:singleLine="false"
-                    android:text=""
-                    android:textAllCaps="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textSize="14sp" />
-            </TableRow>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:layout_span="2"
-                android:background="@android:color/white" />
 
             <TableRow
                 android:layout_width="297dp"
@@ -324,6 +359,7 @@
             android:id="@+id/News"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:layout_margin="10dp"
             android:alpha="0.9"
@@ -331,6 +367,6 @@
             android:gravity="bottom|center_horizontal"
             android:stretchColumns="*" />
 
-    </FrameLayout>
+    </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

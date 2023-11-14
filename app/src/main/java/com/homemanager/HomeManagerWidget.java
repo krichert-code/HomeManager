@@ -63,7 +63,7 @@ class EventsProvider implements Runnable, StatusMessage {
                     restApi.writeDataToServer(localUrl, statusTask.getRequestData());
                     if (restApi.getResponseCode() == 200){
                         statusTask.parseContent(new JSONObject(restApi.getJsonResponse()));
-                        statusTask.inProgressStateNotification();
+                        statusTask.inDoneStateNotification();
                     }
 
                 } catch (JSONException e) {}
@@ -90,7 +90,7 @@ class EventsProvider implements Runnable, StatusMessage {
     }
 
     @Override
-    public void actionDoneNotification() {
+    public void getStatusEventsDataOnly() {
 
     }
 
@@ -129,13 +129,14 @@ public class HomeManagerWidget extends AppWidgetProvider{
                 String resName;
                 int resId = 1;
 
-                CharSequence tempText = eventsProvider.getTemperatureInside() + "ºC";
+                CharSequence tempTextInside = eventsProvider.getTemperatureInside() + "ºC";
 
-                tempText = tempText + " \\ " + eventsProvider.getTemperatureOutside() + "ºC";
+                CharSequence tempTextOutside = eventsProvider.getTemperatureOutside() + "ºC";
                 
                 // Construct the RemoteViews object
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.home_manager_widget);
-                views.setTextViewText(R.id.appwidget_text, tempText);
+                views.setTextViewText(R.id.appwidget_text, tempTextInside);
+                views.setTextViewText(R.id.appwidget_text2, tempTextOutside);
 
                 try {
                     for (EventDescription event : eventsProvider.getEvents()) {

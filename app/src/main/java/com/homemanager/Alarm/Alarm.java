@@ -45,7 +45,6 @@ public class Alarm extends Activity implements AlarmMessage {
     private final Alarm alarmInfo;
     private Timer timer;
     private boolean querySent;
-    private  boolean ignoreResponse;
     private VideoView videoView;
     private String RtspSrvUrl;
 
@@ -54,7 +53,6 @@ public class Alarm extends Activity implements AlarmMessage {
         timer = new Timer();
         alarmInfo = this;
         querySent = false;
-        ignoreResponse = false;
         RtspSrvUrl = rtsp_url;
     }
 
@@ -223,14 +221,18 @@ public class Alarm extends Activity implements AlarmMessage {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (alarmObject.isDataValid() && ignoreResponse == false) {
+                if (alarmObject.isDataValid()) {
                     createInfoPanel(alarmObject);
                     querySent = false;
                 }else {
                     querySent = false;
-                    ignoreResponse = false;
                 }
             }
         });
+    }
+
+    @Override
+    public void errorAlarmOccur() {
+        querySent = false;
     }
 }

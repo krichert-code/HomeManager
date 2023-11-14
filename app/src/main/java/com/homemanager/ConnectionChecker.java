@@ -19,6 +19,7 @@ public class ConnectionChecker {
     private Timer connectionCheckTimer;
     private boolean waitForNewConnectionSettings;
     private Object lock = new Object();
+    private ConnectionMessage connectionMessage;
 
     public ConnectionChecker(String localUrl, String remoteUrl, NetworkService networkService, final ConnectionMessage connectionMessage) {
         this.localRtsp = "rtsp://" + localUrl + ":8554/mystream";
@@ -28,29 +29,11 @@ public class ConnectionChecker {
         this.remoteUrl = "http://" + remoteUrl + "/restApi";
 
         this.networkService = networkService;
+        this.connectionMessage = connectionMessage;
         connectionType = CONNECTION_TYPE_INIT;
         restApi = new RestApi(networkService.getContext());
 
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                synchronized (lock) {
-                    if ((isConnectionErrorAppear() || isConnectionEstablishInProgress())
-                            && false == waitForNewConnectionSettings) {
-                        connectionMessage.displayConnectionError();
-                        waitForNewConnectionSettings = true;
-                    }
-                }
-            }
-        },  1000, 30000);
-
-        connectionCheckTimer = new Timer();
-        connectionCheckTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                connectionCheckerTimer();
-            }
-        }, 100);
+        connectionTimerReschedule(1);
     }
 
     public String getCurrentRtspUrl(){
@@ -65,15 +48,8 @@ public class ConnectionChecker {
         this.localUrl = "http://" + localUrl + "/restApi";
     }
 
-    private void connectionCheckerTimer() {
-        int delay = 30000;
-
-        connectionCheckTimer.cancel();
-        checkConnection();
-        if(isConnectionErrorAppear() || isConnectionEstablishInProgress() ) {
-            delay = 1000;
-        }
-
+    private void connectionTimerReschedule(int delay){
+        if (connectionCheckTimer != null) connectionCheckTimer.cancel();
         connectionCheckTimer = new Timer();
         connectionCheckTimer.schedule(new TimerTask() {
             @Override
@@ -81,6 +57,16 @@ public class ConnectionChecker {
                 connectionCheckerTimer();
             }
         }, delay);
+    }
+    private void connectionCheckerTimer() {
+        int delay = 30000;
+        synchronized (lock) {
+            checkConnection();
+            if (isConnectionErrorAppear()) {
+                delay = 100;
+            }
+            connectionTimerReschedule(delay);
+        }
     }
 
     public void restartConnectionTimer()
@@ -92,36 +78,42 @@ public class ConnectionChecker {
 
     private void checkConnection()
     {
-        synchronized (lock) {
-            if (networkService.isError())
-            {
-                connectionErrorAppear();
-            }
-            JSONObject jsonParams = new JSONObject();
+        JSONObject jsonParams = new JSONObject();
 
-            try {
-                jsonParams.put("action", "version");
+        if (networkService.isError())
+        {
+            connectionType = CONNECTION_TYPE_NONE;
+        }
 
-                if ((connectionType == CONNECTION_TYPE_NONE) || (connectionType == CONNECTION_TYPE_INIT)) {
-                    restApi.writeDataToServer(localUrl, jsonParams);
+        try {
+            jsonParams.put("action", "version");
+
+            if ( ((connectionType == CONNECTION_TYPE_NONE) || (connectionType == CONNECTION_TYPE_INIT)) &&
+                    (waitForNewConnectionSettings == false)) {
+                restApi.writeDataToServer(localUrl, jsonParams);
+                if (restApi.getResponseCode() == 200) {
+                    connectionType = CONNECTION_TYPE_LOCAL;
+                    networkService.clearError();
+                    networkService.setUrl(localUrl);
+                }
+                else {
+                    restApi.writeDataToServer(remoteUrl, jsonParams);
                     if (restApi.getResponseCode() == 200) {
-                        connectionType = CONNECTION_TYPE_LOCAL;
+                        connectionType = CONNECTION_TYPE_REMOTE;
                         networkService.clearError();
-                        networkService.setUrl(localUrl);
-                    }
-                    else {
-                        restApi.writeDataToServer(remoteUrl, jsonParams);
-                        if (restApi.getResponseCode() == 200) {
-                            connectionType = CONNECTION_TYPE_REMOTE;
-                            networkService.clearError();
-                            networkService.setUrl(remoteUrl);
-                        }
+                        networkService.setUrl(remoteUrl);
                     }
                 }
+                if ((connectionType != CONNECTION_TYPE_LOCAL) &&
+                        (connectionType != CONNECTION_TYPE_REMOTE) &&
+                        (waitForNewConnectionSettings == false)) {
+                    connectionMessage.displayConnectionError();
+                    waitForNewConnectionSettings = true;
+                }
             }
-            catch (Exception e) {
-                connectionType = CONNECTION_TYPE_NONE;
-            }
+        }
+        catch (Exception e) {
+            connectionType = CONNECTION_TYPE_NONE;
         }
     }
 
@@ -141,25 +133,38 @@ public class ConnectionChecker {
         }
     }
 
-    private void connectionErrorAppear()
+    protected void connectionErrorAppear()
     {
-        connectionType = CONNECTION_TYPE_NONE;
+        synchronized (lock) {
+            connectionType = CONNECTION_TYPE_NONE;
+            connectionTimerReschedule(1);        }
     }
 
-    public boolean isConnectionErrorAppear()
-    {
-        boolean result = false;
-        synchronized (lock) {
-            if (connectionType == CONNECTION_TYPE_NONE) result = true;
-            return result;
-        }
-    }
+//    public boolean isConnectionErrorAppear()
+//    {
+//        boolean result = false;
+//        synchronized (lock) {
+//            if (connectionType == CONNECTION_TYPE_NONE) result = true;
+//            return result;
+//        }
+//    }
+//
+//    public boolean isConnectionEstablishInProgress()
+//    {
+//        boolean result = false;
+//        synchronized (lock) {
+//            if (connectionType == CONNECTION_TYPE_INIT) result = true;
+//            return result;
+//        }
+//    }
 
-    public boolean isConnectionEstablishInProgress()
-    {
+    public boolean isConnectionErrorAppear(){
         boolean result = false;
         synchronized (lock) {
-            if (connectionType == CONNECTION_TYPE_INIT) result = true;
+            if ((connectionType == CONNECTION_TYPE_NONE) ||
+               (connectionType == CONNECTION_TYPE_INIT)) {
+                result = true;
+            }
             return result;
         }
     }

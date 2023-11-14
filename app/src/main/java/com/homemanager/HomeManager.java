@@ -16,8 +16,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -85,13 +83,26 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
         InfoMessage, TaskConnector, ScheduleMessage, HeaterMessage, GardenMessage, MediaMessage,
         ConnectionMessage, CtrlDeviceMessage {
 
-    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
+    private final BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo ni = manager.getActiveNetworkInfo();
-
-            statusTimerReschedule(1000);
+            connectionChecker.connectionErrorAppear();
+            statusTimerReschedule(1);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (loadingDataBox == null && !networkParametersDialogDisplayed) {
+                            TextView temp = (TextView) findViewById(R.id.tempInText);
+                            temp.setText(getString(R.string.emptyTempText));
+                            temp = (TextView) findViewById(R.id.tempOutText);
+                            temp.setText(getString(R.string.emptyTempText));
+                            loadingDataBox = new AlertDialog.Builder(appContext)
+                                .setMessage(R.string.loadText)
+                                .setCancelable(false)
+                                .show();
+                    }
+                }
+            });
         }
     };
 
@@ -99,12 +110,16 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
 
     private TaskInvoker taskDispatcher;
 
+    private AlertDialog loadingDataBox = null;
+    private boolean networkParametersDialogDisplayed = false;
+
     private TableLayout tl;
     private ConnectionChecker connectionChecker;
 
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
 
+    private Timer statusTimer = new Timer();
 
     private View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
@@ -127,8 +142,9 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
     private View mControlsView;
 
     private void statusTimerReschedule(int delay){
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        if (statusTimer != null) statusTimer.cancel();
+        statusTimer = new Timer();
+        statusTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 checkGeneralStatus();
@@ -137,7 +153,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
     }
 
     private void checkGeneralStatus(){
-        if(!connectionChecker.isConnectionErrorAppear() && !connectionChecker.isConnectionEstablishInProgress()) {
+        if(connectionChecker.isConnectionErrorAppear() == false) {
             putNewTask(new StatusTask(this));
             statusTimerReschedule(60000);
         }
@@ -153,7 +169,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
     }
 
     private void onSharedIntent() {
-        String parameter = "";
+        String parameter;
         Intent intent = getIntent();
 
         Bundle extras = intent.getExtras();
@@ -201,7 +217,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
 
         new Thread(taskDispatcher = new TaskInvoker(getApplicationContext())).start();
 
-        //reasd localhost from the resource
+        //read localhost from the resource
         SharedPreferences prefs = getSharedPreferences(
                 "com.homemanager", getApplicationContext().MODE_PRIVATE);
 
@@ -310,8 +326,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
             @Override
             public void onClick(View view) {
                 view.playSoundEffect(SoundEffectConstants.CLICK);
-                if (false == connectionChecker.isConnectionErrorAppear() &&
-                        false == connectionChecker.isConnectionEstablishInProgress()) {
+                if (false == connectionChecker.isConnectionErrorAppear()) {
                     Alarm alarm = new Alarm(appContext, connectionChecker.getCurrentRtspUrl());
                     AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
                     alarmDialog.setView(alarm.createScreen(mContentView, alarmDialog));
@@ -359,7 +374,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
     }
 
     @Override
-    public void actionDoneNotification(){
+    public void getStatusEventsDataOnly(){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -375,8 +390,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
             @Override
             public void run() {
                 Schedule scheduleData = new Schedule();
-                if (false == connectionChecker.isConnectionErrorAppear() &&
-                        false == connectionChecker.isConnectionEstablishInProgress()) {
+                if (false == connectionChecker.isConnectionErrorAppear()) {
                     AlertDialog scheduleDialog = new AlertDialog.Builder(appContext).create();
                     scheduleDialog.setView(scheduleData.createScreen(mContentView, scheduleDialog, elements));
                     scheduleDialog.show();
@@ -393,8 +407,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
             @Override
             public void run() {
                 Heater heaterData = new Heater(appContext,appContext);
-                if (false == connectionChecker.isConnectionErrorAppear() &&
-                        false == connectionChecker.isConnectionEstablishInProgress()) {
+                if (false == connectionChecker.isConnectionErrorAppear()) {
                     AlertDialog heaterDialog = new AlertDialog.Builder(appContext).create();
                     heaterDialog.setView(heaterData.createScreen(mContentView, heaterDialog, heaterObject));
                     heaterDialog.show();
@@ -410,8 +423,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (false == connectionChecker.isConnectionErrorAppear() &&
-                        false == connectionChecker.isConnectionEstablishInProgress()) {
+                if (false == connectionChecker.isConnectionErrorAppear()) {
                     Media mediaData = new Media(appContext, appContext);
                     AlertDialog mediaDialog = new AlertDialog.Builder(appContext).create();
                     mediaDialog.setView(mediaData.createScreen(mContentView, mediaDialog, mediaObject));
@@ -429,8 +441,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
             @Override
             public void run() {
                 Garden garden = new Garden(appContext, appContext);
-                if (false == connectionChecker.isConnectionErrorAppear() &&
-                        false == connectionChecker.isConnectionEstablishInProgress()) {
+                if (false == connectionChecker.isConnectionErrorAppear()) {
                     AlertDialog gardenDialog = new AlertDialog.Builder(appContext).create();
                     gardenDialog.setView(garden.createScreen(mContentView, gardenDialog, gardenObject));
                     gardenDialog.show();
@@ -446,8 +457,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
                           @Override
                           public void run() {
                               Info infoData = new Info(appContext, appContext);
-                              if (false == connectionChecker.isConnectionErrorAppear() &&
-                                  false == connectionChecker.isConnectionEstablishInProgress()) {
+                              if (false == connectionChecker.isConnectionErrorAppear()) {
                                   AlertDialog infoDialog = new AlertDialog.Builder(appContext).create();
                                   infoDialog.setView(infoData.createScreen(mContentView, infoDialog, info));
                                   infoDialog.show();
@@ -463,8 +473,7 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
             @Override
             public void run() {
                 CtrlDevice ctrDevices = new CtrlDevice(appContext, appContext);
-                if (false == connectionChecker.isConnectionErrorAppear() &&
-                        false == connectionChecker.isConnectionEstablishInProgress()) {
+                if (false == connectionChecker.isConnectionErrorAppear()) {
                     AlertDialog ctrlDeviceDialog = new AlertDialog.Builder(appContext).create();
                     ctrlDeviceDialog.setView(ctrDevices.createScreen(mContentView, ctrlDeviceDialog, ctrlDeviceObject));
                     ctrlDeviceDialog.show();
@@ -503,9 +512,13 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
-                if (connectionChecker.isConnectionErrorAppear() ||
-                        connectionChecker.isConnectionEstablishInProgress()){
+                if (connectionChecker.isConnectionErrorAppear()) {
                     return;
+                }
+
+                if (loadingDataBox != null) {
+                    loadingDataBox.dismiss();
+                    loadingDataBox = null;
                 }
 
                 TextView energy = (TextView) findViewById(R.id.energy);
@@ -514,16 +527,17 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
                             statusData.getEnergyObject().getCurrentPower() + "KWp");
                 }
 
-                TextView temp = (TextView) findViewById(R.id.temperature);
+                TextView temp = (TextView) findViewById(R.id.tempInText);
                 ImageView modeImage = (ImageView) findViewById(R.id.tempModeImage);
 
                 if (statusData.getTempObject().isValidInside()) {
                     modeImage.setImageDrawable(getResources().getDrawable(statusData.getTempObject().getMode()));
-                    temp.setText(statusData.getTempObject().getInsideTemperature() + " \u2103 \\ ");
+                    temp.setText(statusData.getTempObject().getInsideTemperature() + " \u2103");
                 }
 
                 if (statusData.getTempObject().isValidOutside()) {
-                    temp.setText(temp.getText() + statusData.getTempObject().getOutsideTemperature() + " \u2103");
+                    temp = (TextView) findViewById(R.id.tempOutText);
+                    temp.setText(statusData.getTempObject().getOutsideTemperature() + " \u2103");
                 }
 
                 tl = (TableLayout) findViewById(R.id.News);
@@ -666,6 +680,11 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (loadingDataBox != null) {
+                    loadingDataBox.dismiss();
+                    loadingDataBox = null;
+                }
+                networkParametersDialogDisplayed = true;
                 Network netIssue = new Network(appContext);
                 AlertDialog alarmDialog = new AlertDialog.Builder(appContext).create();
                 alarmDialog.setView(netIssue.createScreen(mContentView, alarmDialog, appContext));
@@ -682,6 +701,16 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
         connectionChecker.updateCheckerParameters(prefs.getString("com.homemanager.localUrl", ""));
         connectionChecker.restartConnectionTimer();
         statusTimerReschedule(1000);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                networkParametersDialogDisplayed = false;
+                if (loadingDataBox == null)
+                    loadingDataBox = new AlertDialog.Builder(appContext)
+                    .setMessage(R.string.loadText)
+                    .setCancelable(false)
+                    .show();
+            }
+        });
     }
-
 }

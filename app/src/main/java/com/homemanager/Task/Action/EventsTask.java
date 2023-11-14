@@ -50,7 +50,7 @@ public class EventsTask extends Task {
     }
 
     @Override
-    public void inProgressStateNotification(){
+    public void inDoneStateNotification(){
         statusMessages.displayStatusData(statusData);
     }
 }

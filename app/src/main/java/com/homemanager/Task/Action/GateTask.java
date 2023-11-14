@@ -57,7 +57,7 @@ public class GateTask extends EventsTask {
 
     @Override
     public void inDoneStateNotification(){
-        statusMessages.actionDoneNotification();
+        statusMessages.getStatusEventsDataOnly();
     }
 
 }

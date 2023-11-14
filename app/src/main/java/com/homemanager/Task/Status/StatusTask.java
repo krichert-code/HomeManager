@@ -16,7 +16,7 @@ public class StatusTask extends Task {
     }
 
     @Override
-    public long getDuration() {
+    public long getDuration(){
         return duration;
     }
 
@@ -48,7 +48,7 @@ public class StatusTask extends Task {
     }
 
     @Override
-    public void inProgressStateNotification(){
+    public void inDoneStateNotification(){
         statusMessages.displayStatusData(statusData);
     }
 }

@@ -50,15 +50,14 @@ public class TaskInvoker implements Runnable, NetworkService {
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         synchronized (lock) {
             for (Task t: taskList) {
-                if((currentTimestamp.getTime() - t.getInitTimestamp().getTime() >= t.getDuration()) &&
-                        (t.isInProgressState())){
+                if (t.isReadyState()){
                     t.setDoneState();
                     isAnyTaskDone = true;
                 }
             }
-            //for (Task t: taskList) {
-                //if (t.isDoneState()) taskList.remove(t);
-            //}
+
+            for (Task t: taskList)
+                if (t.isDoneState() || t.isErrorState()) taskList.remove(t);
         }
         return isAnyTaskDone;
     }
@@ -71,7 +70,7 @@ public class TaskInvoker implements Runnable, NetworkService {
 
         synchronized (lock) {
             for (Task t: taskList) {
-                if (t.isInProgressState()) {
+                if (t.isBeginState()) {
                     taskTimeout = t.getDuration() - (currentTimestamp.getTime() - t.getInitTimestamp().getTime());
                     // we are out of time - set to 1 because 0 means infinity timeout
                     if (taskTimeout <= 0) taskTimeout = 1;
@@ -92,7 +91,7 @@ public class TaskInvoker implements Runnable, NetworkService {
         synchronized (lock) {
             for (Task t: taskList) {
                 if ((t.getTaskDescriptor() == task.getTaskDescriptor() ) &&
-                        (t.isBeginState() || t.isInProgressState())){
+                        (t.isBeginState() || t.isReadyState())){
                     //task is already in the queue
                     return -1;
                 }
@@ -144,13 +143,14 @@ public class TaskInvoker implements Runnable, NetworkService {
                         if (restApi.getResponseCode() == 200) {
                             try {
                                 task.parseContent(new JSONObject(restApi.getJsonResponse()));
-                                task.setInProgressState();
+                                task.setInReadyState();
                             } catch (Exception e) {
+                                task.setErrorState();
                             }
 
                         } else {
                             isError = true;
-                            task.setErrorState(R.string.connectionError);
+                            task.setErrorState();
                             break;
                         }
                     }
@@ -161,7 +161,7 @@ public class TaskInvoker implements Runnable, NetworkService {
                 //get minimal timeout to wait
                 timeout = getMinTimeout();
 
-                //update state to DONE for in progress task
+                //update state to DONE for in ready state task
                 finishTask();
 
                 try {

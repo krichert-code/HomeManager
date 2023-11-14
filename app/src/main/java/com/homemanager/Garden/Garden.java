@@ -156,7 +156,6 @@ public class Garden implements GardenMessage {
             public void onClick(View v) {
                 // btnAdd has been clicked
                 tasks.putNewTask(new SprinklerTask(SprinklerTask.MANUAL_STOP, statusMessages));
-                dialog.dismiss();
             }
         });
 
