@@ -16,13 +16,13 @@ import java.util.List;
 public class TaskInvoker implements Runnable, NetworkService {
 
     //task list
-    private List<Task> taskList = new ArrayList<Task>();
+    private final List<Task> taskList = new ArrayList<Task>();
 
-    private Object lock = new Object();
+    private final Object lock = new Object();
 
     private String url;
 
-    private Context context;
+    private final Context context;
 
     private boolean isError = true;
 
@@ -134,12 +134,12 @@ public class TaskInvoker implements Runnable, NetworkService {
         while(true) {
             RestApi restApi = new RestApi(context);
 
-            if (isError == false) {
-                //check if new task in the queue
-                while ((task = getFirstTaskFromQueue()) != null) {
-                    restApi.writeDataToServer(url, task.getRequestData());
+            synchronized (lock) {
+                if (isError == false) {
+                    //check if new task in the queue
+                    while ((task = getFirstTaskFromQueue()) != null) {
+                        restApi.writeDataToServer(url, task.getRequestData());
 
-                    synchronized (lock) {
                         if (restApi.getResponseCode() == 200) {
                             try {
                                 task.parseContent(new JSONObject(restApi.getJsonResponse()));
@@ -153,11 +153,10 @@ public class TaskInvoker implements Runnable, NetworkService {
                             task.setErrorState();
                             break;
                         }
+
                     }
                 }
-            }
 
-            synchronized (lock) {
                 //get minimal timeout to wait
                 timeout = getMinTimeout();
 
