@@ -632,12 +632,14 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
     @Override
     public void onResume() {
         super.onResume();
+        taskDispatcher.Resume();
         registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        taskDispatcher.Pause();
         unregisterReceiver(networkStateReceiver);
     }
 

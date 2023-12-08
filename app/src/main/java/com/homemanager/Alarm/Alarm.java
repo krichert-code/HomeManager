@@ -206,8 +206,8 @@ public class Alarm extends Activity implements AlarmMessage {
             @Override
             public void run() {
                 if (querySent == false) {
-                    tasks.putNewTask(new AlarmTask(alarmInfo));
-                    querySent = true;
+                    if (tasks.putNewTask(new AlarmTask(alarmInfo)) == 0)
+                        querySent = true;
                 }
             }
         }, 0, 5000);

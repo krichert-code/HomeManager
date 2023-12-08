@@ -22,9 +22,25 @@ public class TaskInvoker implements Runnable, NetworkService {
 
     private String url;
 
+    private boolean isPaused = false;
+
     private final Context context;
 
     private boolean isError = true;
+
+    public void Pause()
+    {
+        synchronized (lock) {
+            isPaused = true;
+        }
+    }
+
+    public void Resume()
+    {
+        synchronized (lock) {
+            isPaused = false;
+        }
+    }
 
     public TaskInvoker(Context context){
         this.context = context;
@@ -88,21 +104,27 @@ public class TaskInvoker implements Runnable, NetworkService {
 
     public int putNewTask(Task task)
     {
+        int result = 0;
         synchronized (lock) {
-            for (Task t: taskList) {
-                if ((t.getTaskDescriptor() == task.getTaskDescriptor() ) &&
-                        (t.isBeginState() || t.isReadyState())){
-                    //task is already in the queue
-                    return -1;
+            if (isPaused == false) {
+                for (Task t : taskList) {
+                    if ((t.getTaskDescriptor() == task.getTaskDescriptor()) &&
+                            (t.isBeginState() || t.isReadyState())) {
+                        //task is already in the queue
+                        return -1;
+                    }
+                }
+                taskList.add(task); //add only if no one the list
+                try {
+                    lock.notify();
+                } catch (Exception e) {
                 }
             }
-            taskList.add(task); //add only if no one the list
-            try {
-                lock.notify();
+            else {
+                result = -1;
             }
-            catch (Exception e) {}
         }
-        return 0;
+        return result;
     }
 
     @Override
