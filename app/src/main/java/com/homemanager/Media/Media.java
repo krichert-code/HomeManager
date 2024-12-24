@@ -16,6 +16,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.homemanager.Task.Action.VideoShareTask;
 import com.homemanager.Task.Spotify.SpotifyGetObject;
 import com.homemanager.Task.Spotify.SpotifyGetObjectTask;
 import com.homemanager.Task.Spotify.SpotifyInterface;
@@ -50,6 +51,7 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
     private StatusMessage statusMessages;
     private String currentSporifyDirectory;
     private List<String> sporifyDirectoriesList;
+    private ArrayList<YoutubeObject> ytObjects = null;
     private Timer timer;
 
     public Media(TaskConnector tasksConnector, StatusMessage statusMessages){
@@ -89,17 +91,16 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
             }
         });
 
-        Button btnAdd = (Button) promptView.findViewById(R.id.button);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        ImageButton imgBtnAdd = (ImageButton) promptView.findViewById(R.id.button);
+        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 // btnAdd1 has been clicked
                 dialog.dismiss();
             }
         });
 
-        btnAdd = (Button) promptView.findViewById(R.id.stopMediaButton);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        imgBtnAdd = (ImageButton) promptView.findViewById(R.id.stopMediaButton);
+        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ((TextView) promptView.findViewById(R.id.mediaText)).setText("");
                 taskConnector.putNewTask(new StopMediaTask(statusMessages));
@@ -107,10 +108,23 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
         });
 
 
-        ImageButton imgBtnAdd = (ImageButton) promptView.findViewById(R.id.powerMediaButton);
+        imgBtnAdd= (ImageButton) promptView.findViewById(R.id.playAll);
         imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                taskConnector.putNewTask(new CecTask());
+                ArrayList<String> ytLinks = new ArrayList<String>();
+                if (ytObjects != null && !ytObjects.isEmpty()) {
+                    for (final YoutubeObject obj : ytObjects)
+                        ytLinks.add(obj.getVideoLink());
+                    taskConnector.putNewTask(new VideoShareTask(statusMessages, ytLinks));
+                    statusMessages.displayHint(R.string.HintWaitForData);
+                }
+            }
+        });
+
+        imgBtnAdd= (ImageButton) promptView.findViewById(R.id.next);
+        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                taskConnector.putNewTask(new StopMediaTask(statusMessages, true));
             }
         });
 
@@ -357,6 +371,7 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
     @Override
     public void youtubeObjectRecived(final ArrayList<YoutubeObject> youtubeSearchResult) {
         //prepare list of items on the screen
+        ytObjects = youtubeSearchResult;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

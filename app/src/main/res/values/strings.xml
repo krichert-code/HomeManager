@@ -102,7 +102,7 @@
     <string name="connectionError">Brak połączenia</string>
 
     <!-- URL -->
-    <string name="RemoteUrl">hccapi.000webhostapp.com</string>
+    <string name="RemoteUrl">kwiatowa13.ovh</string>
     <string name="VersionUrl">/version</string>
     <string name="VolumeUpUrl">/VolumeUp</string>
     <string name="VolumeDownUrl">/VolumeDown</string>

@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme"
         android:launchMode="singleInstance"
         android:usesCleartextTraffic="true">
-        <receiver android:name="com.homemanager.HomeManagerWidget">
+        <receiver android:name="com.homemanager.HomeManagerWidget"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -28,6 +29,7 @@
         <activity
             android:name="com.homemanager.HomeManager"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme">
             <intent-filter>

@@ -188,10 +188,10 @@
                 android:text="Radio" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/TV"
+                android:id="@+id/Local"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TV" />
+                android:text="Local" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/Youtube"
@@ -206,26 +206,66 @@
             android:layout_height="51dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/stopMediaButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/StopButton" />
-
             <ImageButton
-                android:id="@+id/powerMediaButton"
+                android:id="@+id/stopMediaButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@android:drawable/ic_notification_overlay" />
+                app:srcCompat="@android:drawable/ic_lock_power_off" />
 
-            <Button
+<!--            <Button
+                android:id="@+id/stopMediaButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="O" />-->
+
+            <ImageButton
+                android:id="@+id/playAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/ic_media_play" />
+
+<!--            <Button-->
+<!--                android:id="@+id/playAll"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_span="2"-->
+<!--                android:text=">" />-->
+
+            <ImageButton
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/ic_media_next" />
+
+<!--            <Button-->
+<!--                android:id="@+id/next"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_span="2"-->
+<!--                android:text=">>" />-->
+
+
+            <ImageButton
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_span="2"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+<!--            <Button
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                android:text="Zamknij" />
-
+                android:layout_weight="1"
+                android:text="X" />
+-->
 
         </LinearLayout>
 
