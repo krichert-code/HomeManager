@@ -10,6 +10,8 @@ public class MediaObject {
     private List<Integer> tvChannelIds = new ArrayList<Integer>();
     private List<String> tvChannelnames = new ArrayList<String>();
 
+    private List<String> localFolderNames = new ArrayList<String>();
+
     private int volume;
 
     public List<Integer> getRadioChannelIds() {
@@ -26,6 +28,14 @@ public class MediaObject {
 
     public void addRadioChannelname(String radioChannelname) {
         this.radioChannelnames.add(radioChannelname);
+    }
+
+    public List<String> getLocalFolderNames() {
+        return localFolderNames;
+    }
+
+    public void addLocalFolderName(String localFolderName) {
+        this.localFolderNames.add(localFolderName);
     }
 
     public List<Integer> getTvChannelIds() {

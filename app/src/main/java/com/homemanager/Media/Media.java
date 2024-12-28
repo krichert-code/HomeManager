@@ -17,33 +17,25 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.homemanager.Task.Action.VideoShareTask;
-import com.homemanager.Task.Spotify.SpotifyGetObject;
-import com.homemanager.Task.Spotify.SpotifyGetObjectTask;
-import com.homemanager.Task.Spotify.SpotifyInterface;
-import com.homemanager.Task.Spotify.SpotifyPlayTask;
 import com.homemanager.Task.Youtube.YoutubeInterface;
 import com.homemanager.Task.Youtube.YoutubeObject;
 import com.homemanager.Task.Youtube.YoutubeSearchTask;
 import com.homemanager.TaskConnector;
 import com.example.homemanager.R;
-import com.homemanager.Task.Action.CecTask;
+
 import com.homemanager.Task.Action.PlayTask;
 import com.homemanager.Task.Action.SoundVolumeTask;
 import com.homemanager.Task.Status.StatusMessage;
 import com.homemanager.Task.Action.StopMediaTask;
 import com.homemanager.Task.Media.MediaObject;
 import com.google.android.material.tabs.TabLayout;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Random;
 
 
-public class Media extends Activity implements SpotifyInterface, YoutubeInterface {
+public class Media extends Activity implements YoutubeInterface {
 
     private View promptView;
     private Media media;
@@ -121,6 +113,27 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
             }
         });
 
+        imgBtnAdd= (ImageButton) promptView.findViewById(R.id.playAllRandom);
+        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String temp;
+                ArrayList<String> ytLinks = new ArrayList<String>();
+                if (ytObjects != null && !ytObjects.isEmpty()) {
+                    for (final YoutubeObject obj : ytObjects)
+                        ytLinks.add(obj.getVideoLink());
+
+                    for (int i = 0; i < ytLinks.size(); i++) {
+                        int idx = (int) (Math.random() * ytLinks.size());
+                        temp = ytLinks.get(i);
+                        ytLinks.set(i, ytLinks.get(idx));
+                        ytLinks.set(idx, temp);
+                    }
+                    taskConnector.putNewTask(new VideoShareTask(statusMessages, ytLinks));
+                    statusMessages.displayHint(R.string.HintWaitForData);
+                }
+            }
+        });
+
         imgBtnAdd= (ImageButton) promptView.findViewById(R.id.next);
         imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -128,34 +141,6 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
             }
         });
 
-        imgBtnAdd = (ImageButton) promptView.findViewById(R.id.buttonUp);
-        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (sporifyDirectoriesList.size() >=2){
-                    int lastIndex = sporifyDirectoriesList.size()-1;
-                    //remove current directory
-                    sporifyDirectoriesList.remove(lastIndex);
-                    lastIndex--;
-                    //get upper directory
-                    String directory = sporifyDirectoriesList.get(lastIndex);
-                    sporifyDirectoriesList.remove(lastIndex);
-                    //go to upper directory
-                    taskConnector.putNewTask(new SpotifyGetObjectTask(media, directory));
-                    statusMessages.displayHint(R.string.HintWaitForData);
-                    ((ProgressBar)(promptView.findViewById(R.id.loadingBar))).setVisibility(View.VISIBLE);
-                }
-
-            }
-        });
-
-        imgBtnAdd = (ImageButton) promptView.findViewById(R.id.buttonSearch);
-        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                taskConnector.putNewTask(new SpotifyGetObjectTask(media).setSearchText(((EditText)promptView.findViewById(R.id.searchSpotifyObject)).getText().toString()));
-                statusMessages.displayHint(R.string.HintWaitForData);
-                ((ProgressBar)(promptView.findViewById(R.id.loadingBar))).setVisibility(View.VISIBLE);
-            }
-        });
 
         imgBtnAdd = (ImageButton) promptView.findViewById(R.id.searchYTButton);
         imgBtnAdd.setOnClickListener(new View.OnClickListener() {
@@ -166,28 +151,6 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
             }
         });
 
-
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                ProgressBar bar = (ProgressBar) promptView.findViewById(R.id.loadingBar);
-                bar.setProgress(bar.getProgress()+1);
-
-            }
-        }, 100, 10);
-
-
-
-
-        imgBtnAdd = (ImageButton) promptView.findViewById(R.id.buttonPlaySpotify);
-        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (currentSporifyDirectory.length() != 0 ){
-                    taskConnector.putNewTask(new SpotifyPlayTask(statusMessages, currentSporifyDirectory, true));
-                    statusMessages.displayHint(R.string.HintWaitForData);
-                }
-            }
-        });
 
 
         LinearLayout layout = (LinearLayout) promptView.findViewById(R.id.radioLayout);
@@ -210,29 +173,24 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
             channelIdx++;
         }
 
-        layout = (LinearLayout) promptView.findViewById(R.id.tvLayout);
+        layout = (LinearLayout) promptView.findViewById(R.id.localLayout);
         layout.removeAllViews();
-        channelIdx = 0;
-        for (final int channelId : mediaObject.getTvChannelIds()) {
-
+        int folderIdx = 0;
+        for (final String name : mediaObject.getLocalFolderNames() ) {
             final Button button = new Button(promptView.getContext());
-            button.setText(mediaObject.getTvChannelnames().get(channelIdx));
-
+            button.setText(name);
+            int finalFolderIdx = folderIdx;
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     ((TextView) promptView.findViewById(R.id.mediaText)).setText(button.getText());
-                    taskConnector.putNewTask(new PlayTask(channelId,
+                    taskConnector.putNewTask(new PlayTask(finalFolderIdx, name,
                             statusMessages));
                 }
             });
 
             layout.addView(button, new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT , TableRow.LayoutParams.WRAP_CONTENT));
-            channelIdx++;
+            folderIdx++;
         }
-
-        layout = (LinearLayout) promptView.findViewById(R.id.spotifyLayout);
-        layout.setVisibility(View.GONE);
-
 
         final TabLayout tabItems = (TabLayout) promptView.findViewById(R.id.tabMediaLayout);
         tabItems.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -242,11 +200,8 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
                     LinearLayout radioLayout = (LinearLayout) promptView.findViewById(R.id.radioLayout);
                     radioLayout.setVisibility(View.VISIBLE);
 
-                    LinearLayout tvLayout = (LinearLayout) promptView.findViewById(R.id.tvLayout);
+                    LinearLayout tvLayout = (LinearLayout) promptView.findViewById(R.id.localLayout);
                     tvLayout.setVisibility(View.GONE);
-
-                    LinearLayout spotifyLayout = (LinearLayout) promptView.findViewById(R.id.spotifyLayout);
-                    spotifyLayout.setVisibility(View.GONE);
 
                     LinearLayout youtubeLayout = (LinearLayout) promptView.findViewById(R.id.youtubeLayout);
                     youtubeLayout.setVisibility(View.GONE);
@@ -255,10 +210,7 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
                     LinearLayout radioLayout = (LinearLayout) promptView.findViewById(R.id.radioLayout);
                     radioLayout.setVisibility(View.GONE);
 
-                    LinearLayout spotifyLayout = (LinearLayout) promptView.findViewById(R.id.spotifyLayout);
-                    spotifyLayout.setVisibility(View.GONE);
-
-                    LinearLayout tvLayout = (LinearLayout) promptView.findViewById(R.id.tvLayout);
+                    LinearLayout tvLayout = (LinearLayout) promptView.findViewById(R.id.localLayout);
                     tvLayout.setVisibility(View.VISIBLE);
 
                     LinearLayout youtubeLayout = (LinearLayout) promptView.findViewById(R.id.youtubeLayout);
@@ -268,32 +220,11 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
                     LinearLayout radioLayout = (LinearLayout) promptView.findViewById(R.id.radioLayout);
                     radioLayout.setVisibility(View.GONE);
 
-                    LinearLayout spotifyLayout = (LinearLayout) promptView.findViewById(R.id.spotifyLayout);
-                    spotifyLayout.setVisibility(View.GONE);
-
-                    LinearLayout tvLayout = (LinearLayout) promptView.findViewById(R.id.tvLayout);
+                    LinearLayout tvLayout = (LinearLayout) promptView.findViewById(R.id.localLayout);
                     tvLayout.setVisibility(View.GONE);
 
                     LinearLayout youtubeLayout = (LinearLayout) promptView.findViewById(R.id.youtubeLayout);
                     youtubeLayout.setVisibility(View.VISIBLE);
-                }
-                else {
-                    if (currentSporifyDirectory.length() ==0) {
-                        taskConnector.putNewTask(new SpotifyGetObjectTask(media));
-                        statusMessages.displayHint(R.string.HintWaitForData);
-                        ((ProgressBar)(promptView.findViewById(R.id.loadingBar))).setVisibility(View.VISIBLE);
-                    }
-                    LinearLayout radioLayout = (LinearLayout) promptView.findViewById(R.id.radioLayout);
-                    radioLayout.setVisibility(View.GONE);
-
-                    LinearLayout spotifyLayout = (LinearLayout) promptView.findViewById(R.id.spotifyLayout);
-                    spotifyLayout.setVisibility(View.VISIBLE);
-
-                    LinearLayout tvLayout = (LinearLayout) promptView.findViewById(R.id.tvLayout);
-                    tvLayout.setVisibility(View.GONE);
-
-                    LinearLayout youtubeLayout = (LinearLayout) promptView.findViewById(R.id.youtubeLayout);
-                    youtubeLayout.setVisibility(View.GONE);
                 }
             }
 
@@ -305,67 +236,6 @@ public class Media extends Activity implements SpotifyInterface, YoutubeInterfac
         });
 
         return promptView;
-    }
-
-    @Override
-    public synchronized void spotifyObjectRecived(SpotifyGetObject spotifyCurrentObject){
-        final JSONArray array = spotifyCurrentObject.getCurrentSpotifyContent();
-
-        this.currentSporifyDirectory = spotifyCurrentObject.getCurrentDirectory();
-        sporifyDirectoriesList.add(this.currentSporifyDirectory);
-        //prepare list of items on the screen
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                createSpotifyContent(array);
-            }
-        });
-     }
-
-    @Override
-    public void spotifyObjectRecivedError() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((ProgressBar)(promptView.findViewById(R.id.loadingBar))).setVisibility(View.INVISIBLE);
-            }
-        });
-    }
-
-    private void createSpotifyContent(final JSONArray items) {
-        LinearLayout layout = (LinearLayout) promptView.findViewById(R.id.spotifyDataLayout);
-        layout.removeAllViews();
-
-        ((ProgressBar)(promptView.findViewById(R.id.loadingBar))).setVisibility(View.INVISIBLE);
-
-        for (int idx = 0; idx < items.length(); idx++) {
-            try {
-                JSONObject item = items.getJSONObject(idx);
-
-                final Button button = new Button(promptView.getContext());
-                button.setText(item.getString("label"));
-                final String file = item.getString("file");
-                final boolean isDirectory = item.getString("filetype").equals("directory");
-
-                button.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        if (isDirectory) {
-                            taskConnector.putNewTask(new SpotifyGetObjectTask(media, file));
-                            ((ProgressBar)(promptView.findViewById(R.id.loadingBar))).setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            taskConnector.putNewTask(new SpotifyPlayTask(statusMessages, file, isDirectory));
-                        }
-                        statusMessages.displayHint(R.string.HintWaitForData);
-                    }
-                });
-
-                layout.addView(button, new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-            } catch (Exception e) {
-
-            }
-        }
     }
 
     @Override

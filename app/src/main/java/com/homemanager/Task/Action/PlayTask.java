@@ -9,11 +9,23 @@ public class PlayTask extends EventsTask {
 
     private StatusMessage statusMessages;
     private int channelId;
+    private int folderId;
+    private String folder;
+    private boolean local;
 
     public PlayTask(int channelId, StatusMessage statusMessages){
         super(statusMessages);
         this.statusMessages = statusMessages;
         this.channelId = channelId;
+        this.local = false;
+    }
+
+    public PlayTask(int folderId, String folder, StatusMessage statusMessages){
+        super(statusMessages);
+        this.statusMessages = statusMessages;
+        this.folderId = folderId;
+        this.folder = folder;
+        this.local = true;
     }
 
     @Override
@@ -21,8 +33,15 @@ public class PlayTask extends EventsTask {
         JSONObject jsonParams = new JSONObject();
 
         try {
-            jsonParams.put("action", "PlayPVR");
-            jsonParams.put("channel", channelId);
+            if (!local) {
+                jsonParams.put("action", "PlayPVR");
+                jsonParams.put("channel", channelId);
+            }
+            else {
+                jsonParams.put("action", "PlayMp3");
+                jsonParams.put("folder", folder);
+                jsonParams.put("folderId", folderId);
+            }
         }
         catch(Exception e){
         }

@@ -89,79 +89,12 @@
                 </LinearLayout>
             </ScrollView>
 
-            <LinearLayout
-                android:id="@+id/spotifyLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/searchSpotifyObject"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="textPersonName" />
-
-                    <ImageButton
-                        android:id="@+id/buttonSearch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_search_category_default" />
-
-                    <ImageButton
-                        android:id="@+id/buttonPlaySpotify"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_media_play" />
-
-
-                    <ImageButton
-                        android:id="@+id/buttonUp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_menu_revert" />
-                </LinearLayout>
-
-                <ProgressBar
-                    android:id="@+id/loadingBar"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"
-                    android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
-                    android:maxHeight="24dip"
-                    android:minHeight="12dip"
-                    android:progressDrawable="@android:drawable/progress_horizontal"
-                    android:visibility="visible" />
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:id="@+id/spotifyDataLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"></LinearLayout>
-                </ScrollView>
-
-            </LinearLayout>
-
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/tvLayout"
+                    android:id="@+id/localLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -179,6 +112,8 @@
             android:id="@+id/tabMediaLayout"
             android:layout_width="match_parent"
             android:layout_height="45dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             app:tabTextAppearance="@style/TextAppearance.AppCompat.Small">
 
             <com.google.android.material.tabs.TabItem
@@ -213,11 +148,6 @@
                 android:layout_weight="1"
                 app:srcCompat="@android:drawable/ic_lock_power_off" />
 
-<!--            <Button
-                android:id="@+id/stopMediaButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="O" />-->
 
             <ImageButton
                 android:id="@+id/playAll"
@@ -227,12 +157,13 @@
                 android:layout_weight="1"
                 app:srcCompat="@android:drawable/ic_media_play" />
 
-<!--            <Button-->
-<!--                android:id="@+id/playAll"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_span="2"-->
-<!--                android:text=">" />-->
+            <ImageButton
+                android:id="@+id/playAllRandom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/ic_menu_revert" />
 
             <ImageButton
                 android:id="@+id/next"
@@ -242,12 +173,6 @@
                 android:layout_weight="1"
                 app:srcCompat="@android:drawable/ic_media_next" />
 
-<!--            <Button-->
-<!--                android:id="@+id/next"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_span="2"-->
-<!--                android:text=">>" />-->
 
 
             <ImageButton
@@ -257,15 +182,6 @@
                 android:layout_weight="1"
                 android:layout_span="2"
                 app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
-
-<!--            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_span="2"
-                android:layout_weight="1"
-                android:text="X" />
--->
 
         </LinearLayout>
 

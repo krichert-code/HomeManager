@@ -73,6 +73,11 @@ public class YoutubeSearchTask extends Task {
     public void inDoneStateNotification(){
         ArrayList<YoutubeObject> youtubeSearchResult = new ArrayList<YoutubeObject>();
 
+        if (searchResult == null) {
+            youtubeInterface.youtubeObjectRecivedError();
+            return;
+        }
+
         for (int i = 0; i < searchResult.length(); i++) {
             try {
                 JSONObject obj = searchResult.getJSONObject(i);

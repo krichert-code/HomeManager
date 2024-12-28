@@ -67,6 +67,12 @@ public class MediaTask extends Task {
                 mediaObject.addTvChannelname(item.getString("label"));
             }
 
+            array = content.getJSONArray("mp3");
+            for(int idx = 0; idx < array.length() ;idx++ ) {
+                String item = array.getString(idx);
+                mediaObject.addLocalFolderName(item);
+            }
+
             mediaObject.setVolume(content.getInt("volume"));
         }
         catch(JSONException e){
