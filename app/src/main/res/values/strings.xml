@@ -72,7 +72,7 @@
     <string name="HintAutoWaterScheduled">Automatyczne podlewanie zaplanowane</string>
     <string name="HintWaitForData">Czekam na odpowiedź</string>
     <string name="HintSettingsSaveDone">Ustawienia zapisane</string>
-    <string name="HintErrorMessage">Błąd odczytu</string>
+    <string name="HintErrorMessage">Błąd wewnętrzny</string>
     <string name="HintYTSent">Film został przesłany</string>
 
     <!-- charts -->

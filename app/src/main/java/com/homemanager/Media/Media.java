@@ -32,7 +32,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.Random;
+
 
 
 public class Media extends Activity implements YoutubeInterface {
@@ -45,13 +45,14 @@ public class Media extends Activity implements YoutubeInterface {
     private List<String> sporifyDirectoriesList;
     private ArrayList<YoutubeObject> ytObjects = null;
     private Timer timer;
+    private boolean sourceIsLocal;
 
     public Media(TaskConnector tasksConnector, StatusMessage statusMessages){
         this.taskConnector = tasksConnector;
         this.statusMessages = statusMessages;
         this.currentSporifyDirectory = "";
         sporifyDirectoriesList = new ArrayList<String>();
-
+        this.sourceIsLocal = false;
         this.media = this;
     }
 
@@ -101,33 +102,14 @@ public class Media extends Activity implements YoutubeInterface {
 
 
         imgBtnAdd= (ImageButton) promptView.findViewById(R.id.playAll);
+        imgBtnAdd.setEnabled(false);
         imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ArrayList<String> ytLinks = new ArrayList<String>();
+                sourceIsLocal = false;
                 if (ytObjects != null && !ytObjects.isEmpty()) {
                     for (final YoutubeObject obj : ytObjects)
                         ytLinks.add(obj.getVideoLink());
-                    taskConnector.putNewTask(new VideoShareTask(statusMessages, ytLinks));
-                    statusMessages.displayHint(R.string.HintWaitForData);
-                }
-            }
-        });
-
-        imgBtnAdd= (ImageButton) promptView.findViewById(R.id.playAllRandom);
-        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                String temp;
-                ArrayList<String> ytLinks = new ArrayList<String>();
-                if (ytObjects != null && !ytObjects.isEmpty()) {
-                    for (final YoutubeObject obj : ytObjects)
-                        ytLinks.add(obj.getVideoLink());
-
-                    for (int i = 0; i < ytLinks.size(); i++) {
-                        int idx = (int) (Math.random() * ytLinks.size());
-                        temp = ytLinks.get(i);
-                        ytLinks.set(i, ytLinks.get(idx));
-                        ytLinks.set(idx, temp);
-                    }
                     taskConnector.putNewTask(new VideoShareTask(statusMessages, ytLinks));
                     statusMessages.displayHint(R.string.HintWaitForData);
                 }
@@ -135,9 +117,11 @@ public class Media extends Activity implements YoutubeInterface {
         });
 
         imgBtnAdd= (ImageButton) promptView.findViewById(R.id.next);
+        imgBtnAdd.setEnabled(false);
         imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                taskConnector.putNewTask(new StopMediaTask(statusMessages, true));
+                taskConnector.putNewTask(new StopMediaTask(statusMessages, true,
+                        sourceIsLocal) );
             }
         });
 
@@ -182,6 +166,7 @@ public class Media extends Activity implements YoutubeInterface {
             int finalFolderIdx = folderIdx;
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    sourceIsLocal = true;
                     ((TextView) promptView.findViewById(R.id.mediaText)).setText(button.getText());
                     taskConnector.putNewTask(new PlayTask(finalFolderIdx, name,
                             statusMessages));
@@ -205,6 +190,11 @@ public class Media extends Activity implements YoutubeInterface {
 
                     LinearLayout youtubeLayout = (LinearLayout) promptView.findViewById(R.id.youtubeLayout);
                     youtubeLayout.setVisibility(View.GONE);
+
+                    ImageButton btn = (ImageButton) promptView.findViewById(R.id.playAll);
+                    btn.setEnabled(false);
+                    btn = (ImageButton) promptView.findViewById(R.id.next);
+                    btn.setEnabled(false);
                 }
                 else if (tabItems.getTabAt(1) == tab) {
                     LinearLayout radioLayout = (LinearLayout) promptView.findViewById(R.id.radioLayout);
@@ -215,6 +205,11 @@ public class Media extends Activity implements YoutubeInterface {
 
                     LinearLayout youtubeLayout = (LinearLayout) promptView.findViewById(R.id.youtubeLayout);
                     youtubeLayout.setVisibility(View.GONE);
+
+                    ImageButton btn = (ImageButton) promptView.findViewById(R.id.playAll);
+                    btn.setEnabled(false);
+                    btn = (ImageButton) promptView.findViewById(R.id.next);
+                    btn.setEnabled(true);
                 }
                 else if (tabItems.getTabAt(2) == tab) {
                     LinearLayout radioLayout = (LinearLayout) promptView.findViewById(R.id.radioLayout);
@@ -225,6 +220,10 @@ public class Media extends Activity implements YoutubeInterface {
 
                     LinearLayout youtubeLayout = (LinearLayout) promptView.findViewById(R.id.youtubeLayout);
                     youtubeLayout.setVisibility(View.VISIBLE);
+                    ImageButton btn = (ImageButton) promptView.findViewById(R.id.playAll);
+                    btn.setEnabled(true);
+                    btn = (ImageButton) promptView.findViewById(R.id.next);
+                    btn.setEnabled(true);
                 }
             }
 
@@ -258,6 +257,7 @@ public class Media extends Activity implements YoutubeInterface {
             @Override
             public void run() {
                 ((ProgressBar)(promptView.findViewById(R.id.loadingYTBar))).setVisibility(View.INVISIBLE);
+                statusMessages.displayHint(R.string.HintErrorMessage);
             }
         });
     }

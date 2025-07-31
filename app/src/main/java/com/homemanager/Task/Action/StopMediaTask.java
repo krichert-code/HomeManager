@@ -6,7 +6,8 @@ import org.json.JSONObject;
 
 public class StopMediaTask extends EventsTask {
     private long duration = 2 * 1000;
-    private boolean stopAndnext = false;
+    private boolean stopAndNext = false;
+    private boolean sourceMp3 = false;
 
     private StatusMessage statusMessages;
 
@@ -16,10 +17,11 @@ public class StopMediaTask extends EventsTask {
         this.statusMessages = statusMessages;
     }
 
-    public StopMediaTask(StatusMessage statusMessages, boolean next){
+    public StopMediaTask(StatusMessage statusMessages, boolean stopAndNext, boolean sourceIsLocal){
         super(statusMessages);
         this.statusMessages = statusMessages;
-        this.stopAndnext = next;
+        this.stopAndNext = stopAndNext;
+        this.sourceMp3 = sourceIsLocal;
     }
 
     @Override
@@ -28,8 +30,11 @@ public class StopMediaTask extends EventsTask {
 
         try {
             jsonParams.put("action", "Stop");
-            if (this.stopAndnext)
+            if (this.stopAndNext) {
                 jsonParams.put("next", 1);
+                jsonParams.put("sourceIsLocal", sourceMp3);
+            }
+
         }
         catch(Exception e){
         }
