@@ -9,6 +9,7 @@ public class InfoObject {
     private String todayHeaterStats;
     private String todayRainStats;
     private int    alarmStateValue;
+    private int    alarmArmedState;
     private String alarmStop;
     private String alarmVolume;
     private int alarmChannel;
@@ -24,8 +25,20 @@ public class InfoObject {
     public final int ALARM_WEEK_DAYS = 2;
     public final int ALARM_NEVER     = 1;
 
+    public final int ALARM_NO_DATA   = 3;
+    public final int ALARM_NOT_ARMED = 2;
+    public final int ALARM_ARMED     = 1;
+
     public int getAlarmStateValue() {
         return alarmStateValue;
+    }
+
+    public int getAlarmArmedState() {
+        return alarmArmedState;
+    }
+
+    public void setAlarmArmedState(int alarmArmedState) {
+        this.alarmArmedState = alarmArmedState;
     }
 
     public void setAlarmStateValue(int alarmStateValue) {

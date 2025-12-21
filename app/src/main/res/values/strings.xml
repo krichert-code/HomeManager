@@ -23,6 +23,8 @@
 
     <!-- Dialog -->
     <string name="InfoNoData">Brak danych</string>
+    <string name="InfoAlarmArmed">Alarm uzbrojony - brak ruchu</string>
+    <string name="InfoAlarmNoArmed">W domu są osoby</string>
     <string name="InfoAlarmTime">Budzik start</string>
     <string name="InfoAlarmStation">Stacja radiowa</string>
     <string name="InfoAlarmTimeOff">Budzik stop</string>
@@ -113,7 +115,7 @@
         <item>Styczeń</item>
         <item>Luty</item>
         <item>Marzec</item>
-        <item>CKwiecień</item>
+        <item>Kwiecień</item>
         <item>Maj</item>
         <item>Czerwiec</item>
         <item>Lipiec</item>
