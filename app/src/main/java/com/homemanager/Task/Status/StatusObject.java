@@ -12,12 +12,14 @@ public class StatusObject {
     private TemperatureObject tempObject;
     private EnergyObject energyObject;
     private EventsObject eventsObject;
+    private AlarmObject alarmObject;
 
     public StatusObject()
     {
         tempObject = new TemperatureObject();
         energyObject = new EnergyObject();
         eventsObject = new EventsObject();
+        alarmObject = new AlarmObject();
     }
 
     public TemperatureObject getTempObject() {
@@ -44,6 +46,10 @@ public class StatusObject {
         this.eventsObject = eventsObject;
     }
 
+    public AlarmObject getAlarmObject() {
+        return alarmObject;
+    }
+
     public void parseStatus(JSONObject content) {
         // parse temperature
         tempObject.parseTemperature(content);
@@ -51,6 +57,8 @@ public class StatusObject {
         energyObject.parseEnergy(content);
         // parse events
         eventsObject.parseEvents(content);
+
+        alarmObject.parseAlarmState(content);
     }
 
 }

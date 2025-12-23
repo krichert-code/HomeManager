@@ -540,6 +540,12 @@ public class HomeManager extends AppCompatActivity implements StatusMessage,
                     temp.setText(statusData.getTempObject().getOutsideTemperature() + " \u2103");
                 }
 
+                ImageView alarmImage = (ImageView) findViewById(R.id.alarmStateImage);
+                if (statusData.getAlarmObject().isAlarmArmed())
+                    alarmImage.setVisibility(View.VISIBLE);
+                else
+                    alarmImage.setVisibility(View.INVISIBLE);
+
                 tl = (TableLayout) findViewById(R.id.News);
                 // Stuff that updates the UI
                 tl.removeAllViews();

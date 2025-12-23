@@ -214,14 +214,6 @@ public class Info implements InfoMessage {
         if (data.getAlarmStateValue() == data.ALARM_NEVER)
             textView.setText(promptView.getResources().getString(R.string.InfoAlarmMode0) );
 
-        textView = (TextView)promptView.findViewById(R.id.infoAlarmText);
-        if (data.getAlarmArmedState() == data.ALARM_ARMED)
-            textView.setText(promptView.getResources().getString(R.string.InfoAlarmArmed));
-        if (data.getAlarmArmedState() == data.ALARM_NOT_ARMED)
-            textView.setText(promptView.getResources().getString(R.string.InfoAlarmNoArmed));
-        if (data.getAlarmArmedState() == data.ALARM_NO_DATA)
-            textView.setText(promptView.getResources().getString(R.string.InfoNoData));
-
         textView = (TextView)promptView.findViewById(R.id.versionInfoText);
         textView.setText(promptView.getResources().getString(R.string.InfoVersion));
 

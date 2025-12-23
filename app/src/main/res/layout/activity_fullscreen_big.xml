@@ -85,12 +85,22 @@
                 app:srcCompat="@drawable/day" />
 
             <ImageView
-                android:id="@+id/energyModeImage"
+                android:id="@+id/alarmStateImage"
                 android:layout_width="60dp"
                 android:layout_height="32dp"
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="left"
                 android:layout_toRightOf="@id/tempModeImage"
+                android:visibility="visible"
+                app:srcCompat="@drawable/alarm" />
+
+            <ImageView
+                android:id="@+id/energyModeImage"
+                android:layout_width="60dp"
+                android:layout_height="32dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="left"
+                android:layout_toRightOf="@id/alarmStateImage"
                 app:srcCompat="@drawable/battery" />
 
             <TextView
