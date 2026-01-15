@@ -36,7 +36,7 @@
     <string name="InfoRainNotOccurs">Dzisiaj nie zanotowano opadu deszczu</string>
     <string name="InfoHeater">Dziś piec pracuje</string>
     <string name="InfoEnergyTotal">Wygenerowana moc </string>
-    <string name="InfoVersion">Wersja 1.4.1</string>
+    <string name="InfoVersion">Wersja 1.5.1</string>
 
     <string name="GateOpenText">Na jak długo chesz otworzyć bramę ?</string>
     <string name="GateOpenMessage">Otwieranie bramy wjazdowej</string>
@@ -93,6 +93,7 @@
     <!-- heater settings -->
     <string name="DayTempSetting">Dzień [ºC]</string>
     <string name="NightTempSetting">Noc [ºC]</string>
+    <string name="SupportTempSetting">Załączenie od[ºC]</string>
     <string name="MainModeEnableSetting">Grzanie główne</string>
     <string name="AdditionModeEnableSetting">Grzanie dodatkowe</string>
 

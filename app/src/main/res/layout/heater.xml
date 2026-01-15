@@ -60,7 +60,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/dayText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
@@ -120,6 +120,42 @@
 
                 <Button
                     android:id="@+id/nightRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="1dip"
+                    android:text="&gt;" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:paddingLeft="5dp"
+                    android:text="@string/SupportTempSetting" />
+
+                <Button
+                    android:id="@+id/supportLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="1dip"
+                    android:text="&lt;" />
+
+                <EditText
+                    android:id="@+id/supportTempText"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:inputType="numberDecimal" />
+
+                <Button
+                    android:id="@+id/supportRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="1dip"

@@ -16,7 +16,9 @@ public class AlarmObject {
     private void setValid(boolean valid) { this.valid = valid; }
 
     public boolean isAlarmArmed() {
-        return state == 1;
+        if (state == 1)
+            return true;
+        return false;
     }
 
     public boolean isValid() {return this.valid; }

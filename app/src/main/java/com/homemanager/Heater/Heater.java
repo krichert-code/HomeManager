@@ -184,6 +184,8 @@ public class Heater implements HeaterMessage {
             editText.setText(Double.toString(heaterObject.getTempDay()));
             editText = (EditText) promptView.findViewById(R.id.nightTempText);
             editText.setText(Double.toString(heaterObject.getTempNight()));
+            editText = (EditText) promptView.findViewById(R.id.supportTempText);
+            editText.setText(Double.toString(heaterObject.getTempSupport()));
             firstUpdate = false;
         }
 
@@ -194,6 +196,7 @@ public class Heater implements HeaterMessage {
             ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(1).setVisibility(View.GONE);
             ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(2).setVisibility(View.VISIBLE);
             ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(3).setVisibility(View.VISIBLE);
+            ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(4).setVisibility(View.GONE);
             CheckBox cb = (CheckBox) promptView.findViewById(R.id.heatMainMode);
             if (this.heaterObject.isMainHeater()) cb.setChecked(true);
             else cb.setChecked(false);
@@ -205,6 +208,7 @@ public class Heater implements HeaterMessage {
             ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(1).setVisibility(View.VISIBLE);
             ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(2).setVisibility(View.GONE);
             ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(3).setVisibility(View.GONE);
+            ((TableLayout)promptView.findViewById(R.id.heaterSettings)).getChildAt(4).setVisibility(View.VISIBLE);
             CheckBox cb = (CheckBox) promptView.findViewById(R.id.heatAddtionMode);
             if (this.heaterObject.isAdditionHeater()) cb.setChecked(true);
             else cb.setChecked(false);
@@ -313,6 +317,8 @@ public class Heater implements HeaterMessage {
                         ((TextView) promptView.findViewById(R.id.dayTempText)).getText().toString() ));
                 heaterObject.setTempNight(Double.parseDouble(
                         ((TextView) promptView.findViewById(R.id.nightTempText)).getText().toString() ));
+                heaterObject.setTempSupport(Double.parseDouble(
+                        ((TextView) promptView.findViewById(R.id.supportTempText)).getText().toString() ));
                 tasks.putNewTask(new HeaterSettingsTask(heaterObject, heaterClass));
             }
         });
@@ -322,6 +328,9 @@ public class Heater implements HeaterMessage {
 
         updateSpinnerButtonMinLimits(R.id.nightLeft, R.id.nightTempText, 15.0);
         updateSpinnerButtonMaxLimits(R.id.nightRight, R.id.nightTempText, 30.0);
+
+        updateSpinnerButtonMinLimits(R.id.supportLeft, R.id.supportTempText, 15.0);
+        updateSpinnerButtonMaxLimits(R.id.supportRight, R.id.supportTempText, 30.0);
 
         for (int i=0; i<24; i++) {
             String name = "h" + i;

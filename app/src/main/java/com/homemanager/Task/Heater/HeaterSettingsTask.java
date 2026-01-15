@@ -30,6 +30,7 @@ public class HeaterSettingsTask extends Task {
             jsonParams.put("main_device_enable", heaterObject.isMainHeater() ? "1" : "0");
             jsonParams.put("day_temperature", Double.toString(heaterObject.getTempDay()));
             jsonParams.put("night_temperature", Double.toString(heaterObject.getTempNight()));
+            jsonParams.put("support_temperature", Double.toString(heaterObject.getTempSupport()));
             jsonParams.put("day1", Integer.toString(heaterObject.getTempModeDay(0)));
             jsonParams.put("day2", Integer.toString(heaterObject.getTempModeDay(1)));
             jsonParams.put("day3", Integer.toString(heaterObject.getTempModeDay(2)));

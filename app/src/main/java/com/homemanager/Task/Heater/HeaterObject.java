@@ -14,7 +14,9 @@ public class HeaterObject {
 
     private double tempDay;
     private double tempNight;
+    private double tempSupport;
     private double threshold;
+
 
     private boolean mainHeater;
     private boolean additionHeater;
@@ -114,6 +116,14 @@ public class HeaterObject {
 
     public void setTempNight(double tempNight) {
         this.tempNight = tempNight;
+    }
+
+    public double getTempSupport() {
+        return tempSupport;
+    }
+
+    public void setTempSupport(double tempSupport) {
+        this.tempSupport = tempSupport;
     }
 
     public double getThreshold() {

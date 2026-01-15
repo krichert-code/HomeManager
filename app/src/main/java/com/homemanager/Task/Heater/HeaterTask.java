@@ -78,6 +78,7 @@ public class HeaterTask extends Task {
 
             heaterObject.setTempDay(content.getJSONObject("settings").getDouble("dayTemp"));
             heaterObject.setTempNight(content.getJSONObject("settings").getDouble("nightTemp"));
+            heaterObject.setTempSupport(content.getJSONObject("settings").getDouble("supportTemp"));
             heaterObject.setThreshold(content.getJSONObject("settings").getDouble("threshold"));
             heaterObject.setTempModeDay(0, content.getJSONObject("settings").getInt("day1"));
             heaterObject.setTempModeDay(1, content.getJSONObject("settings").getInt("day2"));
