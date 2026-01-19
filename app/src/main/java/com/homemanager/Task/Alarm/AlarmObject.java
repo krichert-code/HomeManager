@@ -25,9 +25,11 @@ public class AlarmObject implements Iterable<Room> {
             }
 
             for (int idx = 0; idx < array.length(); idx++) {
-                Room room = new Room();
+                Room room;
                 JSONObject item = array.getJSONObject(idx);
+                if (item.getString("name").isEmpty()) continue;
 
+                room = new Room();
                 room.name = item.getString("name");
                 room.lightIp = item.getJSONObject("light").getString("light_ip");
 
